@@ -1,8 +1,5 @@
 package ar.com.envios.domain.model;
 
-import lombok.Getter;
-import lombok.Setter;
-
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
@@ -11,33 +8,29 @@ public class Presupuesto {
 
     private final String origen;
     private final String destino;
-    // Por ejemplo, volumen o peso de la carga, si es pertinente:
-    private final double volumenCarga; // o pesoCarga, depende de la lógica
+    private final double volumenCarga;
+    private final double pesoCarga;
     private final TipoVehiculo tipoVehiculo;
+    private final BigDecimal consumoPorKm;
     private final List<Extra> extras;
 
-    // Se calcula durante la lógica. Podríamos almacenar un resultado final
-    // o calcularlo a demanda con un método getTotal().
+    private BigDecimal costoBase = BigDecimal.ZERO;
 
-    private BigDecimal costoBase = BigDecimal.valueOf(100);
-
-    public Presupuesto(String origen, String destino, double volumenCarga, TipoVehiculo tipoVehiculo) {
+    public Presupuesto(String origen, String destino, double volumenCarga, double pesoCarga,
+                       TipoVehiculo tipoVehiculo, BigDecimal consumoPorKm) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
+        this.pesoCarga = pesoCarga;
         this.tipoVehiculo = tipoVehiculo;
+        this.consumoPorKm = consumoPorKm;
         this.extras = new ArrayList<>();
-        this.costoBase = BigDecimal.ZERO;
     }
 
     public void agregarExtra(Extra extra) {
         this.extras.add(extra);
     }
 
-    /**
-     * Calcula el costo total: costo base + extras.
-     * Este método es un ejemplo. La lógica real puede ser más compleja.
-     */
     public BigDecimal calcularTotal() {
         BigDecimal total = costoBase;
         for (Extra extra : extras) {
@@ -46,6 +39,7 @@ public class Presupuesto {
         return total;
     }
 
+    // Getters y setters actualizados
     public String getOrigen() {
         return origen;
     }
@@ -58,8 +52,16 @@ public class Presupuesto {
         return volumenCarga;
     }
 
+    public double getPesoCarga() {
+        return pesoCarga;
+    }
+
     public TipoVehiculo getTipoVehiculo() {
         return tipoVehiculo;
+    }
+
+    public BigDecimal getConsumoPorKm() {
+        return consumoPorKm;
     }
 
     public List<Extra> getExtras() {

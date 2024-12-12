@@ -3,12 +3,15 @@ package ar.com.envios.application.dto;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.math.BigDecimal;
+
 public class PresupuestoRequest {
     private String origen;
     private String destino;
     private double volumenCarga;
+    private double pesoCarga;
+    private BigDecimal consumoPorKm;
     private String nombreTipoVehiculo;
-    private double distanciaKm;
 
     public String getOrigen() {
         return origen;
@@ -42,11 +45,19 @@ public class PresupuestoRequest {
         this.nombreTipoVehiculo = nombreTipoVehiculo;
     }
 
-    public double getDistanciaKm() {
-        return distanciaKm;
+    public double getPesoCarga() {
+        return pesoCarga;
     }
 
-    public void setDistanciaKm(double distanciaKm) {
-        this.distanciaKm = distanciaKm;
+    public void setPesoCarga(double pesoCarga) {
+        this.pesoCarga = pesoCarga;
+    }
+
+    public BigDecimal getConsumoPorKm() {
+        return consumoPorKm;
+    }
+
+    public void setConsumoPorKm(BigDecimal consumoPorKm) {
+        this.consumoPorKm = consumoPorKm;
     }
 }

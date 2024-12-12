@@ -4,9 +4,10 @@ import ar.com.envios.application.usecase.GenerarPresupuestoUseCase;
 import ar.com.envios.domain.repository.ITipoVehiculoRepository;
 import ar.com.envios.domain.service.CalculadorPresupuestoService;
 import ar.com.envios.domain.repository.ITarifasRepository;
-import ar.com.envios.infrastructure.adapter.out.persistence.IPresupuestoRepository;
+import ar.com.envios.domain.repository.IPresupuestoRepository;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.client.RestTemplate;
 
 @Configuration
 public class ApplicationConfig {
@@ -20,6 +21,11 @@ public class ApplicationConfig {
     @Bean
     public CalculadorPresupuestoService calculadorPresupuestoService() {
         return new CalculadorPresupuestoService();
+    }
+
+    @Bean
+    public RestTemplate restTemplate() {
+        return new RestTemplate();
     }
 
     @Bean
