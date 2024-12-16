@@ -1,9 +1,6 @@
 package ar.com.envios.infrastructure.entity;
 
-import ar.com.envios.domain.model.TipoVehiculo;
 import jakarta.persistence.*;
-import lombok.Getter;
-import lombok.Setter;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
@@ -26,6 +23,12 @@ public class PresupuestoEntity {
     @Column(name = "volumen_carga", nullable = false)
     private double volumenCarga;
 
+    @Column(name = "peso_carga", nullable = false)
+    private double pesoCarga;
+
+    @Column(name = "consumo_por_km", nullable = false)
+    private BigDecimal consumoPorKm;
+
     @Column(name = "costo_base", nullable = false)
     private BigDecimal costoBase;
 
@@ -46,12 +49,14 @@ public class PresupuestoEntity {
     public PresupuestoEntity() {
     }
 
-    public PresupuestoEntity(String origen, String destino, double volumenCarga,
-                             BigDecimal costoBase, TipoVehiculoEntity tipoVehiculo) {
+    public PresupuestoEntity(String origen, String destino, double volumenCarga, double pesoCarga,
+                             BigDecimal consumoPorKm, BigDecimal costoBase, TipoVehiculoEntity tipoVehiculo) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
-        this.costoBase = costoBase != null ? costoBase : BigDecimal.ZERO; // Evitar nulos
+        this.pesoCarga = pesoCarga;
+        this.consumoPorKm = consumoPorKm != null ? consumoPorKm : BigDecimal.ZERO;
+        this.costoBase = costoBase != null ? costoBase : BigDecimal.ZERO;
         this.tipoVehiculo = tipoVehiculo;
     }
 
@@ -59,6 +64,7 @@ public class PresupuestoEntity {
         this.extras.add(extra);
     }
 
+    // Getters y setters actualizados
     public Long getId() {
         return id;
     }
@@ -89,6 +95,22 @@ public class PresupuestoEntity {
 
     public void setVolumenCarga(double volumenCarga) {
         this.volumenCarga = volumenCarga;
+    }
+
+    public double getPesoCarga() {
+        return pesoCarga;
+    }
+
+    public void setPesoCarga(double pesoCarga) {
+        this.pesoCarga = pesoCarga;
+    }
+
+    public BigDecimal getConsumoPorKm() {
+        return consumoPorKm;
+    }
+
+    public void setConsumoPorKm(BigDecimal consumoPorKm) {
+        this.consumoPorKm = consumoPorKm;
     }
 
     public BigDecimal getCostoBase() {

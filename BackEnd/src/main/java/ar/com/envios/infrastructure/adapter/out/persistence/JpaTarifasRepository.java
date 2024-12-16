@@ -35,6 +35,6 @@ public class JpaTarifasRepository implements ITarifasRepository {
     }
 
     private TipoVehiculo toDomain(TipoVehiculoEntity entity) {
-        return new TipoVehiculo(entity.getNombre(), entity.getCostoBasePorKm(), entity.getCapacidadMaxVolumen());
+        return new TipoVehiculo(entity.getNombre(), entity.getCapacidadMaxVolumen(), entity.getCapacidadMaxPeso(), entity.getConsumoPorKm());
     }
 }

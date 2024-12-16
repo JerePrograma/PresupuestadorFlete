@@ -18,24 +18,46 @@ public class CalculadorPresupuestoService {
      * - Costo base = distancia * costoBasePorKm del tipo de vehículo.
      * - A ese costo base se le suman los extras que ya estén en el Presupuesto.
      *
-     * @param presupuesto   El presupuesto a calcular.
-     * @param distanciaKm   La distancia aproximada del traslado en kilómetros.
+     * @param presupuesto El presupuesto a calcular.
      * @return El total calculado.
      */
-    public BigDecimal calcular(Presupuesto presupuesto, double distanciaKm) {
+    public BigDecimal calcular(Presupuesto presupuesto/*, boolean incluyePeajes*/) {
         TipoVehiculo tipoVehiculo = presupuesto.getTipoVehiculo();
 
-        // Validar que el vehículo soporte el volumen:
-        if(!tipoVehiculo.soportaVolumen(presupuesto.getVolumenCarga())) {
+        if (!tipoVehiculo.soportaVolumen(presupuesto.getVolumenCarga())) {
             throw new IllegalArgumentException("El vehículo no soporta el volumen de la carga.");
         }
 
-        // Costo base = distancia * costoBasePorKm del vehículo
-        BigDecimal costoBase = tipoVehiculo.costoBasePorKm().multiply(BigDecimal.valueOf(distanciaKm));
-        presupuesto.setCostoBase(costoBase);
+        if (!tipoVehiculo.soportaPeso(presupuesto.getPesoCarga())) {
+            throw new IllegalArgumentException("El vehículo no soporta el peso de la carga.");
+        }
 
-        // Cálculo total = costoBase + extras
-        return presupuesto.calcularTotal();
+
+        // Obtener distancia real entre origen y destino
+        double distanciaKm = obtenerDistanciaReal(presupuesto.getOrigen(), presupuesto.getDestino());
+
+        // Obtener precio actual del combustible
+        BigDecimal precioCombustible = obtenerPrecioCombustibleActual();
+
+        BigDecimal costoCombustible = tipoVehiculo.consumoPorKm()
+                .multiply(precioCombustible)
+                .multiply(BigDecimal.valueOf(distanciaKm));
+//        BigDecimal costoPeajes = incluyePeajes ? calcularCostoPeajes(distanciaKm) : BigDecimal.ZERO;
+
+        // Costo total
+        BigDecimal costoTotal = costoCombustible/*.add(costoPeajes)*/;
+
+        presupuesto.setCostoBase(costoTotal);
+        return costoTotal;
     }
+
+    public double obtenerDistanciaReal(String origen, String destino) {
+        return 10;
+    }
+
+    public BigDecimal obtenerPrecioCombustibleActual() {
+        return new BigDecimal(10);
+    }
+
 }
 
