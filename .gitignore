@@ -1,4 +1,2 @@
-node_modules
-.idea/vcs.xml
 package-lock.json
-modules.xml
+node_modules

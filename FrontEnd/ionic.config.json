@@ -1,0 +1,8 @@
+{
+  "name": "Block transportes",
+  "integrations": {
+    "capacitor": {}
+  },
+  "type": "react-vite",
+  "id": "c9b2f38d"
+}
