@@ -7,6 +7,10 @@ import {
 import { IonReactRouter } from "@ionic/react-router";
 import { Redirect, Route } from "react-router-dom";
 import PresupuestosPage from "./pages/PresupuestosPage";
+import VehiculoPage from "./pages/VehiculoPage";
+import UsuarioPage from "./pages/UsuarioPage";
+import LoginForm from "./components/forms/LoginForm";
+import PrivateRoute from "./components/utils/PrivateRoute";
 import Navbar from "./components/layout/Navbar";
 import Footer from "./components/layout/Footer";
 import Menu from "./components/Menu";
@@ -51,15 +55,26 @@ const App: React.FC = () => {
         <IonSplitPane contentId="main">
           <Menu />
           <IonRouterOutlet id="main">
+            <Route path="/login" exact>
+              <LoginForm />
+            </Route>
+            <PrivateRoute path="/presupuestos" component={PresupuestosPage} />
+            <Redirect exact from="/" to="/login" />
             <Route path="/" exact={true}>
               <Redirect to="/folder/Inbox" />
             </Route>
+
+            {/* Rutas específicas */}
             <Route path="/presupuestos" exact>
-              <Redirect to="/pages/PresupuestosPage" />
-            </Route>
-            <Route path="/pages/PresupuestosPage" exact>
               <PresupuestosPage />
             </Route>
+            <Route path="/usuarios" exact>
+              <UsuarioPage />
+            </Route>
+            <Route path="/vehiculos" exact>
+              <VehiculoPage />
+            </Route>
+
             <Route path="/folder/:name" exact={true}>
               <Page />
             </Route>
