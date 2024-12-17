@@ -14,6 +14,13 @@ function Navbar() {
           <Link to="/presupuestos">Presupuestos</Link>
         </IonButton>
       </IonButtons>
+       
+       <div style={{ marginRight: '16px', display: 'flex', alignItems: 'center' }}>
+          <AvatarChip
+            avatarSrc="https://ionicframework.com/docs/img/demos/avatar.svg"
+            label="Usuario"
+          />
+        </div>
     </IonToolbar>
   );
 }
