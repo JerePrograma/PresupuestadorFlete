@@ -1,4 +1,4 @@
 package ar.com.envios.domain.exception;
 
-public class BusinessException {
+public class BussinesException {
 }

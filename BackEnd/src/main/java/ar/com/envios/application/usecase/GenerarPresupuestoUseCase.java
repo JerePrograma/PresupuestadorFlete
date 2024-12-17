@@ -5,7 +5,7 @@ import ar.com.envios.domain.model.TipoVehiculo;
 import ar.com.envios.domain.repository.ITarifasRepository;
 import ar.com.envios.domain.repository.ITipoVehiculoRepository;
 import ar.com.envios.domain.service.CalculadorPresupuestoService;
-import ar.com.envios.infrastructure.adapter.out.persistence.IPresupuestoRepository;
+import ar.com.envios.domain.repository.IPresupuestoRepository;
 import ar.com.envios.infrastructure.entity.PresupuestoEntity;
 import ar.com.envios.infrastructure.entity.TipoVehiculoEntity;
 import ar.com.envios.infrastructure.mapper.TipoVehiculoMapper;
@@ -40,14 +40,11 @@ public class GenerarPresupuestoUseCase {
      * @param destino            Ubicación de destino
      * @param volumenCarga       Volumen o peso de la carga a trasladar
      * @param nombreTipoVehiculo Nombre del tipo de vehículo (ej: "Camioneta")
-     * @param distanciaKm        Distancia aproximada en km
      * @return Un objeto Presupuesto con su costo total calculado
      * @throws IllegalArgumentException Si no se encuentra el tipo de vehículo o falla alguna validación.
      */
-    public Presupuesto ejecutar(String origen, String destino, double volumenCarga,
-                                String nombreTipoVehiculo, double distanciaKm) {
-
-        // Buscar el tipo de vehículo en el repositorio de dominio
+    public Presupuesto ejecutar(String origen, String destino, double volumenCarga, double pesoCarga, BigDecimal consumoPorKm, String nombreTipoVehiculo) {
+        // Buscar el tipo de vehículo
         Optional<TipoVehiculo> tipoVehiculoOpt = tarifasRepository.findByNombre(nombreTipoVehiculo);
         if (tipoVehiculoOpt.isEmpty()) {
             throw new IllegalArgumentException("No se encontró el tipo de vehículo: " + nombreTipoVehiculo);
@@ -55,35 +52,40 @@ public class GenerarPresupuestoUseCase {
 
         TipoVehiculo tipoVehiculo = tipoVehiculoOpt.get();
 
-        // Crear el presupuesto de dominio
-        Presupuesto presupuesto = new Presupuesto(origen, destino, volumenCarga, tipoVehiculo);
+        // Validar volumen y peso
+        if (!tipoVehiculo.soportaVolumen(volumenCarga)) {
+            throw new IllegalArgumentException("El vehículo no soporta el volumen de la carga.");
+        }
+        if (!tipoVehiculo.soportaPeso(pesoCarga)) {
+            throw new IllegalArgumentException("El vehículo no soporta el peso de la carga.");
+        }
 
-        // Calcular el costo total usando el servicio de dominio
-        BigDecimal total = calculadorPresupuestoService.calcular(presupuesto, distanciaKm);
-        presupuesto.setCostoBase(tipoVehiculo.costoBasePorKm().multiply(BigDecimal.valueOf(distanciaKm)));
+        // Crear el presupuesto
+        Presupuesto presupuesto = new Presupuesto(origen, destino, volumenCarga, pesoCarga, tipoVehiculo, consumoPorKm);
 
-        // Convertir a TipoVehiculoEntity
-        TipoVehiculoEntity tipoVehiculoEntity = tipoVehiculoRepository
-                .findByNombre(tipoVehiculo.nombre())
-                .orElseGet(() -> {
-                    // Si no existe, persiste el TipoVehiculoEntity
-                    TipoVehiculoEntity nuevoTipoVehiculoEntity = TipoVehiculoMapper.toEntity(tipoVehiculo);
-                    return tipoVehiculoRepository.save(nuevoTipoVehiculoEntity);
-                });
+        // Calcular costos
+        BigDecimal costoBase = calculadorPresupuestoService.calcular(presupuesto);
+        presupuesto.setCostoBase(costoBase);
 
-        // Crear la entidad Presupuesto
+        // Guardar el presupuesto
         PresupuestoEntity entity = new PresupuestoEntity(
                 presupuesto.getOrigen(),
                 presupuesto.getDestino(),
                 presupuesto.getVolumenCarga(),
+                presupuesto.getPesoCarga(),
+                presupuesto.getConsumoPorKm(),
                 presupuesto.getCostoBase(),
-                tipoVehiculoEntity
+                convertirTipoVehiculo(tipoVehiculo)
         );
 
-        // Guardar PresupuestoEntity
-        PresupuestoEntity saved = presupuestoRepository.save(entity);
+        presupuestoRepository.guardar(entity);
 
         return presupuesto;
+    }
+
+    private TipoVehiculoEntity convertirTipoVehiculo(TipoVehiculo tipoVehiculo) {
+        // Utilizar el mapper para convertir el objeto de dominio a la entidad
+        return TipoVehiculoMapper.toEntity(tipoVehiculo);
     }
 
 }

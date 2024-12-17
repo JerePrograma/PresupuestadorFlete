@@ -11,26 +11,20 @@ public class PresupuestoMapper {
 
     /**
      * Convierte un Presupuesto de dominio a un DTO de respuesta.
+     *
      * @param presupuesto El objeto del dominio
      * @return El DTO PresupuestoResponse
      */
     public static PresupuestoResponse toResponse(Presupuesto presupuesto) {
-        PresupuestoResponse response = new PresupuestoResponse();
-        response.setOrigen(presupuesto.getOrigen());
-        response.setDestino(presupuesto.getDestino());
-        response.setVolumenCarga(presupuesto.getVolumenCarga());
-        response.setTipoVehiculo(presupuesto.getTipoVehiculo().nombre());
-        response.setCostoBase(presupuesto.getCostoBase());
-        response.setCostoTotal(presupuesto.calcularTotal());
-
-        // Convertimos la lista de Extra a una lista de nombres
-        response.setExtras(
-                presupuesto.getExtras().stream()
-                        .map(Extra::nombre)
-                        .collect(Collectors.toList())
+        return new PresupuestoResponse(
+                presupuesto.getOrigen(),
+                presupuesto.getDestino(),
+                presupuesto.getVolumenCarga(),
+                presupuesto.getTipoVehiculo().nombre(),
+                presupuesto.getCostoBase(),
+                presupuesto.calcularTotal(),
+                presupuesto.getExtras().stream().map(Extra::nombre).collect(Collectors.toList())
         );
-
-        return response;
     }
 
     /**

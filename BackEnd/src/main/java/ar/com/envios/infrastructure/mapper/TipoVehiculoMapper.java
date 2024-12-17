@@ -5,19 +5,21 @@ import ar.com.envios.infrastructure.entity.TipoVehiculoEntity;
 
 public class TipoVehiculoMapper {
 
-    public static TipoVehiculo toDomain(TipoVehiculoEntity entity) {
-        return new TipoVehiculo(
-                entity.getNombre(),
-                entity.getCostoBasePorKm(),
-                entity.getCapacidadMaxVolumen()
+    public static TipoVehiculoEntity toEntity(TipoVehiculo tipoVehiculo) {
+        return new TipoVehiculoEntity(
+                tipoVehiculo.nombre(),
+                tipoVehiculo.capacidadMaxVolumen(),
+                tipoVehiculo.capacidadMaxPeso(),
+                tipoVehiculo.consumoPorKm()
         );
     }
 
-    public static TipoVehiculoEntity toEntity(TipoVehiculo domain) {
-        TipoVehiculoEntity entity = new TipoVehiculoEntity();
-        entity.setNombre(domain.nombre());
-        entity.setCostoBasePorKm(domain.costoBasePorKm());
-        entity.setCapacidadMaxVolumen(domain.capacidadMaxVolumen());
-        return entity;
+    public static TipoVehiculo toDomain(TipoVehiculoEntity tipoVehiculoEntity) {
+        return new TipoVehiculo(
+                tipoVehiculoEntity.getNombre(),
+                tipoVehiculoEntity.getCapacidadMaxVolumen(),
+                tipoVehiculoEntity.getCapacidadMaxPeso(),
+                tipoVehiculoEntity.getConsumoPorKm()
+        );
     }
 }

@@ -1,7 +1,6 @@
 package ar.com.envios.application.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import ar.com.envios.domain.exception.BussinesException;
 
 import java.math.BigDecimal;
 import java.util.List;
@@ -14,6 +13,42 @@ public class PresupuestoResponse {
     private BigDecimal costoBase;
     private BigDecimal costoTotal;
     private List<String> extras;
+    private String mensajeError; // Nuevo campo para mensajes de error
+
+    public PresupuestoResponse() {
+    }
+
+    // Constructor completo
+    public PresupuestoResponse(String origen, String destino, double volumenCarga, String tipoVehiculo,
+                               BigDecimal costoBase, BigDecimal costoTotal, List<String> extras) {
+        this.origen = origen;
+        this.destino = destino;
+        this.volumenCarga = volumenCarga;
+        this.tipoVehiculo = tipoVehiculo;
+        this.costoBase = costoBase;
+        this.costoTotal = costoTotal;
+        this.extras = extras;
+        this.mensajeError = null;
+    }
+
+    // Constructor para mensajes de error
+    public PresupuestoResponse(String mensajeError) {
+        this.mensajeError = mensajeError;
+    }
+
+    // Constructor para mensajes de error
+    public PresupuestoResponse(String mensajeError, BussinesException e) {
+        this.mensajeError = mensajeError;
+    }
+
+    // Getters y setters
+    public String getMensajeError() {
+        return mensajeError;
+    }
+
+    public void setMensajeError(String mensajeError) {
+        this.mensajeError = mensajeError;
+    }
 
     public String getOrigen() {
         return origen;

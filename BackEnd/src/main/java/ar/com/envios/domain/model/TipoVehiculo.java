@@ -5,7 +5,7 @@ import java.math.BigDecimal;
 /**
  * @param capacidadMaxVolumen o capacidad máxima en toneladas, etc.
  */
-public record TipoVehiculo(String nombre, BigDecimal costoBasePorKm, double capacidadMaxVolumen) {
+public record TipoVehiculo(String nombre, double capacidadMaxVolumen, double capacidadMaxPeso, BigDecimal consumoPorKm) {
 
     /**
      * Podrías agregar métodos que validen si un cierto volumen de carga
@@ -13,5 +13,9 @@ public record TipoVehiculo(String nombre, BigDecimal costoBasePorKm, double capa
      */
     public boolean soportaVolumen(double volumen) {
         return volumen <= this.capacidadMaxVolumen;
+    }
+
+    public boolean soportaPeso(double peso) {
+        return peso <= this.capacidadMaxPeso;
     }
 }
