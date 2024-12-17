@@ -13,6 +13,12 @@ function Navbar() {
         <IonButton>
           <Link to="/presupuestos">Presupuestos</Link>
         </IonButton>
+        <IonButton>
+          <Link to="/usuarios">Usuarios</Link>
+        </IonButton>
+        <IonButton>
+          <Link to="/vehiculos">Vehículos</Link>
+        </IonButton>
       </IonButtons>
        
        <div style={{ marginRight: '16px', display: 'flex', alignItems: 'center' }}>

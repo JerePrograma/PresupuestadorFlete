@@ -1,8 +1,8 @@
 package ar.com.envios.infrastructure.adapter.out.persistence;
 
-import ar.com.envios.domain.model.TipoVehiculo;
+import ar.com.envios.domain.model.Vehiculo;
 import ar.com.envios.domain.repository.ITarifasRepository;
-import ar.com.envios.infrastructure.entity.TipoVehiculoEntity;
+import ar.com.envios.infrastructure.entity.VehiculoEntity;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -22,19 +22,19 @@ public class JpaTarifasRepository implements ITarifasRepository {
     }
 
     @Override
-    public List<TipoVehiculo> findAll() {
+    public List<Vehiculo> findAll() {
         return springDataTarifasRepository.findAll().stream()
                 .map(this::toDomain)
                 .collect(Collectors.toList());
     }
 
     @Override
-    public Optional<TipoVehiculo> findByNombre(String nombre) {
+    public Optional<Vehiculo> findByNombre(String nombre) {
         return springDataTarifasRepository.findByNombre(nombre)
                 .map(this::toDomain);
     }
 
-    private TipoVehiculo toDomain(TipoVehiculoEntity entity) {
-        return new TipoVehiculo(entity.getNombre(), entity.getCapacidadMaxVolumen(), entity.getCapacidadMaxPeso(), entity.getConsumoPorKm());
+    private Vehiculo toDomain(VehiculoEntity entity) {
+        return new Vehiculo(entity.getNombre(), entity.getCapacidadMaxVolumen(), entity.getCapacidadMaxPeso(), entity.getConsumoPorKm());
     }
 }

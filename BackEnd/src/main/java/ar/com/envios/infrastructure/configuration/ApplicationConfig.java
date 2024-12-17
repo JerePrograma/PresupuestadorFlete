@@ -1,7 +1,7 @@
 package ar.com.envios.infrastructure.configuration;
 
 import ar.com.envios.application.usecase.GenerarPresupuestoUseCase;
-import ar.com.envios.domain.repository.ITipoVehiculoRepository;
+import ar.com.envios.domain.repository.IUsuarioRepository;
 import ar.com.envios.domain.service.CalculadorPresupuestoService;
 import ar.com.envios.domain.repository.ITarifasRepository;
 import ar.com.envios.domain.repository.IPresupuestoRepository;
@@ -13,9 +13,11 @@ import org.springframework.web.client.RestTemplate;
 public class ApplicationConfig {
 
     private final ITarifasRepository tarifasRepository;
+    private final IUsuarioRepository usuarioRepository;
 
-    public ApplicationConfig(ITarifasRepository tarifasRepository) {
+    public ApplicationConfig(ITarifasRepository tarifasRepository, IUsuarioRepository usuarioRepository) {
         this.tarifasRepository = tarifasRepository;
+        this.usuarioRepository = usuarioRepository;
     }
 
     @Bean
@@ -29,12 +31,8 @@ public class ApplicationConfig {
     }
 
     @Bean
-    public GenerarPresupuestoUseCase generarPresupuestoUseCase(CalculadorPresupuestoService calculadorPresupuestoService,
-                                                               IPresupuestoRepository presupuestoRepository,
-                                                               ITipoVehiculoRepository tipoVehiculoRepository) {
+    public GenerarPresupuestoUseCase generarPresupuestoUseCase(IPresupuestoRepository presupuestoRepository) {
         return new GenerarPresupuestoUseCase(tarifasRepository,
-                calculadorPresupuestoService,
-                presupuestoRepository,
-                tipoVehiculoRepository);
+                presupuestoRepository);
     }
 }

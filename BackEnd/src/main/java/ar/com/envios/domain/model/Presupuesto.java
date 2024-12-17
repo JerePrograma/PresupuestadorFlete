@@ -5,25 +5,22 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Presupuesto {
-
     private final String origen;
     private final String destino;
     private final double volumenCarga;
     private final double pesoCarga;
-    private final TipoVehiculo tipoVehiculo;
-    private final BigDecimal consumoPorKm;
+    private final Vehiculo vehiculo;
+    private final List<Usuario> usuariosInvolucrados;
     private final List<Extra> extras;
 
-    private BigDecimal costoBase = BigDecimal.ZERO;
-
     public Presupuesto(String origen, String destino, double volumenCarga, double pesoCarga,
-                       TipoVehiculo tipoVehiculo, BigDecimal consumoPorKm) {
+                       Vehiculo vehiculo, List<Usuario> usuariosInvolucrados) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
         this.pesoCarga = pesoCarga;
-        this.tipoVehiculo = tipoVehiculo;
-        this.consumoPorKm = consumoPorKm;
+        this.vehiculo = vehiculo;
+        this.usuariosInvolucrados = usuariosInvolucrados;
         this.extras = new ArrayList<>();
     }
 
@@ -32,7 +29,7 @@ public class Presupuesto {
     }
 
     public BigDecimal calcularTotal() {
-        BigDecimal total = costoBase;
+        BigDecimal total = new BigDecimal("0");
         for (Extra extra : extras) {
             total = total.add(extra.costo());
         }
@@ -56,23 +53,15 @@ public class Presupuesto {
         return pesoCarga;
     }
 
-    public TipoVehiculo getTipoVehiculo() {
-        return tipoVehiculo;
-    }
-
-    public BigDecimal getConsumoPorKm() {
-        return consumoPorKm;
+    public Vehiculo getTipoVehiculo() {
+        return vehiculo;
     }
 
     public List<Extra> getExtras() {
         return extras;
     }
 
-    public BigDecimal getCostoBase() {
-        return costoBase;
-    }
-
-    public void setCostoBase(BigDecimal costoBase) {
-        this.costoBase = costoBase;
+    public List<Usuario> getUsuariosInvolucrados() {
+        return usuariosInvolucrados;
     }
 }
