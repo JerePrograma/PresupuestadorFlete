@@ -1,18 +1,27 @@
 package ar.com.envios.application.dto;
 
-import lombok.Getter;
-import lombok.Setter;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Positive;
 
-import java.math.BigDecimal;
+import java.util.List;
 
 public class PresupuestoRequest {
+    @NotBlank(message = "El origen es obligatorio")
     private String origen;
+
+    @NotBlank(message = "El destino es obligatorio")
     private String destino;
+
+    @Positive(message = "El volumen debe ser un número positivo")
     private double volumenCarga;
+
+    @Positive(message = "El peso debe ser un número positivo")
     private double pesoCarga;
-    private BigDecimal consumoPorKm;
+
+    @NotBlank(message = "El tipo de vehículo es obligatorio")
     private String nombreTipoVehiculo;
 
+    private List<UsuarioRequest> usuariosInvolucrados;
     public String getOrigen() {
         return origen;
     }
@@ -53,11 +62,11 @@ public class PresupuestoRequest {
         this.pesoCarga = pesoCarga;
     }
 
-    public BigDecimal getConsumoPorKm() {
-        return consumoPorKm;
+    public List<UsuarioRequest> getUsuariosInvolucrados() {
+        return usuariosInvolucrados;
     }
 
-    public void setConsumoPorKm(BigDecimal consumoPorKm) {
-        this.consumoPorKm = consumoPorKm;
+    public void setUsuariosInvolucrados(List<UsuarioRequest> usuariosInvolucrados) {
+        this.usuariosInvolucrados = usuariosInvolucrados;
     }
 }

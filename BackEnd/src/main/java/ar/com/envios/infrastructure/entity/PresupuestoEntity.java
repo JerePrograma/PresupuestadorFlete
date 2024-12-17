@@ -2,7 +2,6 @@ package ar.com.envios.infrastructure.entity;
 
 import jakarta.persistence.*;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +25,16 @@ public class PresupuestoEntity {
     @Column(name = "peso_carga", nullable = false)
     private double pesoCarga;
 
-    @Column(name = "consumo_por_km", nullable = false)
-    private BigDecimal consumoPorKm;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<UsuarioEntity> usuariosInvolucrados;
 
-    @Column(name = "costo_base", nullable = false)
-    private BigDecimal costoBase;
+    @Column(name = "presupuesto_total", nullable = false)
+    private double presupuestoTotal;
 
     // Relación con tipoVehiculo (Many-to-One)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_vehiculo_id", nullable = false)
-    private TipoVehiculoEntity tipoVehiculo;
+    private VehiculoEntity tipoVehiculo;
 
     // Relación con extras (Many-to-Many)
     @ManyToMany
@@ -46,18 +45,21 @@ public class PresupuestoEntity {
     )
     private List<ExtraEntity> extras = new ArrayList<>();
 
-    public PresupuestoEntity() {
+    public PresupuestoEntity(String origen, String destino, double volumenCarga, double pesoCarga, VehiculoEntity tipoVehiculo, String string) {
     }
 
     public PresupuestoEntity(String origen, String destino, double volumenCarga, double pesoCarga,
-                             BigDecimal consumoPorKm, BigDecimal costoBase, TipoVehiculoEntity tipoVehiculo) {
+                             VehiculoEntity tipoVehiculo, List<UsuarioEntity> usuariosInvolucrados) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
         this.pesoCarga = pesoCarga;
-        this.consumoPorKm = consumoPorKm != null ? consumoPorKm : BigDecimal.ZERO;
-        this.costoBase = costoBase != null ? costoBase : BigDecimal.ZERO;
         this.tipoVehiculo = tipoVehiculo;
+        this.usuariosInvolucrados = usuariosInvolucrados;
+    }
+
+    public PresupuestoEntity() {
+
     }
 
     public void addExtra(ExtraEntity extra) {
@@ -105,27 +107,11 @@ public class PresupuestoEntity {
         this.pesoCarga = pesoCarga;
     }
 
-    public BigDecimal getConsumoPorKm() {
-        return consumoPorKm;
-    }
-
-    public void setConsumoPorKm(BigDecimal consumoPorKm) {
-        this.consumoPorKm = consumoPorKm;
-    }
-
-    public BigDecimal getCostoBase() {
-        return costoBase;
-    }
-
-    public void setCostoBase(BigDecimal costoBase) {
-        this.costoBase = costoBase;
-    }
-
-    public TipoVehiculoEntity getTipoVehiculo() {
+    public VehiculoEntity getTipoVehiculo() {
         return tipoVehiculo;
     }
 
-    public void setTipoVehiculo(TipoVehiculoEntity tipoVehiculo) {
+    public void setTipoVehiculo(VehiculoEntity tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
     }
 
@@ -135,5 +121,21 @@ public class PresupuestoEntity {
 
     public void setExtras(List<ExtraEntity> extras) {
         this.extras = extras;
+    }
+
+    public double getPresupuestoTotal() {
+        return presupuestoTotal;
+    }
+
+    public void setPresupuestoTotal(double presupuestoTotal) {
+        this.presupuestoTotal = presupuestoTotal;
+    }
+
+    public List<UsuarioEntity> getUsuariosInvolucrados() {
+        return usuariosInvolucrados;
+    }
+
+    public void setUsuariosInvolucrados(List<UsuarioEntity> usuariosInvolucrados) {
+        this.usuariosInvolucrados = usuariosInvolucrados;
     }
 }

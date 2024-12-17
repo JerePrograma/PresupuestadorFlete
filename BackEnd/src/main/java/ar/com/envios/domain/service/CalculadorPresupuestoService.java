@@ -1,7 +1,8 @@
 package ar.com.envios.domain.service;
 
 import ar.com.envios.domain.model.Presupuesto;
-import ar.com.envios.domain.model.TipoVehiculo;
+import ar.com.envios.domain.model.Vehiculo;
+import ar.com.envios.domain.model.Extra;
 
 import java.math.BigDecimal;
 
@@ -21,17 +22,16 @@ public class CalculadorPresupuestoService {
      * @param presupuesto El presupuesto a calcular.
      * @return El total calculado.
      */
-    public BigDecimal calcular(Presupuesto presupuesto/*, boolean incluyePeajes*/) {
-        TipoVehiculo tipoVehiculo = presupuesto.getTipoVehiculo();
+    public BigDecimal calcular(Presupuesto presupuesto) {
+        Vehiculo vehiculo = presupuesto.getTipoVehiculo();
 
-        if (!tipoVehiculo.soportaVolumen(presupuesto.getVolumenCarga())) {
+        if (!vehiculo.soportaVolumen(presupuesto.getVolumenCarga())) {
             throw new IllegalArgumentException("El vehículo no soporta el volumen de la carga.");
         }
 
-        if (!tipoVehiculo.soportaPeso(presupuesto.getPesoCarga())) {
+        if (!vehiculo.soportaPeso(presupuesto.getPesoCarga())) {
             throw new IllegalArgumentException("El vehículo no soporta el peso de la carga.");
         }
-
 
         // Obtener distancia real entre origen y destino
         double distanciaKm = obtenerDistanciaReal(presupuesto.getOrigen(), presupuesto.getDestino());
@@ -39,16 +39,19 @@ public class CalculadorPresupuestoService {
         // Obtener precio actual del combustible
         BigDecimal precioCombustible = obtenerPrecioCombustibleActual();
 
-        BigDecimal costoCombustible = tipoVehiculo.consumoPorKm()
+        // Calcular costo base
+        BigDecimal costoBase = vehiculo.consumoPorKm()
                 .multiply(precioCombustible)
                 .multiply(BigDecimal.valueOf(distanciaKm));
-//        BigDecimal costoPeajes = incluyePeajes ? calcularCostoPeajes(distanciaKm) : BigDecimal.ZERO;
 
-        // Costo total
-        BigDecimal costoTotal = costoCombustible/*.add(costoPeajes)*/;
+        // Sumar costos de los extras
+        BigDecimal costoExtras = BigDecimal.ZERO;
+        for (Extra extra : presupuesto.getExtras()) {
+            costoExtras = costoExtras.add(extra.costo());
+        }
 
-        presupuesto.setCostoBase(costoTotal);
-        return costoTotal;
+        // Retornar el costo total (costo base + extras)
+        return costoBase.add(costoExtras);
     }
 
     public double obtenerDistanciaReal(String origen, String destino) {

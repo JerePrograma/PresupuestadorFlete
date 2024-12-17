@@ -1,18 +1,19 @@
 package ar.com.envios.application.usecase;
 
-import ar.com.envios.domain.model.TipoVehiculo;
+import ar.com.envios.domain.enumeraciones.TipoUsuario;
+import ar.com.envios.domain.model.Vehiculo;
 import ar.com.envios.domain.model.Presupuesto;
+import ar.com.envios.domain.model.Usuario;
 import ar.com.envios.domain.repository.ITarifasRepository;
-import ar.com.envios.domain.repository.ITipoVehiculoRepository;
-import ar.com.envios.domain.service.CalculadorPresupuestoService;
 import ar.com.envios.domain.repository.IPresupuestoRepository;
 import ar.com.envios.infrastructure.entity.PresupuestoEntity;
-import ar.com.envios.infrastructure.entity.TipoVehiculoEntity;
+import ar.com.envios.infrastructure.entity.VehiculoEntity;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Optional;
 
 class GenerarPresupuestoUseCaseTest {
@@ -22,72 +23,70 @@ class GenerarPresupuestoUseCaseTest {
         // Datos de entrada
         String origen = "Buenos Aires";
         String destino = "La Plata";
-        double volumenCarga = 500.0; // soportado por la camioneta
-        double pesoCarga = 100.0; // Peso dentro del límite
+        double volumenCarga = 500.0;
+        double pesoCarga = 100.0;
         String nombreTipoVehiculo = "Camioneta";
-        BigDecimal consumoPorKm = new BigDecimal("1.0");
+        List<Usuario> usuariosInvolucrados = List.of(new Usuario(1L, "Chofer", "chofer@mail.com","asd", TipoUsuario.CHOFER));
 
         // Mock del repositorio
         ITarifasRepository mockITarifasRepository = Mockito.mock(ITarifasRepository.class);
         IPresupuestoRepository mockIPresupuestoRepository = Mockito.mock(IPresupuestoRepository.class);
-        ITipoVehiculoRepository mockITipoVehiculoRepository = Mockito.mock(ITipoVehiculoRepository.class);
 
-        // Definimos el TipoVehiculo simulado
-        TipoVehiculo camioneta = new TipoVehiculo(
-                "Camioneta",
-                1000.0, // Capacidad máxima de volumen
-                1000.0, // Capacidad máxima de peso
-                new BigDecimal("2.00") // Consumo por km
-        );
+        // Mock del TipoVehiculo
+        Vehiculo camioneta = new Vehiculo("Camioneta", 1000.0, 1000.0, new BigDecimal("2.00"));
+        Mockito.when(mockITarifasRepository.findByNombre(nombreTipoVehiculo)).thenReturn(Optional.of(camioneta));
 
-        // Configuramos el mock para retornar la camioneta al buscar por nombre
-        Mockito.when(mockITarifasRepository.findByNombre(nombreTipoVehiculo))
-                .thenReturn(Optional.of(camioneta));
+        // Caso de uso
+        GenerarPresupuestoUseCase useCase = getGenerarPresupuestoUseCase(mockITarifasRepository, mockIPresupuestoRepository);
 
-        // Creamos el servicio de dominio sin mocks (es puro)
-        GenerarPresupuestoUseCase generarPresupuestoUseCase = getGenerarPresupuestoUseCase(mockITarifasRepository, mockIPresupuestoRepository, mockITipoVehiculoRepository);
+        // Ejecución
+        Presupuesto presupuesto = useCase.ejecutar(origen, destino, volumenCarga, pesoCarga, nombreTipoVehiculo, usuariosInvolucrados);
 
-        // Ejecutamos el caso de uso
-        Presupuesto presupuesto = generarPresupuestoUseCase.ejecutar(
-                origen, destino, volumenCarga, pesoCarga, consumoPorKm, nombreTipoVehiculo
-        );
-
-        // Validamos resultados
-        BigDecimal expectedTotal = new BigDecimal("200.00"); // Costo base esperado
-        Assertions.assertEquals(expectedTotal, presupuesto.calcularTotal(), "El total del presupuesto debe ser 200.00");
+        // Validaciones
         Assertions.assertEquals(origen, presupuesto.getOrigen());
         Assertions.assertEquals(destino, presupuesto.getDestino());
         Assertions.assertEquals(volumenCarga, presupuesto.getVolumenCarga());
+        Assertions.assertEquals(pesoCarga, presupuesto.getPesoCarga());
         Assertions.assertEquals(nombreTipoVehiculo, presupuesto.getTipoVehiculo().nombre());
+        Assertions.assertEquals(usuariosInvolucrados, presupuesto.getUsuariosInvolucrados());
     }
 
-    private static GenerarPresupuestoUseCase getGenerarPresupuestoUseCase(ITarifasRepository mockITarifasRepository, IPresupuestoRepository mockIPresupuestoRepository, ITipoVehiculoRepository mockITipoVehiculoRepository) {
-        CalculadorPresupuestoService calculadorPresupuestoService = new CalculadorPresupuestoService();
+
+    private static GenerarPresupuestoUseCase getGenerarPresupuestoUseCase(ITarifasRepository mockITarifasRepository, IPresupuestoRepository mockIPresupuestoRepository) {
 
         // Instanciamos el caso de uso con los mocks y servicios
         return new GenerarPresupuestoUseCase(
                 mockITarifasRepository,
-                calculadorPresupuestoService,
-                mockIPresupuestoRepository,
-                mockITipoVehiculoRepository
+                mockIPresupuestoRepository
         );
     }
 
     @Test
-    void testGenerarPresupuesto_SinTipoVehiculo() {
-        // Si el tipo de vehículo no existe, esperamos una excepción.
+    void testGenerarPresupuesto_TipoVehiculoNoEncontrado() {
+        // Configuración del test: repositorios mockeados
         ITarifasRepository mockITarifasRepository = Mockito.mock(ITarifasRepository.class);
         IPresupuestoRepository mockIPresupuestoRepository = Mockito.mock(IPresupuestoRepository.class);
-        ITipoVehiculoRepository mockITipoVehiculoRepository = Mockito.mock(ITipoVehiculoRepository.class);
-        Mockito.when(mockITarifasRepository.findByNombre("Inexistente"))
+
+        // Simular que no se encuentra el tipo de vehículo
+        String tipoVehiculoInexistente = "Inexistente";
+        Mockito.when(mockITarifasRepository.findByNombre(tipoVehiculoInexistente))
                 .thenReturn(Optional.empty());
 
-        GenerarPresupuestoUseCase useCase = getGenerarPresupuestoUseCase(mockITarifasRepository, mockIPresupuestoRepository, mockITipoVehiculoRepository);
-
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
-                useCase.ejecutar("Origen", "Destino", 100.0, 50.0, new BigDecimal("0"), "Inexistente")
+        // Instanciar el caso de uso
+        GenerarPresupuestoUseCase useCase = getGenerarPresupuestoUseCase(
+                mockITarifasRepository,
+                mockIPresupuestoRepository
         );
+
+        // Ejecución y validación
+        IllegalArgumentException exception = Assertions.assertThrows(IllegalArgumentException.class, () ->
+                useCase.ejecutar("Buenos Aires", "La Plata", 100.0, 50.0, tipoVehiculoInexistente, List.of())
+        );
+
+        // Verificar mensaje de error
+        Assertions.assertEquals("No se encontró el tipo de vehículo: " + tipoVehiculoInexistente, exception.getMessage());
     }
+
 
     @Test
     void testGuardarPresupuesto() {
@@ -95,22 +94,7 @@ class GenerarPresupuestoUseCaseTest {
         IPresupuestoRepository mockPresupuestoRepository = Mockito.mock(IPresupuestoRepository.class);
 
         // Datos para el test
-        TipoVehiculoEntity tipoVehiculo = new TipoVehiculoEntity(
-                "Auto",
-                1000.0, // Capacidad máxima de volumen
-                500.0,  // Capacidad máxima de peso
-                new BigDecimal("2.00") // Consumo por km
-        );
-
-        PresupuestoEntity entity = new PresupuestoEntity(
-                "Origen",
-                "Destino",
-                20.0, // Volumen de carga
-                50.0, // Peso de carga
-                new BigDecimal("2.00"), // Consumo por km
-                BigDecimal.valueOf(1000.0), // Costo base
-                tipoVehiculo
-        );
+        PresupuestoEntity entity = getPresupuestoEntity();
 
         // Configuramos el comportamiento del mock
         Mockito.doNothing().when(mockPresupuestoRepository).guardar(entity);
@@ -120,6 +104,25 @@ class GenerarPresupuestoUseCaseTest {
 
         // Validamos que el método guardar fue llamado correctamente
         Mockito.verify(mockPresupuestoRepository, Mockito.times(1)).guardar(entity);
+    }
+
+    private static PresupuestoEntity getPresupuestoEntity() {
+        VehiculoEntity tipoVehiculo = new VehiculoEntity(
+                "Auto",
+                1000.0, // Capacidad máxima de volumen
+                500.0,  // Capacidad máxima de peso
+                new BigDecimal("2.00") // Consumo por km
+        );
+
+        String tipoPersonalInvolucrado = "";
+        return new PresupuestoEntity(
+                "Origen",
+                "Destino",
+                20.0, // Volumen de carga
+                50.0, // Peso de carga
+                tipoVehiculo,
+                tipoPersonalInvolucrado
+        );
     }
 
 }

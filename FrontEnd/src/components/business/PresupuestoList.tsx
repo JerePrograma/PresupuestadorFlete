@@ -1,38 +1,46 @@
-// src/components/business/PresupuestoList.tsx
-import { useEffect } from "react";
-import { useSelector, useDispatch } from "react-redux";
-import { RootState } from "../../store";
-import { setPresupuestos } from "../../store/slices/presupuestoSlice";
-import {
-  listarPresupuestos,
-  PresupuestoResponse,
-} from "../../api/services/presupuestoService";
-import { IonList, IonItem, IonLabel } from "@ionic/react";
+import React, { useEffect, useState } from "react";
+import { listarPresupuestos } from "../../api/services/presupuestoService";
 
-function PresupuestoList() {
-  const dispatch = useDispatch();
-  const presupuestos = useSelector(
-    (state: RootState) => state.presupuesto.data
-  );
+const PresupuestoList: React.FC = () => {
+  const [presupuestos, setPresupuestos] = useState<any[]>([]); // Inicializar como array vacío
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
-      const data = await listarPresupuestos();
-      dispatch(setPresupuestos(data));
-    })();
-  }, [dispatch]);
+    const fetchPresupuestos = async () => {
+      try {
+        const response = await listarPresupuestos();
+        if (Array.isArray(response)) {
+          setPresupuestos(response);
+        } else {
+          setPresupuestos([]); // Si no es un array, setea a vacío
+          console.error("La respuesta no es un array:", response);
+        }
+      } catch (err) {
+        console.error("Error al cargar presupuestos:", err);
+        setError("Error al cargar presupuestos");
+      }
+    };
+
+    fetchPresupuestos();
+  }, []);
 
   return (
-    <IonList>
-      {presupuestos.map((p: PresupuestoResponse, idx: number) => (
-        <IonItem key={idx}>
-          <IonLabel>
-            {p.origen} - {p.destino} - Total: {p.costoTotal}
-          </IonLabel>
-        </IonItem>
-      ))}
-    </IonList>
+    <div>
+      <h2>Lista de Presupuestos</h2>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+      <ul>
+        {presupuestos.length > 0 ? (
+          presupuestos.map((presupuesto, index) => (
+            <li key={index}>
+              Origen: {presupuesto.origen}, Destino: {presupuesto.destino}
+            </li>
+          ))
+        ) : (
+          <p>No hay presupuestos disponibles.</p>
+        )}
+      </ul>
+    </div>
   );
-}
+};
 
 export default PresupuestoList;

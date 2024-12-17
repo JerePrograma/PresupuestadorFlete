@@ -1,3 +1,4 @@
+// src/components/AutocompleteInputProps.tsx
 import React, { useRef } from "react";
 import { Autocomplete } from "@react-google-maps/api";
 import { IonItem, IonLabel, IonInput } from "@ionic/react";
@@ -14,6 +15,8 @@ const AutocompleteInput: React.FC<AutocompleteInputProps> = ({
   const autocompleteRef = useRef<google.maps.places.Autocomplete | null>(null);
 
   const handleLoad = (autocomplete: google.maps.places.Autocomplete) => {
+    autocomplete.setTypes(["geocode"]); // Solo ubicaciones geográficas
+    autocomplete.setFields(["formatted_address", "geometry", "name"]); // Define los campos necesarios
     autocompleteRef.current = autocomplete;
   };
 

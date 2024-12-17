@@ -12,8 +12,12 @@ export default defineConfig({
     },
   },
   server: {
-    host: "localhost",
-    port: 8100,
-    open: true,
+    proxy: {
+      "/api": {
+        target: "http://localhost:8080/", // URL del backend
+        changeOrigin: true,
+        secure: false,
+      },
+    },
   },
 });

@@ -10,7 +10,6 @@ public class PresupuestoResponse {
     private String destino;
     private double volumenCarga;
     private String tipoVehiculo;
-    private BigDecimal costoBase;
     private BigDecimal costoTotal;
     private List<String> extras;
     private String mensajeError; // Nuevo campo para mensajes de error
@@ -20,12 +19,11 @@ public class PresupuestoResponse {
 
     // Constructor completo
     public PresupuestoResponse(String origen, String destino, double volumenCarga, String tipoVehiculo,
-                               BigDecimal costoBase, BigDecimal costoTotal, List<String> extras) {
+                               BigDecimal costoTotal, List<String> extras) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
         this.tipoVehiculo = tipoVehiculo;
-        this.costoBase = costoBase;
         this.costoTotal = costoTotal;
         this.extras = extras;
         this.mensajeError = null;
@@ -80,14 +78,6 @@ public class PresupuestoResponse {
 
     public void setTipoVehiculo(String tipoVehiculo) {
         this.tipoVehiculo = tipoVehiculo;
-    }
-
-    public BigDecimal getCostoBase() {
-        return costoBase;
-    }
-
-    public void setCostoBase(BigDecimal costoBase) {
-        this.costoBase = costoBase;
     }
 
     public BigDecimal getCostoTotal() {
