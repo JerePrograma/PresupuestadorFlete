@@ -1,57 +1,88 @@
 package ar.com.envios.infrastructure.adapter.in.web;
 
 import ar.com.envios.application.dto.PresupuestoRequest;
-import ar.com.envios.application.usecase.GenerarPresupuestoUseCase;
-import ar.com.envios.configuration.TestConfig;
-import ar.com.envios.configuration.TestSecurityConfig;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import ar.com.envios.application.dto.PresupuestoResponse;
+import ar.com.envios.application.service.PresupuestoService;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
-import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.context.annotation.Import;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 
+import java.math.BigDecimal;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
-@WebMvcTest(PresupuestoController.class)
-@Import({TestConfig.class, TestSecurityConfig.class})
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.Mock;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
+
+@ExtendWith(MockitoExtension.class)
 class PresupuestoControllerTest {
 
-    @Autowired
+    @Mock
+    private PresupuestoService presupuestoService;
+
+    @InjectMocks
+    private PresupuestoController presupuestoController;
+
     private MockMvc mockMvc;
 
-    @Autowired
-    private ObjectMapper objectMapper;
-
-    @MockBean
-    private GenerarPresupuestoUseCase generarPresupuestoUseCase;
+    @BeforeEach
+    void setUp() {
+        mockMvc = MockMvcBuilders.standaloneSetup(presupuestoController).build();
+    }
 
     @Test
     void testCrearPresupuesto() throws Exception {
-        PresupuestoRequest request = new PresupuestoRequest();
-        request.setOrigen("Buenos Aires");
-        request.setDestino("La Plata");
-        request.setVolumenCarga(500.0);
-        request.setPesoCarga(100.0);
-        request.setNombreTipoVehiculo("Camioneta");
+        // Configuración del Request y Response
+        PresupuestoRequest request = new PresupuestoRequest(
+                "Buenos Aires",
+                "La Plata",
+                500.0,
+                1000.0,
+                "Camioneta",
+                List.of()
+        );
 
-        Mockito.when(generarPresupuestoUseCase.ejecutar(
-                Mockito.anyString(),
-                Mockito.anyString(),
-                Mockito.anyDouble(),
-                Mockito.anyDouble(),
-                Mockito.anyString(),
-                Mockito.anyList()
-        )).thenReturn(null);
+        PresupuestoResponse response = new PresupuestoResponse(
+                "Buenos Aires",
+                "La Plata",
+                500.0,
+                "Camioneta",
+                new BigDecimal("2000.00"),
+                List.of("Costo Total")
+        );
 
+        // Mock exacto con cualquier request
+        Mockito.when(presupuestoService.crearPresupuesto(Mockito.any(PresupuestoRequest.class)))
+                .thenReturn(response);
+
+        // Ejecución y validación del MockMvc
         mockMvc.perform(post("/api/presupuestos/crear")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isCreated());
+                        .content("""
+                            {
+                                "origen": "Buenos Aires",
+                                "destino": "La Plata",
+                                "volumenCarga": 500.0,
+                                "pesoCarga": 1000.0,
+                                "nombreTipoVehiculo": "Camioneta",
+                                "usuariosInvolucrados": []
+                            }
+                            """))
+                .andExpect(status().isCreated())
+                .andExpect(jsonPath("$.origen").value("Buenos Aires"))
+                .andExpect(jsonPath("$.destino").value("La Plata"))
+                .andExpect(jsonPath("$.volumenCarga").value(500.0))
+                .andExpect(jsonPath("$.nombreTipoVehiculo").value("Camioneta"))
+                .andExpect(jsonPath("$.costoTotal").value(2000.00))
+                .andExpect(jsonPath("$.detalleCostos[0]").value("Costo Total"));
+
     }
+
 }

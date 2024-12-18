@@ -6,6 +6,7 @@ import ar.com.envios.domain.enumeraciones.TipoUsuario;
 import ar.com.envios.domain.model.Extra;
 import ar.com.envios.domain.model.Presupuesto;
 import ar.com.envios.domain.model.Usuario;
+import ar.com.envios.infrastructure.entity.PresupuestoEntity;
 
 import java.util.stream.Collectors;
 
@@ -16,9 +17,9 @@ public class PresupuestoMapper {
                 presupuesto.getOrigen(),
                 presupuesto.getDestino(),
                 presupuesto.getVolumenCarga(),
-                presupuesto.getTipoVehiculo().nombre(),
+                presupuesto.getTipoVehiculo().getNombre(),
                 presupuesto.calcularTotal(),
-                presupuesto.getExtras().stream().map(Extra::nombre).collect(Collectors.toList())
+                presupuesto.getExtras().stream().map(Extra::getNombre).collect(Collectors.toList())
         );
     }
 
@@ -31,4 +32,20 @@ public class PresupuestoMapper {
                 TipoUsuario.valueOf(request.getTipoUsuario().toUpperCase()) // Asegúrate de manejar el enum correctamente
         );
     }
+
+    public static PresupuestoEntity toEntity(Presupuesto presupuesto) {
+        PresupuestoEntity entity = new PresupuestoEntity(
+                presupuesto.getOrigen(),
+                presupuesto.getDestino(),
+                presupuesto.getVolumenCarga(),
+                presupuesto.getPesoCarga(),
+                VehiculoMapper.toEntity(presupuesto.getTipoVehiculo()),
+                presupuesto.getUsuariosInvolucrados().stream()
+                        .map(UsuarioMapper::toEntity)
+                        .collect(Collectors.toList())
+        );
+        entity.setPresupuestoTotal(presupuesto.calcularTotal().doubleValue());
+        return entity;
+    }
+
 }

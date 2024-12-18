@@ -9,4 +9,6 @@ public interface IUsuarioRepository {
     void guardar(Usuario usuario);
     Optional<Usuario> buscarPorEmail(String email);
     List<Usuario> listarTodos();
+
+    List<Usuario> buscarPorTipoUsuario(List<String> tipos);
 }

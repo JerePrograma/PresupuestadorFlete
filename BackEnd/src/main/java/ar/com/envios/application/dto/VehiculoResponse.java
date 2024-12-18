@@ -15,6 +15,9 @@ public class VehiculoResponse {
         this.consumoPorKm = consumoPorKm;
     }
 
+    public VehiculoResponse() {
+    }
+
     public String getNombre() {
         return nombre;
     }
@@ -47,3 +50,4 @@ public class VehiculoResponse {
         this.consumoPorKm = consumoPorKm;
     }
 }
+

@@ -4,6 +4,9 @@ import ar.com.envios.application.dto.UsuarioRequest;
 import ar.com.envios.application.dto.UsuarioResponse;
 import ar.com.envios.application.mapper.UsuarioMapper;
 import ar.com.envios.domain.enumeraciones.TipoUsuario;
+import ar.com.envios.domain.repository.IUsuarioRepository;
+import ar.com.envios.infrastructure.adapter.out.persistence.JpaUsuarioRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,9 +15,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ar.com.envios.domain.model.Usuario;
-import ar.com.envios.domain.repository.IUsuarioRepository;
 
-import org.springframework.security.crypto.password.PasswordEncoder;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class UsuarioService implements UserDetailsService {
@@ -22,9 +25,20 @@ public class UsuarioService implements UserDetailsService {
     private final IUsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
 
+    @Autowired
     public UsuarioService(IUsuarioRepository usuarioRepository, PasswordEncoder passwordEncoder) {
         this.usuarioRepository = usuarioRepository;
-        this.passwordEncoder = passwordEncoder; // Inyectar el PasswordEncoder
+        this.passwordEncoder = passwordEncoder;
+    }
+
+    public UsuarioResponse crearUsuario(UsuarioRequest request) {
+        Usuario usuario = new Usuario();
+        usuario.setNombre(request.getNombre());
+        usuario.setEmail(request.getEmail());
+        usuario.setPassword(passwordEncoder.encode(request.getPassword())); // Codifica la contraseña
+        usuario.setTipoUsuario(TipoUsuario.valueOf(request.getTipoUsuario()));
+        usuarioRepository.guardar(usuario);
+        return new UsuarioResponse("Usuario creado correctamente");
     }
 
     @Override
@@ -32,27 +46,17 @@ public class UsuarioService implements UserDetailsService {
         Usuario usuario = usuarioRepository.buscarPorEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
 
+        // Configurar roles correctamente
         return User.builder()
                 .username(usuario.getEmail())
-                .password(usuario.getPassword()) // Contraseña con BCrypt
-                .roles(usuario.getTipoUsuario().name())
+                .password(usuario.getPassword())
+                .roles(usuario.getTipoUsuario().name()) // Asigna el rol desde el campo tipo_usuario
                 .build();
     }
 
-    public UsuarioResponse crearUsuario(UsuarioRequest request) {
-        // Mapear la solicitud a la entidad de dominio Usuario
-        Usuario usuario = new Usuario(
-                null, // ID nulo porque se generará automáticamente en la base de datos
-                request.getNombre(),
-                request.getEmail(),
-                passwordEncoder.encode(request.getPassword()), // Encriptar la contraseña
-                TipoUsuario.valueOf(request.getTipoUsuario().toUpperCase()) // Convertir a ENUM
-        );
-
-        // Guardar el usuario en el repositorio
-        usuarioRepository.guardar(usuario);
-
-        // Mapear la entidad de dominio a la respuesta
-        return UsuarioMapper.toResponse(usuario);
+    public List<UsuarioResponse> obtenerUsuariosPorRoles(List<String> roles) {
+        return usuarioRepository.buscarPorTipoUsuario(roles).stream()
+                .map(UsuarioMapper::toResponse)
+                .collect(Collectors.toList());
     }
 }

@@ -26,7 +26,7 @@ public class VehiculoUseCase {
     }
 
     public List<VehiculoResponse> listarVehiculos() {
-        return vehiculoRepository.listarTodos()
+        return vehiculoRepository.obtenerTodos()
                 .stream()
                 .map(VehiculoMapper::toResponse)
                 .collect(Collectors.toList());

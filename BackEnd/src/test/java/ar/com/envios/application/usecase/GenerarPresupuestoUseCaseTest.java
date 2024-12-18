@@ -47,7 +47,7 @@ class GenerarPresupuestoUseCaseTest {
         Assertions.assertEquals(destino, presupuesto.getDestino());
         Assertions.assertEquals(volumenCarga, presupuesto.getVolumenCarga());
         Assertions.assertEquals(pesoCarga, presupuesto.getPesoCarga());
-        Assertions.assertEquals(nombreTipoVehiculo, presupuesto.getTipoVehiculo().nombre());
+        Assertions.assertEquals(nombreTipoVehiculo, presupuesto.getTipoVehiculo().getNombre());
         Assertions.assertEquals(usuariosInvolucrados, presupuesto.getUsuariosInvolucrados());
     }
 

@@ -18,11 +18,11 @@ export interface VehiculoResponse {
 export async function crearVehiculo(
   data: VehiculoRequest
 ): Promise<VehiculoResponse> {
-  const response = await api.post<VehiculoResponse>("api/vehiculos", data);
+  const response = await api.post<VehiculoResponse>("/vehiculos/crear", data);
   return response.data;
 }
 
 export async function listarVehiculos(): Promise<VehiculoResponse[]> {
-  const response = await api.get<VehiculoResponse[]>("api/vehiculos");
+  const response = await api.get<VehiculoResponse[]>("/vehiculos/listar");
   return response.data;
 }

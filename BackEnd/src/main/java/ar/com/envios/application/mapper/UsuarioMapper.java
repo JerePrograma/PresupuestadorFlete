@@ -36,4 +36,15 @@ public class UsuarioMapper {
                 usuario.getTipoUsuario()
         );
     }
+
+    public static Usuario toDomain(UsuarioEntity entity) {
+        return new Usuario(
+                entity.getId(),
+                entity.getNombre(),
+                entity.getEmail(),
+                entity.getPassword(), // La contraseña debería ser encriptada en la capa de servicio
+                entity.getTipoUsuario()
+        );
+    }
+
 }

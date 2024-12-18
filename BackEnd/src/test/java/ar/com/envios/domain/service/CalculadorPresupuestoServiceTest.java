@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.List;
 
 class CalculadorPresupuestoServiceTest {
@@ -22,12 +23,16 @@ class CalculadorPresupuestoServiceTest {
         List<Usuario> usuariosInvolucrados = List.of(new Usuario(1L, "Chofer", "chofer@mail.com", "asd", TipoUsuario.CHOFER));
         Presupuesto presupuesto = new Presupuesto("Buenos Aires", "La Plata", 500.0, 10.0, vehiculo, usuariosInvolucrados);
 
+        // Mock de IDistanceCalculator
+        IDistanceCalculator distanceCalculator = Mockito.mock(IDistanceCalculator.class);
+        Mockito.when(distanceCalculator.calculateDistance("Buenos Aires", "La Plata")).thenReturn(100.0);
+
         // Servicio
-        CalculadorPresupuestoService service = new CalculadorPresupuestoService();
+        CalculadorPresupuestoService service = new CalculadorPresupuestoService(distanceCalculator);
         BigDecimal total = service.calcular(presupuesto);
 
         // Validación
-        Assertions.assertEquals(0, total.compareTo(new BigDecimal("200.00")));
+        Assertions.assertEquals(0, total.compareTo(new BigDecimal("200.00")), "El total no coincide con el esperado.");
     }
 
     @Test
@@ -41,21 +46,22 @@ class CalculadorPresupuestoServiceTest {
         presupuesto.agregarExtra(new Extra("Seguro adicional", new BigDecimal("50.0")));
         presupuesto.agregarExtra(new Extra("Embalaje especial", new BigDecimal("25.0")));
 
-        // Mock del servicio que calcula distancia y obtiene precio de combustible
-        CalculadorPresupuestoService service = Mockito.spy(new CalculadorPresupuestoService());
+        // Mock de IDistanceCalculator
+        IDistanceCalculator distanceCalculator = Mockito.mock(IDistanceCalculator.class);
+        Mockito.when(distanceCalculator.calculateDistance("Buenos Aires", "La Plata")).thenReturn(100.0);
 
-        // Simula la distancia entre Buenos Aires y La Plata
-        Mockito.doReturn(100.0).when(service).obtenerDistanciaReal("Buenos Aires", "La Plata");
+        // Spy del servicio
+        CalculadorPresupuestoService service = Mockito.spy(new CalculadorPresupuestoService(distanceCalculator));
 
-        // Simula el precio actual del combustible
+        // Stub del precio del combustible
         Mockito.doReturn(new BigDecimal("100.0")).when(service).obtenerPrecioCombustibleActual();
 
         // Calcula el total
         BigDecimal total = service.calcular(presupuesto);
 
         // Normalizar valores
-        BigDecimal costoEsperado = new BigDecimal("20075.0").setScale(2, BigDecimal.ROUND_HALF_UP);
-        BigDecimal totalNormalizado = total.setScale(2, BigDecimal.ROUND_HALF_UP);
+        BigDecimal costoEsperado = new BigDecimal("20075.0").setScale(2, RoundingMode.HALF_UP);
+        BigDecimal totalNormalizado = total.setScale(2, RoundingMode.HALF_UP);
 
         // Depuración
         System.out.println("Costo esperado: " + costoEsperado);
@@ -64,6 +70,4 @@ class CalculadorPresupuestoServiceTest {
         // Validación
         Assertions.assertEquals(0, totalNormalizado.compareTo(costoEsperado), "El costo calculado no coincide con el esperado.");
     }
-
-
 }

@@ -12,7 +12,10 @@ public class UsuarioEntity {
     private Long id;
 
     private String nombre;
+
+    @Column(unique = true, nullable = false)
     private String email;
+
     private String password; // Nueva propiedad
 
     @Enumerated(EnumType.STRING)

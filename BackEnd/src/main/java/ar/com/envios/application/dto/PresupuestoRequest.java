@@ -22,6 +22,19 @@ public class PresupuestoRequest {
     private String nombreTipoVehiculo;
 
     private List<UsuarioRequest> usuariosInvolucrados;
+
+    public PresupuestoRequest() {
+    }
+
+    public PresupuestoRequest(String origen, String destino, double volumenCarga, double pesoCarga, String nombreTipoVehiculo, List<UsuarioRequest> usuariosInvolucrados) {
+        this.origen = origen;
+        this.destino = destino;
+        this.volumenCarga = volumenCarga;
+        this.pesoCarga = pesoCarga;
+        this.nombreTipoVehiculo = nombreTipoVehiculo;
+        this.usuariosInvolucrados = usuariosInvolucrados;
+    }
+
     public String getOrigen() {
         return origen;
     }

@@ -66,7 +66,7 @@ const UsuarioForm: React.FC = () => {
         <IonItem>
           <IonInput
             name="tipoUsuario"
-            placeholder="Tipo de Usuario (admin/cliente)"
+            placeholder="Tipo de Usuario"
             value={formData.tipoUsuario}
             onIonChange={handleChange}
             required

@@ -31,7 +31,7 @@ public class Presupuesto {
     public BigDecimal calcularTotal() {
         BigDecimal total = new BigDecimal("0");
         for (Extra extra : extras) {
-            total = total.add(extra.costo());
+            total = total.add(extra.getCosto());
         }
         return total;
     }

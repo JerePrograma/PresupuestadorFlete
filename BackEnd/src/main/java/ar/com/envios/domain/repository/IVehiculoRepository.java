@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface IVehiculoRepository {
     void guardar(Vehiculo vehiculo);
-    List<Vehiculo> listarTodos();
+    List<Vehiculo> obtenerTodos();
 }
