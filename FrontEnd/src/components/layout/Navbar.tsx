@@ -20,6 +20,13 @@ function Navbar() {
           <Link to="/vehiculos">Vehículos</Link>
         </IonButton>
       </IonButtons>
+       
+       <div style={{ marginRight: '16px', display: 'flex', alignItems: 'center' }}>
+          <AvatarChip
+            avatarSrc="https://ionicframework.com/docs/img/demos/avatar.svg"
+            label="Usuario"
+          />
+        </div>
     </IonToolbar>
   );
 }
