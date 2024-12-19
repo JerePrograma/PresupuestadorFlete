@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IonButton, IonInput, IonItem, IonList, IonAlert } from "@ionic/react";
+import { IonButton, IonInput, IonItem, IonList, IonAlert, IonPage, IonContent, IonGrid, IonRow, IonCol } from "@ionic/react";
 import { login } from "../../api/services/authService";
 import { useHistory } from "react-router-dom";
 
@@ -21,32 +21,42 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <IonList>
-        <IonItem>
-          <IonInput
-            placeholder="Email"
-            type="email"
-            value={email}
-            onIonChange={(e) => setEmail(e.detail.value!)}
-            required
-          />
-        </IonItem>
-        <IonItem>
-          <IonInput
-            placeholder="Contraseña"
-            type="password"
-            value={password}
-            onIonChange={(e) => setPassword(e.detail.value!)}
-            required
-          />
-        </IonItem>
-        <IonButton expand="full" type="submit">
-          Iniciar Sesión
-        </IonButton>
-      </IonList>
-      {error && <IonAlert isOpen={true} message={error} buttons={["OK"]} />}
-    </form>
+    <IonPage>
+      <IonContent>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="12">
+              <form onSubmit={handleSubmit}>
+                <IonList>
+                  <IonItem>
+                    <IonInput
+                      placeholder="Email"
+                      type="email"
+                      value={email}
+                      onIonChange={(e) => setEmail(e.detail.value!)}
+                      required
+                    />
+                  </IonItem>
+                  <IonItem>
+                    <IonInput
+                      placeholder="Contraseña"
+                      type="password"
+                      value={password}
+                      onIonChange={(e) => setPassword(e.detail.value!)}
+                      required
+                    />
+                  </IonItem>
+                  <IonButton expand="full" type="submit">
+                    Iniciar Sesión
+                  </IonButton>
+                </IonList>
+                {error && <IonAlert isOpen={true} message={error} buttons={["OK"]} />}
+              </form>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+    </IonPage>
   );
 };
 
