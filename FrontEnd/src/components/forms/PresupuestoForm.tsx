@@ -6,6 +6,10 @@ import {
   IonItem,
   IonList,
   IonSpinner,
+  IonPage,
+  IonGrid,
+  IonRow,
+  IonCol,
 } from "@ionic/react";
 import AutocompleteInput from "../AutocompleteInputProps";
 import ControlledInput from "../utils/ControlledInput";
@@ -70,78 +74,88 @@ function PresupuestoForm() {
   };
 
   return (
-    <IonContent>
-      <form onSubmit={handleSubmit}>
-        <IonList>
-          {/* Origen */}
-          <IonItem>
-            <AutocompleteInput
-              label="Origen"
-              onPlaceChanged={handlePlaceChanged("origen")}
-            />
-          </IonItem>
+    <IonPage>
+      <IonContent>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="12">
+              <form onSubmit={handleSubmit}>
+                <IonList>
+                  {/* Origen */}
+                  <IonItem>
+                    <AutocompleteInput
+                      label="Origen"
+                      onPlaceChanged={handlePlaceChanged("origen")}
+                    />
+                  </IonItem>
 
-          {/* Destino */}
-          <IonItem>
-            <AutocompleteInput
-              label="Destino"
-              onPlaceChanged={handlePlaceChanged("destino")}
-            />
-          </IonItem>
+                  {/* Destino */}
+                  <IonItem>
+                    <AutocompleteInput
+                      label="Destino"
+                      onPlaceChanged={handlePlaceChanged("destino")}
+                    />
+                  </IonItem>
 
-          {/* Volumen de Carga */}
-          <ControlledInput
-            label="Volumen de Carga"
-            name="volumenCarga"
-            type="number"
-            value={formData.volumenCarga}
-            onChange={handleFieldChange}
-            required
-            min={0}
-          />
+                  {/* Volumen de Carga */}
+                  <ControlledInput
+                    label="Volumen de Carga"
+                    name="volumenCarga"
+                    type="number"
+                    value={formData.volumenCarga}
+                    onChange={handleFieldChange}
+                    required
+                    min={0}
+                  />
 
-          {/* Peso de Carga */}
-          <ControlledInput
-            label="Peso de Carga"
-            name="pesoCarga"
-            type="number"
-            value={formData.pesoCarga}
-            onChange={handleFieldChange}
-            required
-            min={0}
-          />
+                  {/* Peso de Carga */}
+                  <ControlledInput
+                    label="Peso de Carga"
+                    name="pesoCarga"
+                    type="number"
+                    value={formData.pesoCarga}
+                    onChange={handleFieldChange}
+                    required
+                    min={0}
+                  />
 
-          {/* Tipo de Vehículo */}
-          <ControlledInput
-            label="Tipo de Vehículo"
-            name="nombreTipoVehiculo"
-            value={formData.nombreTipoVehiculo}
-            onChange={handleFieldChange}
-            required
-          />
+                  {/* Tipo de Vehículo */}
+                  <ControlledInput
+                    label="Tipo de Vehículo"
+                    name="nombreTipoVehiculo"
+                    value={formData.nombreTipoVehiculo}
+                    onChange={handleFieldChange}
+                    required
+                  />
 
-          {/* Usuarios Involucrados */}
-          <IonItem>
-            <ControlledInput
-              label="Usuarios Involucrados (IDs separados por comas)"
-              name="usuariosInvolucrados"
-              value={formData.usuariosInvolucrados.join(", ")}
-              onChange={(name, value) =>
-                handleFieldChange(
-                  name,
-                  value.split(",").map((id) => id.trim())
-                )
-              }
-            />
-          </IonItem>
-        </IonList>
+                  {/* Usuarios Involucrados */}
+                  <IonItem>
+                    <ControlledInput
+                      label="Usuarios Involucrados (IDs separados por comas)"
+                      name="usuariosInvolucrados"
+                      value={formData.usuariosInvolucrados.join(", ")}
+                      onChange={(name, value) =>
+                        handleFieldChange(
+                          name,
+                          typeof value === "string"
+                            ? value.split(",").map((id) => id.trim())
+                            : []
+                        )
+                      }
+                    />
+                  </IonItem>
+                </IonList>
 
-        {/* Botón de Enviar */}
-        <IonButton expand="full" type="submit" disabled={loading}>
-          {loading ? <IonSpinner name="dots" /> : "Crear Presupuesto"}
-        </IonButton>
-      </form>
-    </IonContent>
+                {/* Botón de Enviar */}
+                <IonButton expand="full" type="submit" disabled={loading}>
+                  {loading ? <IonSpinner name="dots" /> : "Crear Presupuesto"}
+                </IonButton>
+              </form>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+    </IonPage>
   );
 }
 

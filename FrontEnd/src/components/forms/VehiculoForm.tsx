@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IonButton, IonInput, IonItem, IonList } from "@ionic/react";
+import { IonButton, IonInput, IonItem, IonList, IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
 import { crearVehiculo } from "../../api/services/vehiculoService";
 
 const VehiculoForm: React.FC = () => {
@@ -10,8 +10,9 @@ const VehiculoForm: React.FC = () => {
     consumoPorKm: 0,
   });
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (e: CustomEvent) => {
+    const { name, value } = e.detail;
+    setFormData({ ...formData, [name]: value });
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -25,42 +26,54 @@ const VehiculoForm: React.FC = () => {
   };
 
   return (
-    <form onSubmit={handleSubmit}>
-      <IonList>
-        <IonItem>
-          <IonInput
-            name="nombre"
-            placeholder="Nombre del Vehículo"
-            onIonChange={handleChange}
-          />
-        </IonItem>
-        <IonItem>
-          <IonInput
-            name="capacidadMaxVolumen"
-            type="number"
-            placeholder="Capacidad Máxima de Volumen"
-            onIonChange={handleChange}
-          />
-        </IonItem>
-        <IonItem>
-          <IonInput
-            name="capacidadMaxPeso"
-            type="number"
-            placeholder="Capacidad Máxima de Peso"
-            onIonChange={handleChange}
-          />
-        </IonItem>
-        <IonItem>
-          <IonInput
-            name="consumoPorKm"
-            type="number"
-            placeholder="Consumo por Kilómetro"
-            onIonChange={handleChange}
-          />
-        </IonItem>
-        <IonButton type="submit">Crear Vehículo</IonButton>
-      </IonList>
-    </form>
+    <IonPage>
+      <IonContent>
+        <IonGrid>
+          <IonRow>
+            <IonCol size="12">
+              <form onSubmit={handleSubmit}>
+                <IonList>
+                  <IonItem>
+                    <IonInput
+                      name="nombre"
+                      placeholder="Nombre del Vehículo"
+                      onIonChange={handleChange}
+                    />
+                  </IonItem>
+                  <IonItem>
+                    <IonInput
+                      name="capacidadMaxVolumen"
+                      type="number"
+                      placeholder="Capacidad Máxima de Volumen"
+                      onIonChange={handleChange}
+                    />
+                  </IonItem>
+                  <IonItem>
+                    <IonInput
+                      name="capacidadMaxPeso"
+                      type="number"
+                      placeholder="Capacidad Máxima de Peso"
+                      onIonChange={handleChange}
+                    />
+                  </IonItem>
+                  <IonItem>
+                    <IonInput
+                      name="consumoPorKm"
+                      type="number"
+                      placeholder="Consumo por Kilómetro"
+                      onIonChange={handleChange}
+                    />
+                  </IonItem>
+                  <IonButton expand="full" type="submit">
+                    Crear Vehículo
+                  </IonButton>
+                </IonList>
+              </form>
+            </IonCol>
+          </IonRow>
+        </IonGrid>
+      </IonContent>
+    </IonPage>
   );
 };
 
