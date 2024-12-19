@@ -35,8 +35,9 @@ public class SecurityConfig {
                 .cors().and()
                 .authorizeHttpRequests(auth -> auth
                         .requestMatchers("/api/login", "/api/public/**").permitAll()
-                        .requestMatchers("/api/usuarios/crear").permitAll()
-                        .requestMatchers("/api/vehiculos/crear").permitAll()
+                        .requestMatchers("/api/usuarios/**").permitAll()
+                        .requestMatchers("/api/vehiculos/**").permitAll()
+                        .requestMatchers("/api/presupuestos/**").permitAll()
                         .requestMatchers("/api/admin/**").hasRole("SUPERADMIN")
                         .anyRequest().authenticated()
                 )

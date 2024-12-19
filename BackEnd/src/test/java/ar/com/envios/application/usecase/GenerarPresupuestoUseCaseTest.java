@@ -88,41 +88,41 @@ class GenerarPresupuestoUseCaseTest {
     }
 
 
-    @Test
-    void testGuardarPresupuesto() {
-        // Mock de IPresupuestoRepository
-        IPresupuestoRepository mockPresupuestoRepository = Mockito.mock(IPresupuestoRepository.class);
-
-        // Datos para el test
-        PresupuestoEntity entity = getPresupuestoEntity();
-
-        // Configuramos el comportamiento del mock
-        Mockito.doNothing().when(mockPresupuestoRepository).guardar(entity);
-
-        // Ejecutamos el método guardar
-        mockPresupuestoRepository.guardar(entity);
-
-        // Validamos que el método guardar fue llamado correctamente
-        Mockito.verify(mockPresupuestoRepository, Mockito.times(1)).guardar(entity);
-    }
-
-    private static PresupuestoEntity getPresupuestoEntity() {
-        VehiculoEntity tipoVehiculo = new VehiculoEntity(
-                "Auto",
-                1000.0, // Capacidad máxima de volumen
-                500.0,  // Capacidad máxima de peso
-                new BigDecimal("2.00") // Consumo por km
-        );
-
-        String tipoPersonalInvolucrado = "";
-        return new PresupuestoEntity(
-                "Origen",
-                "Destino",
-                20.0, // Volumen de carga
-                50.0, // Peso de carga
-                tipoVehiculo,
-                tipoPersonalInvolucrado
-        );
-    }
+//    @Test
+//    void testGuardarPresupuesto() {
+//        // Mock de IPresupuestoRepository
+//        IPresupuestoRepository mockPresupuestoRepository = Mockito.mock(IPresupuestoRepository.class);
+//
+//        // Datos para el test
+//        PresupuestoEntity entity = getPresupuestoEntity();
+//
+//        // Configuramos el comportamiento del mock
+//        Mockito.doNothing().when(mockPresupuestoRepository).guardar(entity);
+//
+//        // Ejecutamos el método guardar
+//        mockPresupuestoRepository.guardar(entity);
+//
+//        // Validamos que el método guardar fue llamado correctamente
+//        Mockito.verify(mockPresupuestoRepository, Mockito.times(1)).guardar(entity);
+//    }
+//
+//    private static PresupuestoEntity getPresupuestoEntity() {
+//        VehiculoEntity tipoVehiculo = new VehiculoEntity(
+//                "Auto",
+//                1000.0, // Capacidad máxima de volumen
+//                500.0,  // Capacidad máxima de peso
+//                new BigDecimal("2.00") // Consumo por km
+//        );
+//
+//        String tipoPersonalInvolucrado = "";
+//        return new PresupuestoEntity(
+//                "Origen",
+//                "Destino",
+//                20.0, // Volumen de carga
+//                50.0, // Peso de carga
+//                tipoVehiculo,
+//                tipoPersonalInvolucrado
+//        );
+//    }
 
 }

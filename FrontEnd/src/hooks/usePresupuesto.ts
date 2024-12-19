@@ -1,7 +1,7 @@
 // src/hooks/usePresupuesto.ts
 import { useState, useEffect } from "react";
 import {
-  listarPresupuestos,
+  //listarPresupuestos,
   crearPresupuesto,
   listarUsuariosDisponibles,
   listarVehiculosDisponibles,
@@ -12,38 +12,44 @@ import {
 } from "../api/services/presupuestoService";
 
 export function usePresupuesto() {
-  const [data, setData] = useState<PresupuestoResponse[]>([]);
+  const [presupuestos, setPresupuestos] = useState<PresupuestoResponse[]>([]);
   const [usuarios, setUsuarios] = useState<UsuarioResponse[]>([]);
   const [vehiculos, setVehiculos] = useState<VehiculoResponse[]>([]);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
-    (async () => {
+    const fetchData = async () => {
       try {
-        const [presupuestosRes, usuariosRes, vehiculosRes] = await Promise.all([
-          listarPresupuestos(),
-          listarUsuariosDisponibles(),
-          listarVehiculosDisponibles(),
-        ]);
-        setData(presupuestosRes);
+        const [/*presupuestosRes,*/ usuariosRes, vehiculosRes] =
+          await Promise.all([
+            //listarPresupuestos(),
+            listarUsuariosDisponibles(),
+            listarVehiculosDisponibles(),
+          ]);
+        //setPresupuestos(presupuestosRes);
         setUsuarios(usuariosRes);
         setVehiculos(vehiculosRes);
       } catch (err) {
-        setError("Error al cargar datos");
-        console.error(err);
+        setError("Error al cargar los datos");
+        console.error("Error al cargar los datos:", err);
+      } finally {
+        setLoading(false);
       }
-    })();
+    };
+
+    fetchData();
   }, []);
 
   const addPresupuesto = async (presupuesto: PresupuestoRequest) => {
     try {
       const nuevoPresupuesto = await crearPresupuesto(presupuesto);
-      setData((prev) => [...prev, nuevoPresupuesto]);
+      setPresupuestos((prev) => [...prev, nuevoPresupuesto]);
     } catch (err) {
       setError("Error al crear el presupuesto");
-      console.error(err);
+      console.error("Error al crear el presupuesto:", err);
     }
   };
 
-  return { data, usuarios, vehiculos, addPresupuesto, error };
+  return { presupuestos, usuarios, vehiculos, addPresupuesto, loading, error };
 }

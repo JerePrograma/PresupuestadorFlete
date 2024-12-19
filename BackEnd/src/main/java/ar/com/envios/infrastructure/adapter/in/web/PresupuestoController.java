@@ -19,21 +19,24 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/presupuestos")
-@CrossOrigin(origins = "http://localhost:8100") // Habilita CORS para este endpoint
+@CrossOrigin(origins = "http://localhost:8100")
 public class PresupuestoController {
 
     private final PresupuestoService presupuestoService;
     private final UsuarioService usuarioService;
     private final VehiculoService vehiculoService;
 
-    public PresupuestoController(PresupuestoService presupuestoService, UsuarioService usuarioService, VehiculoService vehiculoService) {
+    public PresupuestoController(PresupuestoService presupuestoService,
+                                 UsuarioService usuarioService,
+                                 VehiculoService vehiculoService) {
         this.presupuestoService = presupuestoService;
         this.usuarioService = usuarioService;
         this.vehiculoService = vehiculoService;
     }
 
     @PostMapping("/crear")
-    public ResponseEntity<PresupuestoResponse> crearPresupuesto(@Valid @RequestBody PresupuestoRequest request, BindingResult bindingResult) {
+    public ResponseEntity<PresupuestoResponse> crearPresupuesto(@Valid @RequestBody PresupuestoRequest request,
+                                                                BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
             String errores = bindingResult.getAllErrors().stream()
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
@@ -49,32 +52,32 @@ public class PresupuestoController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
                     .body(new PresupuestoResponse("Error en los datos: " + e.getMessage()));
         } catch (Exception e) {
-            e.printStackTrace(); // Log completo para diagnóstico
+            e.printStackTrace();
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(new PresupuestoResponse("Error interno: " + e.getMessage()));
         }
     }
 
-    @GetMapping("/usuarios-por-roles")
-    public ResponseEntity<List<UsuarioResponse>> listarUsuariosPorRoles(@RequestParam List<String> roles) {
-        List<UsuarioResponse> usuarios = usuarioService.obtenerUsuariosPorRoles(roles);
+    @GetMapping("/usuarios-disponibles")
+    public ResponseEntity<List<UsuarioResponse>> listarUsuariosDisponibles() {
+        List<UsuarioResponse> usuarios = usuarioService.obtenerUsuariosPorRoles(List.of("CHOFER", "AYUDANTE"));
         return ResponseEntity.ok(usuarios);
     }
 
-
     @GetMapping("/vehiculos-disponibles")
     public ResponseEntity<List<VehiculoResponse>> listarVehiculosDisponibles() {
-        List<VehiculoResponse> vehiculos = vehiculoService.obtenerTodos().stream()
-                .map(vehiculo -> new VehiculoResponse(
-                        vehiculo.getNombre(),
-                        vehiculo.getCapacidadMaxVolumen(),
-                        vehiculo.getCapacidadMaxPeso(),
-                        vehiculo.getConsumoPorKm()
-                ))
-                .collect(Collectors.toList());
-        return ResponseEntity.ok(vehiculos);
+        try {
+            List<VehiculoResponse> vehiculos = vehiculoService.obtenerTodos().stream()
+                    .map(vehiculo -> new VehiculoResponse(
+                            vehiculo.getNombre(),
+                            vehiculo.getCapacidadMaxVolumen(),
+                            vehiculo.getCapacidadMaxPeso(),
+                            vehiculo.getConsumoPorKm()
+                    ))
+                    .collect(Collectors.toList());
+            return ResponseEntity.ok(vehiculos);
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(List.of());
+        }
     }
-
-
 }
-

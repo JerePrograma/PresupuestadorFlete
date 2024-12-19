@@ -41,7 +41,6 @@ public class GenerarPresupuestoUseCase {
      */
     public Presupuesto ejecutar(String origen, String destino, double volumenCarga, double pesoCarga,
                                 String nombreTipoVehiculo, List<Usuario> usuariosInvolucrados) {
-        // Buscar el tipo de vehículo
         Optional<Vehiculo> tipoVehiculoOpt = tarifasRepository.findByNombre(nombreTipoVehiculo);
         if (tipoVehiculoOpt.isEmpty()) {
             throw new IllegalArgumentException("No se encontró el tipo de vehículo: " + nombreTipoVehiculo);
@@ -49,7 +48,6 @@ public class GenerarPresupuestoUseCase {
 
         Vehiculo vehiculo = tipoVehiculoOpt.get();
 
-        // Validar volumen y peso
         if (!vehiculo.soportaVolumen(volumenCarga)) {
             throw new IllegalArgumentException("El vehículo no soporta el volumen de la carga.");
         }
@@ -57,27 +55,8 @@ public class GenerarPresupuestoUseCase {
             throw new IllegalArgumentException("El vehículo no soporta el peso de la carga.");
         }
 
-        // Crear el presupuesto
-        Presupuesto presupuesto = new Presupuesto(origen, destino, volumenCarga, pesoCarga, vehiculo, usuariosInvolucrados);
-
-        // Guardar el presupuesto
-        // Cambiar el mapeo para usar toEntity
-        PresupuestoEntity entity = new PresupuestoEntity(
-                presupuesto.getOrigen(),
-                presupuesto.getDestino(),
-                presupuesto.getVolumenCarga(),
-                presupuesto.getPesoCarga(),
-                convertirTipoVehiculo(vehiculo),
-                usuariosInvolucrados.stream()
-                        .map(UsuarioMapper::toEntity)
-                        .toList()
-                        .toString()
-        );
-
-
-        presupuestoRepository.guardar(entity);
-
-        return presupuesto;
+        // Solo crear y retornar el presupuesto de dominio
+        return new Presupuesto(origen, destino, volumenCarga, pesoCarga, vehiculo, usuariosInvolucrados);
     }
 
 

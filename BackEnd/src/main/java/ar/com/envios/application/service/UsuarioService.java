@@ -55,8 +55,15 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public List<UsuarioResponse> obtenerUsuariosPorRoles(List<String> roles) {
-        return usuarioRepository.buscarPorTipoUsuario(roles).stream()
+        return usuarioRepository.buscarPorTipoUsuario(roles)
+                .stream()
                 .map(UsuarioMapper::toResponse)
                 .collect(Collectors.toList());
     }
+
+    public Usuario obtenerUsuarioPorId(Long usuarioId) {
+        return usuarioRepository.buscarPorId(usuarioId)
+                .orElseThrow(() -> new IllegalArgumentException("No se encontró el usuario con id: " + usuarioId));
+    }
+
 }

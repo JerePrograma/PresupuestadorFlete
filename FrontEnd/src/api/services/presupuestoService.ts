@@ -25,18 +25,16 @@ export async function crearPresupuesto(
   data: PresupuestoRequest
 ): Promise<PresupuestoResponse> {
   const response = await api.post<PresupuestoResponse>(
-    "api/presupuestos/crear",
+    "/presupuestos/crear",
     data
   );
   return response.data;
 }
 
-export async function listarPresupuestos(): Promise<PresupuestoResponse[]> {
-  const response = await api.get<PresupuestoResponse[]>(
-    "api/presupuestos/listar"
-  );
+/*export async function listarPresupuestos(): Promise<PresupuestoResponse[]> {
+  const response = await api.get<PresupuestoResponse[]>("/presupuestos/listar");
   return response.data;
-}
+}*/
 
 export interface UsuarioResponse {
   id: number;
@@ -51,28 +49,20 @@ export interface VehiculoResponse {
   capacidad: string;
 }
 
+// Lista usuarios con roles CHOFER y AYUDANTE
 export async function listarUsuariosDisponibles(): Promise<UsuarioResponse[]> {
   const response = await api.get<UsuarioResponse[]>(
-    "api/presupuestos/usuarios-disponibles"
+    "/presupuestos/usuarios-disponibles"
   );
   return response.data;
 }
 
-export async function obtenerUsuariosPorRoles(
-  roles: string[]
-): Promise<UsuarioResponse[]> {
-  const response = await api.get<UsuarioResponse[]>(
-    "http://localhost:8080/api/usuarios-por-roles?roles=CHOFER&roles=AYUDANTE",
-    { params: { roles } }
-  );
-  return response.data;
-}
-
+// Lista vehículos disponibles
 export async function listarVehiculosDisponibles(): Promise<
   VehiculoResponse[]
 > {
   const response = await api.get<VehiculoResponse[]>(
-    "api/presupuestos/vehiculos-disponibles"
+    "/presupuestos/vehiculos-disponibles"
   );
   return response.data;
 }

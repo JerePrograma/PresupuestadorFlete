@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+/*import React, { useEffect, useState } from "react";
 import { listarPresupuestos } from "../../api/services/presupuestoService";
 
 const PresupuestoList: React.FC = () => {
@@ -44,3 +44,4 @@ const PresupuestoList: React.FC = () => {
 };
 
 export default PresupuestoList;
+*/

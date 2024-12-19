@@ -2,7 +2,6 @@ package ar.com.envios.application.dto;
 
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Positive;
-
 import java.util.List;
 
 public class PresupuestoRequest {
@@ -21,12 +20,13 @@ public class PresupuestoRequest {
     @NotBlank(message = "El tipo de vehículo es obligatorio")
     private String nombreTipoVehiculo;
 
-    private List<UsuarioRequest> usuariosInvolucrados;
+    // Ahora sólo IDs de usuarios
+    private List<Long> usuariosInvolucrados;
 
     public PresupuestoRequest() {
     }
 
-    public PresupuestoRequest(String origen, String destino, double volumenCarga, double pesoCarga, String nombreTipoVehiculo, List<UsuarioRequest> usuariosInvolucrados) {
+    public PresupuestoRequest(String origen, String destino, double volumenCarga, double pesoCarga, String nombreTipoVehiculo, List<Long> usuariosInvolucrados) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
@@ -59,14 +59,6 @@ public class PresupuestoRequest {
         this.volumenCarga = volumenCarga;
     }
 
-    public String getNombreTipoVehiculo() {
-        return nombreTipoVehiculo;
-    }
-
-    public void setNombreTipoVehiculo(String nombreTipoVehiculo) {
-        this.nombreTipoVehiculo = nombreTipoVehiculo;
-    }
-
     public double getPesoCarga() {
         return pesoCarga;
     }
@@ -75,11 +67,19 @@ public class PresupuestoRequest {
         this.pesoCarga = pesoCarga;
     }
 
-    public List<UsuarioRequest> getUsuariosInvolucrados() {
+    public String getNombreTipoVehiculo() {
+        return nombreTipoVehiculo;
+    }
+
+    public void setNombreTipoVehiculo(String nombreTipoVehiculo) {
+        this.nombreTipoVehiculo = nombreTipoVehiculo;
+    }
+
+    public List<Long> getUsuariosInvolucrados() {
         return usuariosInvolucrados;
     }
 
-    public void setUsuariosInvolucrados(List<UsuarioRequest> usuariosInvolucrados) {
+    public void setUsuariosInvolucrados(List<Long> usuariosInvolucrados) {
         this.usuariosInvolucrados = usuariosInvolucrados;
     }
 }
