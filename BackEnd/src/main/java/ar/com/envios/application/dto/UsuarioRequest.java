@@ -2,7 +2,6 @@ package ar.com.envios.application.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
 public class UsuarioRequest {
@@ -18,7 +17,6 @@ public class UsuarioRequest {
     private String password;
 
     @NotBlank(message = "El tipo de usuario no puede estar vacío")
-    @Pattern(regexp = "admin|cliente", message = "El tipo de usuario debe ser 'admin' o 'cliente'")
     private String tipoUsuario;
 
     public String getNombre() {
@@ -46,10 +44,10 @@ public class UsuarioRequest {
     }
 
     public String getTipoUsuario() {
-        return tipoUsuario;
+        return tipoUsuario.toUpperCase();
     }
 
     public void setTipoUsuario(String tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
+        this.tipoUsuario = tipoUsuario.toUpperCase();
     }
 }

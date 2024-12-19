@@ -45,9 +45,6 @@ public class PresupuestoEntity {
     )
     private List<ExtraEntity> extras = new ArrayList<>();
 
-    public PresupuestoEntity(String origen, String destino, double volumenCarga, double pesoCarga, VehiculoEntity tipoVehiculo, String string) {
-    }
-
     public PresupuestoEntity(String origen, String destino, double volumenCarga, double pesoCarga,
                              VehiculoEntity tipoVehiculo, List<UsuarioEntity> usuariosInvolucrados) {
         this.origen = origen;
@@ -55,7 +52,7 @@ public class PresupuestoEntity {
         this.volumenCarga = volumenCarga;
         this.pesoCarga = pesoCarga;
         this.tipoVehiculo = tipoVehiculo;
-        this.usuariosInvolucrados = usuariosInvolucrados;
+        this.usuariosInvolucrados = usuariosInvolucrados != null ? usuariosInvolucrados : new ArrayList<>();
     }
 
     public PresupuestoEntity() {

@@ -9,10 +9,10 @@ public class VehiculoMapper {
 
     public static VehiculoEntity toEntity(Vehiculo vehiculo) {
         return new VehiculoEntity(
-                vehiculo.nombre(),
-                vehiculo.capacidadMaxVolumen(),
-                vehiculo.capacidadMaxPeso(),
-                vehiculo.consumoPorKm()
+                vehiculo.getNombre(),
+                vehiculo.getCapacidadMaxVolumen(),
+                vehiculo.getCapacidadMaxPeso(),
+                vehiculo.getConsumoPorKm()
         );
     }
 
@@ -28,10 +28,10 @@ public class VehiculoMapper {
     // Nuevo método: Convierte de Vehiculo a VehiculoResponse
     public static VehiculoResponse toResponse(Vehiculo vehiculo) {
         return new VehiculoResponse(
-                vehiculo.nombre(),
-                vehiculo.capacidadMaxVolumen(),
-                vehiculo.capacidadMaxPeso(),
-                vehiculo.consumoPorKm()
+                vehiculo.getNombre(),
+                vehiculo.getCapacidadMaxVolumen(),
+                vehiculo.getCapacidadMaxPeso(),
+                vehiculo.getConsumoPorKm()
         );
     }
 

@@ -13,6 +13,15 @@ import java.math.BigDecimal;
  */
 public class CalculadorPresupuestoService {
 
+    private final IDistanceCalculator distanceCalculator;
+
+    public CalculadorPresupuestoService(IDistanceCalculator distanceCalculator) {
+        this.distanceCalculator = distanceCalculator;
+    }
+
+    public double obtenerDistanciaReal(String origen, String destino) {
+        return distanceCalculator.calculateDistance(origen, destino);
+    }
     /**
      * Calcula el costo total del presupuesto.
      * Ejemplo de lógica:
@@ -40,26 +49,23 @@ public class CalculadorPresupuestoService {
         BigDecimal precioCombustible = obtenerPrecioCombustibleActual();
 
         // Calcular costo base
-        BigDecimal costoBase = vehiculo.consumoPorKm()
+        BigDecimal costoBase = vehiculo.getConsumoPorKm()
                 .multiply(precioCombustible)
                 .multiply(BigDecimal.valueOf(distanciaKm));
 
         // Sumar costos de los extras
         BigDecimal costoExtras = BigDecimal.ZERO;
         for (Extra extra : presupuesto.getExtras()) {
-            costoExtras = costoExtras.add(extra.costo());
+            costoExtras = costoExtras.add(extra.getCosto());
         }
 
         // Retornar el costo total (costo base + extras)
         return costoBase.add(costoExtras);
     }
 
-    public double obtenerDistanciaReal(String origen, String destino) {
-        return 10;
-    }
-
     public BigDecimal obtenerPrecioCombustibleActual() {
-        return new BigDecimal(10);
+        // Implementación ficticia para consulta de precio del combustible
+        return BigDecimal.valueOf(1.25); // Precio de ejemplo por litro
     }
 
 }

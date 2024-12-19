@@ -1,51 +1,34 @@
 package ar.com.envios.application.dto;
 
-import ar.com.envios.domain.exception.BussinesException;
-
 import java.math.BigDecimal;
 import java.util.List;
 
 public class PresupuestoResponse {
+
     private String origen;
     private String destino;
     private double volumenCarga;
-    private String tipoVehiculo;
+    private String nombreTipoVehiculo;
     private BigDecimal costoTotal;
-    private List<String> extras;
-    private String mensajeError; // Nuevo campo para mensajes de error
+    private List<String> detalleCostos;
 
-    public PresupuestoResponse() {
-    }
-
-    // Constructor completo
-    public PresupuestoResponse(String origen, String destino, double volumenCarga, String tipoVehiculo,
-                               BigDecimal costoTotal, List<String> extras) {
+    // Constructor
+    public PresupuestoResponse(String origen, String destino, double volumenCarga,
+                               String nombreTipoVehiculo, BigDecimal costoTotal, List<String> detalleCostos) {
         this.origen = origen;
         this.destino = destino;
         this.volumenCarga = volumenCarga;
-        this.tipoVehiculo = tipoVehiculo;
+        this.nombreTipoVehiculo = nombreTipoVehiculo;
         this.costoTotal = costoTotal;
-        this.extras = extras;
-        this.mensajeError = null;
+        this.detalleCostos = detalleCostos;
     }
 
-    // Constructor para mensajes de error
+
     public PresupuestoResponse(String mensajeError) {
-        this.mensajeError = mensajeError;
     }
 
-    // Constructor para mensajes de error
-    public PresupuestoResponse(String mensajeError, BussinesException e) {
-        this.mensajeError = mensajeError;
-    }
 
-    // Getters y setters
-    public String getMensajeError() {
-        return mensajeError;
-    }
-
-    public void setMensajeError(String mensajeError) {
-        this.mensajeError = mensajeError;
+    public PresupuestoResponse() {
     }
 
     public String getOrigen() {
@@ -72,12 +55,12 @@ public class PresupuestoResponse {
         this.volumenCarga = volumenCarga;
     }
 
-    public String getTipoVehiculo() {
-        return tipoVehiculo;
+    public String getNombreTipoVehiculo() {
+        return nombreTipoVehiculo;
     }
 
-    public void setTipoVehiculo(String tipoVehiculo) {
-        this.tipoVehiculo = tipoVehiculo;
+    public void setNombreTipoVehiculo(String nombreTipoVehiculo) {
+        this.nombreTipoVehiculo = nombreTipoVehiculo;
     }
 
     public BigDecimal getCostoTotal() {
@@ -88,11 +71,11 @@ public class PresupuestoResponse {
         this.costoTotal = costoTotal;
     }
 
-    public List<String> getExtras() {
-        return extras;
+    public List<String> getDetalleCostos() {
+        return detalleCostos;
     }
 
-    public void setExtras(List<String> extras) {
-        this.extras = extras;
+    public void setDetalleCostos(List<String> detalleCostos) {
+        this.detalleCostos = detalleCostos;
     }
 }

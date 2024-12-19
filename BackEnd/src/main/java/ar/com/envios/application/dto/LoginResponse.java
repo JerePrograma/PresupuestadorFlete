@@ -9,5 +9,11 @@ public class LoginResponse {
         this.mensaje = mensaje;
     }
 
-    // Getters y Setters
+    public String getToken() {
+        return token;
+    }
+
+    public String getMensaje() {
+        return mensaje;
+    }
 }

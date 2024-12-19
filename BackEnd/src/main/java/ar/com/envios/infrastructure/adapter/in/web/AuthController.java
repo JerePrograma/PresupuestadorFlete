@@ -14,9 +14,14 @@ import ar.com.envios.infrastructure.security.JwtUtil;
 @RequestMapping("/api")
 public class AuthController {
 
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
+    private final JwtUtil jwtUtil;
 
-    private JwtUtil jwtUtil;
+    @Autowired
+    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
+        this.authenticationManager = authenticationManager;
+        this.jwtUtil = jwtUtil;
+    }
 
     @PostMapping("/login")
     public LoginResponse login(@RequestBody LoginRequest request) {
