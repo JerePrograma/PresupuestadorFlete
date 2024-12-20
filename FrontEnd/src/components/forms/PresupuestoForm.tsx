@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { PresupuestoRequest } from "../../api/services/presupuestoService";
+// import { PresupuestoRequest } from "../../api/services/presupuestoService";
 import {
   IonButton,
   IonContent,
@@ -13,11 +13,11 @@ import {
 } from "@ionic/react";
 import AutocompleteInput from "../AutocompleteInputProps";
 import ControlledInput from "../utils/ControlledInput";
-import { usePresupuesto } from "../../hooks/usePresupuesto";
+// import { usePresupuesto } from "../../hooks/usePresupuesto";
 
 function PresupuestoForm() {
-  const { addPresupuesto } = usePresupuesto(); // Hook para manejar presupuestos
-  const [formData, setFormData] = useState<PresupuestoRequest>({
+  // const { addPresupuesto } = usePresupuesto(); // Hook para manejar presupuestos
+  const [formData, setFormData] = useState({
     origen: "",
     destino: "",
     volumenCarga: 0,
@@ -54,7 +54,7 @@ function PresupuestoForm() {
     setLoading(true);
 
     try {
-      await addPresupuesto(formData); // Agrega el presupuesto al estado global
+      // await addPresupuesto(formData); // Agrega el presupuesto al estado global
       console.log("Presupuesto creado:", formData);
 
       // Restablece el formulario

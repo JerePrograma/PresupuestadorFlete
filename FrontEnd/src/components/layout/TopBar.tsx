@@ -1,5 +1,6 @@
 import React from 'react';
-import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle } from '@ionic/react';
+import { IonHeader, IonToolbar, IonButtons, IonMenuButton, IonTitle, IonIcon } from '@ionic/react';
+import { busOutline } from 'ionicons/icons';
 
 const TopBar: React.FC = () => {
   return (
@@ -8,7 +9,9 @@ const TopBar: React.FC = () => {
         <IonButtons slot="start">
           <IonMenuButton />
         </IonButtons>
-        <IonTitle>Truck-Vector App</IonTitle>
+        <IonTitle>
+          Truck-Vector App   <IonIcon icon={busOutline} /> 
+        </IonTitle>
       </IonToolbar>
     </IonHeader>
   );
