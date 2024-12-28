@@ -1,4 +1,4 @@
-package ar.com.envios.infrastructure.services;
+package ar.com.envios.infrastructure.service;
 
 import ar.com.envios.domain.service.IDistanceCalculator;
 import ar.com.envios.infrastructure.adapter.out.external.dto.MapResponse;

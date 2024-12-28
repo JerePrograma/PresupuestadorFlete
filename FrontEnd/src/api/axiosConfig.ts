@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://localhost:8080/api",
+  baseURL: "http://192.168.1.16:8080",
   headers: {
     "Content-Type": "application/json",
   },
@@ -11,12 +11,9 @@ const api = axios.create({
 // Interceptor para agregar el token JWT
 api.interceptors.request.use(
   (config) => {
-    if (config.method !== "options") {
-      // Evita agregar el token en OPTIONS
-      const token = localStorage.getItem("token");
-      if (token) {
-        config.headers.Authorization = `Bearer ${token}`;
-      }
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`;
     }
     return config;
   },
@@ -25,7 +22,12 @@ api.interceptors.request.use(
 
 export const login = async (email: string, password: string) => {
   try {
-    const response = await axios.post("/auth/login", { email, password });
+    const response = await api.post("/login", { email, password });
+    const { mensaje: token } = response.data;
+
+    // Guarda el token en localStorage
+    localStorage.setItem("token", token);
+
     return response.data;
   } catch (error) {
     console.error("Error durante el login:", error);

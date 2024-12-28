@@ -1,9 +1,15 @@
 package ar.com.envios.domain.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
+@AllArgsConstructor
 public class Presupuesto {
     private final String origen;
     private final String destino;
@@ -34,34 +40,5 @@ public class Presupuesto {
             total = total.add(extra.getCosto());
         }
         return total;
-    }
-
-    // Getters y setters actualizados
-    public String getOrigen() {
-        return origen;
-    }
-
-    public String getDestino() {
-        return destino;
-    }
-
-    public double getVolumenCarga() {
-        return volumenCarga;
-    }
-
-    public double getPesoCarga() {
-        return pesoCarga;
-    }
-
-    public Vehiculo getTipoVehiculo() {
-        return vehiculo;
-    }
-
-    public List<Extra> getExtras() {
-        return extras;
-    }
-
-    public List<Usuario> getUsuariosInvolucrados() {
-        return usuariosInvolucrados;
     }
 }

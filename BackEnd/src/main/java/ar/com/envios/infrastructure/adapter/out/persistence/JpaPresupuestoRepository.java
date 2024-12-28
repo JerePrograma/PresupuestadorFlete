@@ -38,7 +38,7 @@ public class JpaPresupuestoRepository implements IPresupuestoRepository {
                 presupuesto.getDestino(),
                 presupuesto.getVolumenCarga(),
                 presupuesto.getPesoCarga(),
-                VehiculoMapper.toEntity(presupuesto.getTipoVehiculo()), // Usa el Mapper
+                VehiculoMapper.toEntity(presupuesto.getVehiculo()), // Usa el Mapper
                 presupuesto.getUsuariosInvolucrados().stream()
                         .map(this::convertirUsuarioAEntidad)
                         .collect(Collectors.toList()) // Lista de UsuarioEntity

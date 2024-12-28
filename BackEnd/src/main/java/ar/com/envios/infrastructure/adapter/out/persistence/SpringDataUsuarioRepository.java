@@ -1,5 +1,6 @@
 package ar.com.envios.infrastructure.adapter.out.persistence;
 
+import aj.org.objectweb.asm.commons.Remapper;
 import ar.com.envios.domain.enumeraciones.TipoUsuario;
 import ar.com.envios.infrastructure.entity.UsuarioEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -14,4 +15,5 @@ public interface SpringDataUsuarioRepository extends JpaRepository<UsuarioEntity
 
     List<UsuarioEntity> findByTipoUsuarioIn(List<TipoUsuario> roles);
 
+    UsuarioEntity findByNombre(String nombre);
 }

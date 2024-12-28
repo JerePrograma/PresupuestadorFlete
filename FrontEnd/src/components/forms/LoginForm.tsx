@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { IonButton, IonInput, IonItem, IonList, IonAlert } from "@ionic/react";
+import { IonButton, IonInput, IonItem, IonList } from "@ionic/react";
 import { login } from "../../api/services/authService";
 import { useHistory } from "react-router-dom";
 
@@ -12,9 +12,15 @@ const LoginForm: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const token = await login({ email, password });
-      localStorage.setItem("token", token); // Guarda el token en el almacenamiento local
-      history.push("/presupuestos"); // Redirige a la página principal
+      // Llama al servicio de login y espera a recibir el token
+      const token = await login(email, password);
+
+      // Almacena el token en localStorage
+      console.log("Token recibido:", token);
+      localStorage.setItem("token", token);
+
+      // Redirige después de que el token se almacene correctamente
+      history.push("/presupuestos");
     } catch (err) {
       setError("Credenciales incorrectas o error del servidor.");
     }
@@ -45,7 +51,7 @@ const LoginForm: React.FC = () => {
           Iniciar Sesión
         </IonButton>
       </IonList>
-      {error && <IonAlert isOpen={true} message={error} buttons={["OK"]} />}
+      {error && <p style={{ color: "red" }}>{error}</p>}
     </form>
   );
 };

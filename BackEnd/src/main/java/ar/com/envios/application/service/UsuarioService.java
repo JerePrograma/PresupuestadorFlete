@@ -3,9 +3,8 @@ package ar.com.envios.application.service;
 import ar.com.envios.application.dto.UsuarioRequest;
 import ar.com.envios.application.dto.UsuarioResponse;
 import ar.com.envios.application.mapper.UsuarioMapper;
-import ar.com.envios.domain.enumeraciones.TipoUsuario;
 import ar.com.envios.domain.repository.IUsuarioRepository;
-import ar.com.envios.infrastructure.adapter.out.persistence.JpaUsuarioRepository;
+import ar.com.envios.domain.service.UsuarioDomainService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,7 +19,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class UsuarioService implements UserDetailsService {
+public class UsuarioService {
 
     private final IUsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
@@ -32,26 +31,10 @@ public class UsuarioService implements UserDetailsService {
     }
 
     public UsuarioResponse crearUsuario(UsuarioRequest request) {
-        Usuario usuario = new Usuario();
-        usuario.setNombre(request.getNombre());
-        usuario.setEmail(request.getEmail());
-        usuario.setPassword(passwordEncoder.encode(request.getPassword())); // Codifica la contraseña
-        usuario.setTipoUsuario(TipoUsuario.valueOf(request.getTipoUsuario()));
+        var usuario = UsuarioMapper.toDomain(request);
+        usuario.setPassword(passwordEncoder.encode(request.getPassword()));
         usuarioRepository.guardar(usuario);
-        return new UsuarioResponse("Usuario creado correctamente");
-    }
-
-    @Override
-    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        Usuario usuario = usuarioRepository.buscarPorEmail(email)
-                .orElseThrow(() -> new UsernameNotFoundException("Usuario no encontrado: " + email));
-
-        // Configurar roles correctamente
-        return User.builder()
-                .username(usuario.getEmail())
-                .password(usuario.getPassword())
-                .roles(usuario.getTipoUsuario().name()) // Asigna el rol desde el campo tipo_usuario
-                .build();
+        return UsuarioMapper.toResponse(usuario);
     }
 
     public List<UsuarioResponse> obtenerUsuariosPorRoles(List<String> roles) {
@@ -63,7 +46,7 @@ public class UsuarioService implements UserDetailsService {
 
     public Usuario obtenerUsuarioPorId(Long usuarioId) {
         return usuarioRepository.buscarPorId(usuarioId)
-                .orElseThrow(() -> new IllegalArgumentException("No se encontró el usuario con id: " + usuarioId));
+                .orElseThrow(() -> new IllegalArgumentException("Usuario no encontrado con id: " + usuarioId));
     }
 
 }

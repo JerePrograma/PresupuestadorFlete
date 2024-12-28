@@ -8,6 +8,7 @@ import ar.com.envios.domain.model.Presupuesto;
 import ar.com.envios.domain.model.Usuario;
 import ar.com.envios.domain.repository.IPresupuestoRepository;
 import ar.com.envios.domain.service.CalculadorPresupuestoService;
+import ar.com.envios.domain.service.UsuarioDomainService;
 import ar.com.envios.infrastructure.entity.PresupuestoEntity;
 import ar.com.envios.application.mapper.PresupuestoMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,27 +24,26 @@ public class PresupuestoService {
     private final IPresupuestoRepository presupuestoRepository;
     private final CalculadorPresupuestoService calculadorPresupuestoService;
     private final GenerarPresupuestoUseCase generarPresupuestoUseCase;
-    private final UsuarioService usuarioService;
+    private final UsuarioDomainService usuarioDomainService; // Usa la interfaz
 
     @Autowired
     public PresupuestoService(
             IPresupuestoRepository presupuestoRepository,
             CalculadorPresupuestoService calculadorPresupuestoService,
             GenerarPresupuestoUseCase generarPresupuestoUseCase,
-            UsuarioService usuarioService) {
+            UsuarioDomainService usuarioDomainService) { // Cambio aquí
 
         this.presupuestoRepository = presupuestoRepository;
         this.calculadorPresupuestoService = calculadorPresupuestoService;
         this.generarPresupuestoUseCase = generarPresupuestoUseCase;
-        this.usuarioService = usuarioService;
+        this.usuarioDomainService = usuarioDomainService; // Cambio aquí
     }
 
     public PresupuestoResponse crearPresupuesto(PresupuestoRequest request) {
-        // Obtener la lista de usuarios desde sus IDs
+        // Usa la interfaz en lugar de la implementación
         List<Usuario> usuariosInvolucrados = request.getUsuariosInvolucrados().stream()
-                .map(usuarioService::obtenerUsuarioPorId)
+                .map(usuarioDomainService::obtenerUsuarioPorId)
                 .collect(Collectors.toList());
-
         // Generar el presupuesto
         Presupuesto presupuesto = generarPresupuestoUseCase.ejecutar(
                 request.getOrigen(),

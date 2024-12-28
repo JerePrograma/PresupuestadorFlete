@@ -1,23 +1,14 @@
 import React from "react";
-import { Route, Redirect } from "react-router-dom";
+import { Redirect, Route } from "react-router-dom";
 
-interface PrivateRouteProps {
-  component: React.ComponentType<any>;
-  path: string;
-  exact?: boolean;
-}
-
-const PrivateRoute: React.FC<PrivateRouteProps> = ({
-  component: Component,
-  ...rest
-}) => {
-  const token = localStorage.getItem("token");
+const PrivateRoute = ({ component: Component, ...rest }: any) => {
+  const isAuthenticated = !!localStorage.getItem("token"); // Verifica si hay un token en localStorage
 
   return (
     <Route
       {...rest}
       render={(props) =>
-        token ? <Component {...props} /> : <Redirect to="/login" />
+        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
       }
     />
   );

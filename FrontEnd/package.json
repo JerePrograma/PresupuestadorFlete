@@ -1,15 +1,19 @@
 {
   "name": "block-transportes",
   "private": true,
-  "version": "0.0.1",
+  "version": "1.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "test.e2e": "cypress run",
-    "test.unit": "vitest",
-    "lint": "eslint"
+    "test": "vitest run",
+    "test:watch": "vitest --watch",
+    "test:e2e": "cypress run",
+    "test:unit": "vitest",
+    "lint": "eslint .",
+    "format": "prettier --write .",
+    "prepare": "husky install"
   },
   "dependencies": {
     "@capacitor/app": "^6.0.2",
@@ -53,5 +57,10 @@
     "vite": "~5.2.0",
     "vitest": "^0.34.6"
   },
-  "description": "An Ionic project"
+  "description": "An Ionic project",
+  "engines": {
+    "node": ">=18.0.0",
+    "npm": ">=9.0.0"
+  },
+  "homepage": "http://192.168.1.16:8100"
 }

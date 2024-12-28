@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("/api/usuarios")
+@RequestMapping("/usuarios")
 public class UsuarioController {
 
     private final IUsuarioRepository usuarioRepository;
@@ -31,7 +31,7 @@ public class UsuarioController {
 
     @PostMapping("/crear")
     public ResponseEntity<UsuarioResponse> crearUsuario(@Valid @RequestBody UsuarioRequest request, BindingResult bindingResult) {
-        request.setTipoUsuario(request.getTipoUsuario().toUpperCase());
+        request.setTipoUsuario(request.getTipoUsuario());
         logger.info("Request recibido: nombre={}, email={}, tipoUsuario={}, password={}",
                 request.getNombre(), request.getEmail(), request.getTipoUsuario(), request.getPassword());
 

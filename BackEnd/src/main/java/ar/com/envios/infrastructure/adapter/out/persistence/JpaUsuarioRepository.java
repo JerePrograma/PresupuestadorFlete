@@ -5,6 +5,7 @@ import ar.com.envios.domain.model.Usuario;
 import ar.com.envios.domain.repository.IUsuarioRepository;
 import ar.com.envios.infrastructure.entity.UsuarioEntity;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -63,6 +64,11 @@ public class JpaUsuarioRepository implements IUsuarioRepository {
     public Optional<Usuario> buscarPorId(Long id) {
         return springDataUsuarioRepository.findById(id)
                 .map(this::convertirADominio);
+    }
+
+    @Override
+    public UserDetails findByNombre(String nombre) {
+        return (UserDetails) springDataUsuarioRepository.findByNombre(nombre);
     }
 
     private Usuario convertirADominio(UsuarioEntity entity) {

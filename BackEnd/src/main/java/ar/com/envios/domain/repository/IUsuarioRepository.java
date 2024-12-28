@@ -1,6 +1,8 @@
 package ar.com.envios.domain.repository;
 
 import ar.com.envios.domain.model.Usuario;
+import org.springframework.security.core.userdetails.UserDetails;
+
 import java.util.List;
 import java.util.Optional;
 
@@ -12,4 +14,6 @@ public interface IUsuarioRepository {
 
     // Nuevo método para buscar por ID
     Optional<Usuario> buscarPorId(Long id);
+
+    UserDetails findByNombre(String nombre);
 }

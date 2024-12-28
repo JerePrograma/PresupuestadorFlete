@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @RestController
-@RequestMapping("api/presupuestos")
+@RequestMapping("/presupuestos")
 @CrossOrigin(origins = "http://localhost:8100")
 public class PresupuestoController {
 

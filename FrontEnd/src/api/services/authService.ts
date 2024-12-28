@@ -1,11 +1,25 @@
-import axios from "../axiosConfig";
+import api from "../axiosConfig";
 
-interface LoginRequest {
-  email: string;
-  password: string;
-}
+export const login = async (email: string, password: string) => {
+  try {
+    const response = await api.post("/login", { email, password });
+    const { mensaje: token } = response.data; // Ajustar al formato devuelto por tu API
+    localStorage.setItem("token", token);
+    return token;
+  } catch (error: any) {
+    console.error("Error durante el login:", error);
+    if (error.response) {
+      console.error("Error Response:", error.response.data);
+    } else if (error.request) {
+      console.error("Error Request:", error.request);
+    } else {
+      console.error("Error Message:", error.message);
+    }
+    throw error;
+  }
+};
 
-export const login = async (data: LoginRequest): Promise<string> => {
-  const response = await axios.post("/login", data); // Endpoint del login
-  return response.data.token; // Asegúrate de que el backend retorne un 'token'
+export const logout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
 };

@@ -1,34 +1,24 @@
 package ar.com.envios.infrastructure.adapter.in.web;
 
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
-import org.springframework.web.bind.annotation.*;
-
 import ar.com.envios.application.dto.LoginRequest;
 import ar.com.envios.application.dto.LoginResponse;
-import ar.com.envios.infrastructure.security.JwtUtil;
+import ar.com.envios.application.usecase.AuthUseCase;
+import jakarta.validation.Valid;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api")
 public class AuthController {
 
-    private final AuthenticationManager authenticationManager;
-    private final JwtUtil jwtUtil;
+    private final AuthUseCase authUseCase;
 
-    @Autowired
-    public AuthController(AuthenticationManager authenticationManager, JwtUtil jwtUtil) {
-        this.authenticationManager = authenticationManager;
-        this.jwtUtil = jwtUtil;
+    public AuthController(AuthUseCase authUseCase) {
+        this.authUseCase = authUseCase;
     }
 
     @PostMapping("/login")
-    public LoginResponse login(@RequestBody LoginRequest request) {
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword()));
-
-        String jwt = jwtUtil.generateToken(authentication);
-        return new LoginResponse(jwt, "Login exitoso");
+    public ResponseEntity<LoginResponse> login(@RequestBody @Valid LoginRequest request) {
+        LoginResponse response = authUseCase.login(request);
+        return ResponseEntity.ok(response);
     }
 }

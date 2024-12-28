@@ -16,6 +16,7 @@ import {
   mailSharp,
   peopleOutline,
   carOutline,
+  logInOutline,
 } from "ionicons/icons";
 import "./Menu.css";
 
@@ -47,8 +48,6 @@ const appPages: AppPage[] = [
   },
 ];
 
-const labels = ["Family", "Friends", "Notes", "Work", "Travel", "Reminders"];
-
 const Menu: React.FC = () => {
   const location = useLocation();
 
@@ -58,39 +57,40 @@ const Menu: React.FC = () => {
         <IonList id="inbox-list">
           <IonListHeader>Gestión</IonListHeader>
           <IonNote>admin@facturacion.com</IonNote>
-          {appPages.map((appPage, index) => {
-            return (
-              <IonMenuToggle key={index} autoHide={false}>
-                <IonItem
-                  className={
-                    location.pathname === appPage.url ? "selected" : ""
-                  }
-                  routerLink={appPage.url}
-                  routerDirection="none"
-                  lines="none"
-                  detail={false}
-                >
-                  <IonIcon
-                    aria-hidden="true"
-                    slot="start"
-                    ios={appPage.iosIcon}
-                    md={appPage.mdIcon}
-                  />
-                  <IonLabel>{appPage.title}</IonLabel>
-                </IonItem>
-              </IonMenuToggle>
-            );
-          })}
+          {appPages.map((appPage, index) => (
+            <IonMenuToggle key={index} autoHide={false}>
+              <IonItem
+                className={location.pathname === appPage.url ? "selected" : ""}
+                routerLink={appPage.url}
+                routerDirection="none"
+                lines="none"
+                detail={false}
+              >
+                <IonIcon
+                  aria-hidden="true"
+                  slot="start"
+                  ios={appPage.iosIcon}
+                  md={appPage.mdIcon}
+                />
+                <IonLabel>{appPage.title}</IonLabel>
+              </IonItem>
+            </IonMenuToggle>
+          ))}
         </IonList>
 
-        <IonList id="labels-list">
-          <IonListHeader>Labels</IonListHeader>
-          {labels.map((label, index) => (
-            <IonItem lines="none" key={index}>
-              <IonIcon aria-hidden="true" slot="start" icon={mailOutline} />
-              <IonLabel>{label}</IonLabel>
+        <IonList id="actions-list">
+          <IonListHeader>Acciones</IonListHeader>
+          {/* Botón de Iniciar Sesión */}
+          <IonMenuToggle autoHide={false}>
+            <IonItem
+              routerLink="/login" // Asegúrate de usar routerLink correctamente
+              routerDirection="none"
+              lines="none"
+              detail={false}
+            >
+              <IonLabel>Iniciar Sesión</IonLabel>
             </IonItem>
-          ))}
+          </IonMenuToggle>
         </IonList>
       </IonContent>
     </IonMenu>
