@@ -52,6 +52,7 @@
     "eslint": "^8.35.0",
     "eslint-plugin-react": "^7.32.2",
     "jsdom": "^22.1.0",
+    "react-router-dom": "^6.15.0",
     "terser": "^5.4.0",
     "typescript": "^5.7.2",
     "vite": "~5.2.0",

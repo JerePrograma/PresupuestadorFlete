@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { IonButton, IonInput, IonItem, IonList } from "@ionic/react";
-import { login } from "../../api/services/authService";
+import { login } from "../../api/axiosConfig";
 import { useHistory } from "react-router-dom";
 
 const LoginForm: React.FC = () => {

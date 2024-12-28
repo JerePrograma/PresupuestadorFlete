@@ -13,7 +13,7 @@ api.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = token;
     }
     return config;
   },
@@ -23,16 +23,29 @@ api.interceptors.request.use(
 export const login = async (email: string, password: string) => {
   try {
     const response = await api.post("/login", { email, password });
-    const { mensaje: token } = response.data;
+    const { mensaje: token } = response.data; // Ajustar al formato devuelto por tu API
 
+    console.log(response.data);
     // Guarda el token en localStorage
     localStorage.setItem("token", token);
 
     return response.data;
-  } catch (error) {
+  } catch (error: any) {
     console.error("Error durante el login:", error);
+    if (error.response) {
+      console.error("Error Response:", error.response.data);
+    } else if (error.request) {
+      console.error("Error Request:", error.request);
+    } else {
+      console.error("Error Message:", error.message);
+    }
     throw error;
   }
+};
+
+export const logout = () => {
+  localStorage.removeItem("token");
+  window.location.href = "/login";
 };
 
 export default api;
