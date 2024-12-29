@@ -1,9 +1,10 @@
-import type { CapacitorConfig } from '@capacitor/cli';
+import type { CapacitorConfig } from "@capacitor/cli";
 
 const config: CapacitorConfig = {
-  appId: 'io.ionic.starter',
-  appName: 'Block transportes',
-  webDir: 'dist'
+  appId: "com.example.mynewproject",
+  appName: "MyNewProject",
+  webDir: "dist",
+  bundledWebRuntime: false,
 };
 
 export default config;

@@ -1,10 +1,6 @@
-import axios from "axios";
-
-const api = axios.create({
-  baseURL: "http://localhost:8080",
-  withCredentials: true, // Permitir el envío de cookies
-});
+// src/api/services/usuarioService.ts
+import api from "../axiosConfig"; // <-- usa la misma instancia con interceptores
 
 export const crearUsuario = async (data: any) => {
-  return await api.post("/api/usuarios/crear", data);
+  return await api.post("/usuarios/crear", data);
 };

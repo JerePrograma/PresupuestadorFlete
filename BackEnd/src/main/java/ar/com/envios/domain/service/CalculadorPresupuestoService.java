@@ -32,7 +32,7 @@ public class CalculadorPresupuestoService {
      * @return El total calculado.
      */
     public BigDecimal calcular(Presupuesto presupuesto) {
-        Vehiculo vehiculo = presupuesto.getTipoVehiculo();
+        Vehiculo vehiculo = presupuesto.getVehiculo();
 
         if (!vehiculo.soportaVolumen(presupuesto.getVolumenCarga())) {
             throw new IllegalArgumentException("El vehículo no soporta el volumen de la carga.");

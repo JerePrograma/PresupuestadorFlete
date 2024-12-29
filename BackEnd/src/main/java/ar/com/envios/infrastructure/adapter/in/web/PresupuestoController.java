@@ -60,9 +60,10 @@ public class PresupuestoController {
 
     @GetMapping("/usuarios-disponibles")
     public ResponseEntity<List<UsuarioResponse>> listarUsuariosDisponibles() {
-        List<UsuarioResponse> usuarios = usuarioService.obtenerUsuariosPorRoles(List.of("CHOFER", "AYUDANTE"));
+        List<UsuarioResponse> usuarios = usuarioService.obtenerUsuariosPorRolesDisponibles(List.of("CHOFER", "AYUDANTE"));
         return ResponseEntity.ok(usuarios);
     }
+
 
     @GetMapping("/vehiculos-disponibles")
     public ResponseEntity<List<VehiculoResponse>> listarVehiculosDisponibles() {

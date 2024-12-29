@@ -1,3 +1,6 @@
+/***********************************************
+ * ar.com.envios.application.mapper.UsuarioMapper
+ ***********************************************/
 package ar.com.envios.application.mapper;
 
 import ar.com.envios.application.dto.UsuarioRequest;
@@ -8,43 +11,60 @@ import ar.com.envios.infrastructure.entity.UsuarioEntity;
 
 public class UsuarioMapper {
 
-    public static Usuario toUsuario(UsuarioRequest request) {
+    /**
+     * DTO (request) -> Dominio
+     */
+    public static Usuario toDomain(UsuarioRequest request) {
         return new Usuario(
-                null, // El ID se genera en la base de datos
+                request.getId(),
                 request.getNombre(),
                 request.getEmail(),
-                request.getPassword(), // La contraseña aún no está encriptada
-                TipoUsuario.valueOf(request.getTipoUsuario().toUpperCase())
+                request.getTipoUsuario(),  // Enum directamente
+                request.getPassword(),
+                request.isDisponible()     // <-- mapeo del boolean
         );
     }
 
-    public static UsuarioResponse toResponse(Usuario usuario) {
+    /**
+     * Dominio -> DTO (response)
+     */
+    public static UsuarioResponse toResponse(Usuario domain) {
         return new UsuarioResponse(
-                usuario.getId(),
-                usuario.getNombre(),
-                usuario.getEmail(),
-                usuario.getTipoUsuario().name()
+                domain.getId(),
+                domain.getNombre(),
+                domain.getEmail(),
+                // Convertimos la enum a String
+                domain.getTipoUsuario() != null ? domain.getTipoUsuario().name() : null,
+                domain.isDisponible(),  // <-- mapeo del boolean
+                null
         );
     }
 
-    public static UsuarioEntity toEntity(Usuario usuario) {
+    /**
+     * Dominio -> Entidad
+     */
+    public static UsuarioEntity toEntity(Usuario domain) {
         return new UsuarioEntity(
-                usuario.getId(),
-                usuario.getNombre(),
-                usuario.getEmail(),
-                usuario.getPassword(),
-                usuario.getTipoUsuario()
+                domain.getId(),
+                domain.getNombre(),
+                domain.getEmail(),
+                domain.getPassword(),
+                domain.getTipoUsuario(),
+                domain.isDisponible()   // <-- mapeo del boolean
         );
     }
 
+    /**
+     * Entidad -> Dominio
+     */
     public static Usuario toDomain(UsuarioEntity entity) {
         return new Usuario(
                 entity.getId(),
                 entity.getNombre(),
                 entity.getEmail(),
-                entity.getPassword(), // La contraseña debería ser encriptada en la capa de servicio
-                entity.getTipoUsuario()
+                entity.getTipoUsuario(),
+                entity.getPassword(),
+                entity.isDisponible()  // <-- mapeo del boolean
         );
     }
-
 }

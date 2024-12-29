@@ -8,10 +8,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface SpringDataUsuarioRepository extends JpaRepository<UsuarioEntity, Long> {
+    // Asegúrate de tener este método declarado:
     Optional<UsuarioEntity> findByEmail(String email);
-
-    List<UsuarioEntity> findByTipoUsuario(TipoUsuario tipoUsuario);
-
-    List<UsuarioEntity> findByTipoUsuarioIn(List<TipoUsuario> roles);
-
+    List<UsuarioEntity> findAllByTipoUsuarioInAndDisponible(List<TipoUsuario> tipoUsuarios, boolean disponible);
 }

@@ -1,82 +1,111 @@
+/***********************
+ * src/App.tsx
+ ***********************/
+
+import React from "react";
 import {
   IonApp,
   IonRouterOutlet,
   IonSplitPane,
+  IonTabs,
+  IonTabBar,
+  IonTabButton,
+  IonIcon,
+  IonLabel,
   setupIonicReact,
-  IonContent,
 } from "@ionic/react";
 import { IonReactRouter } from "@ionic/react-router";
-import { Redirect, Route } from "react-router-dom";
-import PresupuestosPage from "./pages/PresupuestosPage";
-import VehiculoPage from "./pages/VehiculoPage";
-import UsuarioPage from "./pages/UsuarioPage";
+import { Route, Redirect, Switch } from "react-router-dom";
+import { triangle, ellipse, square } from "ionicons/icons";
+
 import LoginForm from "./components/forms/LoginForm";
-import PrivateRoute from "./components/utils/PrivateRoute";
-import Navbar from "./components/layout/Navbar";
-import Footer from "./components/layout/Footer";
+import PresupuestosPage from "./pages/PresupuestosPage";
+import UsuarioPage from "./pages/UsuarioPage";
+import VehiculoPage from "./pages/VehiculoPage";
+import ProtectedRoute from "./routes/ProtectedRoute";
 import Menu from "./components/Menu";
-import Page from "./pages/Page";
-import TopBar from "./components/layout/TopBar"; // Importa el nuevo componente
+import { AuthProvider } from "./hooks/context/AuthContext";
 
-/* Core CSS required for Ionic components to work properly */
+/* CSS imports */
 import "@ionic/react/css/core.css";
-
-/* Basic CSS for apps built with Ionic */
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
 import "@ionic/react/css/typography.css";
-
-/* Optional CSS utils that can be commented out */
 import "@ionic/react/css/padding.css";
 import "@ionic/react/css/float-elements.css";
 import "@ionic/react/css/text-alignment.css";
 import "@ionic/react/css/text-transformation.css";
 import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
-import "@ionic/react/css/palettes/dark.system.css";
-
-/* Theme variables */
 import "./theme/variables.css";
 
 setupIonicReact();
 
 const App: React.FC = () => {
   return (
-    <IonApp>
-      <IonReactRouter>
-        <IonSplitPane contentId="main">
-          <Menu />
-          <IonContent>
-            <TopBar /> {/* Barra superior */}
-            <IonRouterOutlet id="main">
-              <Route path="/login" exact>
-                <LoginForm />
-              </Route>
-              <PrivateRoute path="/presupuestos" component={PresupuestosPage} />
-              <Redirect exact from="/" to="/login" />
-              <Route path="/" exact={true}>
-                <Redirect to="/folder/Inbox" />
-              </Route>
+    <AuthProvider>
+      <IonApp>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            {/* Side menu */}
+            <Menu />
 
-              {/* Rutas específicas */}
-              <Route path="/presupuestos" exact>
-                <PresupuestosPage />
-              </Route>
-              <Route path="/usuarios" exact>
-                <UsuarioPage />
-              </Route>
-              <Route path="/vehiculos" exact>
-                <VehiculoPage />
-              </Route>
+            <IonTabs>
+              <IonRouterOutlet id="main">
+                <Switch>
+                  {/* Ruta de Login (pública) */}
+                  <Route exact path="/login" component={LoginForm} />
 
-              <Route path="/folder/:name" exact={true}>
-                <Page />
-              </Route>
-            </IonRouterOutlet>
-          </IonContent>
-        </IonSplitPane>
-      </IonReactRouter>
-    </IonApp>
+                  {/* Rutas protegidas (si no hay token, ProtectedRoute redirige a /login) */}
+                  <ProtectedRoute
+                    exact
+                    path="/presupuestos"
+                    component={PresupuestosPage}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/usuarios"
+                    component={UsuarioPage}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/vehiculos"
+                    component={VehiculoPage}
+                  />
+
+                  {/* Redirección por defecto a /login */}
+                  <Route exact path="/">
+                    <Redirect to="/login" />
+                  </Route>
+                </Switch>
+              </IonRouterOutlet>
+
+              {/*
+                Barra de Tabs en la parte inferior
+                Nota: fíjate que en href ponemos la ruta del FRONTEND,
+                no la del backend (/api/...).  
+              */}
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="presupuestos" href="/presupuestos">
+                  <IonIcon aria-hidden="true" icon={triangle} />
+                  <IonLabel>Presupuestos</IonLabel>
+                </IonTabButton>
+
+                <IonTabButton tab="usuarios" href="/usuarios">
+                  <IonIcon aria-hidden="true" icon={ellipse} />
+                  <IonLabel>Usuarios</IonLabel>
+                </IonTabButton>
+
+                <IonTabButton tab="vehiculos" href="/vehiculos">
+                  <IonIcon aria-hidden="true" icon={square} />
+                  <IonLabel>Vehículos</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonSplitPane>
+        </IonReactRouter>
+      </IonApp>
+    </AuthProvider>
   );
 };
 

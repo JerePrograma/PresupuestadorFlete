@@ -1,16 +1,15 @@
 import React from "react";
 import { createRoot } from "react-dom/client";
-import { Provider } from "react-redux";
 import App from "./App";
-import { store } from "./store"; // Asegúrate de que esta ruta sea correcta
 
 const container = document.getElementById("root");
-const root = createRoot(container!);
+if (!container) {
+  throw new Error("No se encontró el contenedor principal con id 'root'.");
+}
 
+const root = createRoot(container);
 root.render(
   <React.StrictMode>
-    <Provider store={store}>
-      <App />
-    </Provider>
+    <App />
   </React.StrictMode>
 );

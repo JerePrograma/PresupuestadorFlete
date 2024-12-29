@@ -1,59 +1,51 @@
+/***********************************************
+ * ar.com.envios.infrastructure.adapter.in.web.UsuarioController
+ ***********************************************/
 package ar.com.envios.infrastructure.adapter.in.web;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import ar.com.envios.application.dto.UsuarioRequest;
 import ar.com.envios.application.dto.UsuarioResponse;
-import ar.com.envios.application.service.UsuarioService;
-import ar.com.envios.domain.repository.IUsuarioRepository;
-import jakarta.validation.Valid;
-import org.springframework.context.support.DefaultMessageSourceResolvable;
-import org.springframework.http.HttpStatus;
+import ar.com.envios.application.usecase.UsuarioUseCase;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.stream.Collectors;
+import jakarta.validation.Valid;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/usuarios")
 public class UsuarioController {
 
-    private final IUsuarioRepository usuarioRepository;
-    private final UsuarioService usuarioService;
-    private static final Logger logger = LoggerFactory.getLogger(UsuarioController.class);
+    private final UsuarioUseCase usuarioUseCase;
 
-    public UsuarioController(IUsuarioRepository usuarioRepository, UsuarioService usuarioService) {
-        this.usuarioRepository = usuarioRepository;
-        this.usuarioService = usuarioService;
+    public UsuarioController(UsuarioUseCase usuarioUseCase) {
+        this.usuarioUseCase = usuarioUseCase;
     }
 
-
     @PostMapping("/crear")
-    public ResponseEntity<UsuarioResponse> crearUsuario(@Valid @RequestBody UsuarioRequest request, BindingResult bindingResult) {
-        request.setTipoUsuario(request.getTipoUsuario().toUpperCase());
-        logger.info("Request recibido: nombre={}, email={}, tipoUsuario={}, password={}",
-                request.getNombre(), request.getEmail(), request.getTipoUsuario(), request.getPassword());
-
+    public ResponseEntity<UsuarioResponse> crearUsuario(@Valid @RequestBody UsuarioRequest request,
+                                                        BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
-            String errores = bindingResult.getAllErrors().stream()
-                    .map(DefaultMessageSourceResolvable::getDefaultMessage)
-                    .collect(Collectors.joining(", "));
-            logger.error("Errores de validación: {}", errores);
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new UsuarioResponse("Errores de validación: " + errores));
+            return ResponseEntity.badRequest().body(new UsuarioResponse("Errores de validación"));
         }
+        UsuarioResponse resp = usuarioUseCase.crearUsuario(request);
+        return ResponseEntity.ok(resp);
+    }
+
+    @GetMapping("/listar")
+    public ResponseEntity<List<UsuarioResponse>> listarUsuarios() {
+        List<UsuarioResponse> usuarios = usuarioUseCase.listarUsuarios();
+        return ResponseEntity.ok(usuarios);
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<UsuarioResponse> obtenerUsuario(@PathVariable Long id) {
         try {
-            UsuarioResponse response = usuarioService.crearUsuario(request);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            UsuarioResponse resp = usuarioUseCase.obtenerUsuarioResponsePorId(id);
+            return ResponseEntity.ok(resp);
         } catch (IllegalArgumentException e) {
-            logger.error("Error en los datos: {}", e.getMessage());
-            return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new UsuarioResponse("Error en los datos: " + e.getMessage()));
-        } catch (Exception e) {
-            logger.error("Error interno al crear el usuario: ", e);
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-                    .body(new UsuarioResponse("Ocurrió un error interno al crear el usuario"));
+            return ResponseEntity.notFound().build();
         }
     }
 }

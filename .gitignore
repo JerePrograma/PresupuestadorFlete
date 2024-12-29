@@ -1,2 +1,104 @@
-package-lock.json
-node_modules
+###############################################################################
+#   SENSITIVE / ENV FILES
+###############################################################################
+# Variables de entorno (si usas .env para credenciales, tokens, etc.)
+.env
+.env.*
+# Archivos de configuración sensible (puedes cambiar nombres según uses)
+application.properties
+application-*.properties
+application.yml
+application-*.yml
+# Llaves, certificados, credenciales
+*.keystore
+*.jks
+*.p12
+*.pem
+*.crt
+*.key
+*.pfx
+privateKey.*
+
+###############################################################################
+#   JAVA / SPRING BOOT / MAVEN / GRADLE
+###############################################################################
+# Compiled class files
+*.class
+# JAR Files
+*.jar
+*.war
+*.ear
+# Maven / Gradle directories
+.mvn/
+**/target/
+**/build/
+# Log and temporary files
+*.log
+logs/
+hs_err_pid*
+
+# IntelliJ / Eclipse / NetBeans files
+/.idea/
+/*.iml
+/.classpath
+/.project
+/.settings/
+/.nb-gradle/
+# Lombok config cache
+.lombok/
+
+###############################################################################
+#   NODE / REACT / JAVASCRIPT FRONTEND
+###############################################################################
+# Node modules
+node_modules/
+# Build output (React, Angular, Vue, etc.)
+dist/
+build/
+.npm/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+# OS & Editor generados
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+*.swn
+*.bak
+
+###############################################################################
+#   TEST / COVERAGE / CI
+###############################################################################
+# Test outputs
+coverage/
+test-output/
+cypress/videos/
+cypress/screenshots/
+# CI config caches
+/.sass-cache
+/.eslintcache
+/.cache
+/.nyc_output
+
+###############################################################################
+#   MISC / EXTRA (según tus herramientas)
+###############################################################################
+# Local environment config (por ejemplo, Docker overrides)
+docker-compose.override.yml
+# Parcel / Rollup / Webpack cache
+.cache/
+.parcel-cache/
+# Next.js
+.next/
+out/
+# Storybook
+storybook-static/
+*.stories.mdx
+*.stories.@(js|jsx|ts|tsx)
+# VSCode debug & settings
+.vscode/
+
+###############################################################################
+# FIN
+###############################################################################

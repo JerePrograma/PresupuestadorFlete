@@ -2,7 +2,6 @@ package ar.com.envios.application.mapper;
 
 import ar.com.envios.application.dto.PresupuestoResponse;
 import ar.com.envios.application.dto.UsuarioRequest;
-import ar.com.envios.domain.enumeraciones.TipoUsuario;
 import ar.com.envios.domain.model.Extra;
 import ar.com.envios.domain.model.Presupuesto;
 import ar.com.envios.domain.model.Usuario;
@@ -17,7 +16,7 @@ public class PresupuestoMapper {
                 presupuesto.getOrigen(),
                 presupuesto.getDestino(),
                 presupuesto.getVolumenCarga(),
-                presupuesto.getTipoVehiculo().getNombre(),
+                presupuesto.getVehiculo().getNombre(),
                 presupuesto.calcularTotal(),
                 presupuesto.getExtras().stream().map(Extra::getNombre).collect(Collectors.toList())
         );
@@ -28,8 +27,9 @@ public class PresupuestoMapper {
                 null, // El id puede ser null si no se requiere al crear un nuevo usuario
                 request.getNombre(),
                 request.getEmail(),
+                request.getTipoUsuario(),
                 request.getPassword(),
-                TipoUsuario.valueOf(request.getTipoUsuario().toUpperCase()) // Asegúrate de manejar el enum correctamente
+                true
         );
     }
 
@@ -39,7 +39,7 @@ public class PresupuestoMapper {
                 presupuesto.getDestino(),
                 presupuesto.getVolumenCarga(),
                 presupuesto.getPesoCarga(),
-                VehiculoMapper.toEntity(presupuesto.getTipoVehiculo()),
+                VehiculoMapper.toEntity(presupuesto.getVehiculo()),
                 presupuesto.getUsuariosInvolucrados().stream()
                         .map(UsuarioMapper::toEntity)
                         .collect(Collectors.toList())

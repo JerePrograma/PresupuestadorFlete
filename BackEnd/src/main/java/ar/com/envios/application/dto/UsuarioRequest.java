@@ -1,10 +1,21 @@
 package ar.com.envios.application.dto;
 
+import ar.com.envios.domain.enumeraciones.TipoUsuario;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Size;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioRequest {
+    private Long id;
+
     @NotBlank(message = "El nombre no puede estar vacío")
     private String nombre;
 
@@ -16,38 +27,8 @@ public class UsuarioRequest {
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 
-    @NotBlank(message = "El tipo de usuario no puede estar vacío")
-    private String tipoUsuario;
+    @NotNull(message = "El tipo de usuario no puede ser nulo")
+    private TipoUsuario tipoUsuario;
 
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public String getTipoUsuario() {
-        return tipoUsuario.toUpperCase();
-    }
-
-    public void setTipoUsuario(String tipoUsuario) {
-        this.tipoUsuario = tipoUsuario.toUpperCase();
-    }
+    private boolean disponible; // <-- nuevo campo
 }
