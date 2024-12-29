@@ -27,8 +27,9 @@ public class PresupuestoMapper {
                 null, // El id puede ser null si no se requiere al crear un nuevo usuario
                 request.getNombre(),
                 request.getEmail(),
+                request.getTipoUsuario(),
                 request.getPassword(),
-                request.getTipoUsuario()
+                true
         );
     }
 

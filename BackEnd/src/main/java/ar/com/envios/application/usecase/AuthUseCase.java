@@ -41,7 +41,7 @@ public class AuthUseCase {
         // Genera el token
         String token = tokenService.generateToken(usuario);
 
-        return new LoginResponse(usuario.getEmail(), token);
+        return new LoginResponse(usuario.getEmail());
     }
 
 }

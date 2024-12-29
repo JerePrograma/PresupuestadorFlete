@@ -1,4 +1,6 @@
-// src/components/Menu.tsx
+/****************************************
+ * src/components/Menu.tsx
+ ****************************************/
 import {
   IonContent,
   IonIcon,
@@ -57,6 +59,8 @@ const Menu: React.FC = () => {
         <IonList id="inbox-list">
           <IonListHeader>Gestión</IonListHeader>
           <IonNote>admin@facturacion.com</IonNote>
+
+          {/* Rutas de navegación principal */}
           {appPages.map((appPage, index) => (
             <IonMenuToggle key={index} autoHide={false}>
               <IonItem
@@ -80,14 +84,20 @@ const Menu: React.FC = () => {
 
         <IonList id="actions-list">
           <IonListHeader>Acciones</IonListHeader>
-          {/* Botón de Iniciar Sesión */}
+          {/* Ejemplo: Botón de Login o Logout */}
           <IonMenuToggle autoHide={false}>
             <IonItem
-              routerLink="/login" // Asegúrate de usar routerLink correctamente
+              routerLink="/login"
               routerDirection="none"
               lines="none"
               detail={false}
             >
+              <IonIcon
+                aria-hidden="true"
+                slot="start"
+                ios={logInOutline}
+                md={logInOutline}
+              />
               <IonLabel>Iniciar Sesión</IonLabel>
             </IonItem>
           </IonMenuToggle>

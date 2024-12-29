@@ -1,8 +1,7 @@
 {
-  "name": "Block transportes",
+  "name": "MyNewProject",
   "integrations": {
     "capacitor": {}
   },
-  "type": "react-vite",
-  "id": "c9b2f38d"
+  "type": "react-vite"
 }

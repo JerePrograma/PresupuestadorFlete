@@ -29,19 +29,28 @@ public class SecurityConfig {
     }
 
     @Bean
-    public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
-        return http.csrf(AbstractHttpConfigurer::disable)
-                .cors(Customizer.withDefaults()) // Habilita CORS usando la configuración global
+    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+        return http
+                .csrf(AbstractHttpConfigurer::disable)
+                .cors(Customizer.withDefaults())
                 .sessionManagement(sm -> sm.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(req -> {
-                    req.requestMatchers(HttpMethod.POST, "/login").permitAll();
-                    req.requestMatchers(HttpMethod.POST, "/register").permitAll();
-                    req.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
-                    req.anyRequest().authenticated(); // Esto asegura que el resto de las rutas requieren autenticación
+                .authorizeHttpRequests(auth -> {
+                    auth.requestMatchers(HttpMethod.POST, "/api/login").permitAll();
+                    auth.requestMatchers(HttpMethod.POST, "/api/register").permitAll();
+                    auth.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
+
+                    // Aquí podrías forzar que TODO /api/** se autentique:
+                    auth.requestMatchers("/api/**").authenticated();
+                    // o si prefieres enumerar GET, POST, etc.
+                    // auth.requestMatchers(HttpMethod.GET, "/api/presupuestos/**").authenticated();
+
+                    auth.anyRequest().authenticated();
                 })
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
+
+
 
 
     @Bean
@@ -61,8 +70,9 @@ public class SecurityConfig {
     public AuthenticationManager authManager(HttpSecurity http,
                                              DaoAuthenticationProvider provider) throws Exception {
         return http.getSharedObject(AuthenticationManagerBuilder.class)
-                .authenticationProvider(provider)
+                .authenticationProvider(provider)  // Usa tu userDetailsService
                 .build();
     }
+
 }
 

@@ -1,11 +1,19 @@
+/***********************************************
+ * ar.com.envios.infrastructure.entity.UsuarioEntity
+ ***********************************************/
 package ar.com.envios.infrastructure.entity;
 
 import ar.com.envios.domain.enumeraciones.TipoUsuario;
-
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "usuarios")
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class UsuarioEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -16,60 +24,12 @@ public class UsuarioEntity {
     @Column(unique = true, nullable = false)
     private String email;
 
-    private String password; // Nueva propiedad
+    private String password;
 
     @Enumerated(EnumType.STRING)
     private TipoUsuario tipoUsuario;
 
-    public UsuarioEntity(Long id, String nombre, String email, String password, TipoUsuario tipoUsuario) {
-        this.id = id;
-        this.nombre = nombre;
-        this.email = email;
-        this.password = password;
-        this.tipoUsuario = tipoUsuario;
-    }
+    @Column(name="disponible", nullable=false)
+    private boolean disponible;
 
-    public UsuarioEntity() {
-        
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getNombre() {
-        return nombre;
-    }
-
-    public void setNombre(String nombre) {
-        this.nombre = nombre;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public TipoUsuario getTipoUsuario() {
-        return tipoUsuario;
-    }
-
-    public void setTipoUsuario(TipoUsuario tipoUsuario) {
-        this.tipoUsuario = tipoUsuario;
-    }
 }

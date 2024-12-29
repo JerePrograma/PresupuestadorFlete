@@ -1,4 +1,4 @@
-import { Redirect, Route } from "react-router-dom";
+import { Navigate, Route } from "react-router-dom";
 
 const PrivateRoute = ({ component: Component, ...rest }: any) => {
   const isAuthenticated = !!localStorage.getItem("token"); // Verifica si hay un token en localStorage
@@ -7,7 +7,7 @@ const PrivateRoute = ({ component: Component, ...rest }: any) => {
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+        isAuthenticated ? <Component {...props} /> : <Navigate to="/login" />
       }
     />
   );

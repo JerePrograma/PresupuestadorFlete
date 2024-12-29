@@ -1,3 +1,6 @@
+/**********************************************
+ * src/hooks/context/AuthContext.tsx
+ **********************************************/
 import React, {
   useContext,
   useEffect,
@@ -5,7 +8,8 @@ import React, {
   createContext,
   ReactNode,
 } from "react";
-import api from "../../api/axiosConfig";
+import { login as loginApi } from "../../api/axiosConfig";
+// ^ importas la función "login" del index.ts que hace `const { token } = ...`
 
 interface AuthContextProps {
   isAuth: boolean;
@@ -29,6 +33,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    // Verificar si existe un token en el almacenamiento local
     const token = localStorage.getItem("token");
     setIsAuth(!!token);
     setLoading(false);
@@ -36,12 +41,16 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
 
   const login = async (email: string, password: string) => {
     try {
-      const response = await api.post("/login", { email, password });
-      const { token } = response.data; // Asegúrate de que el backend devuelva el token como `token`
-      localStorage.setItem("token", token);
+      // Llama la función de tu capa de API
+      const data = await loginApi(email, password);
+      // A estas alturas, "loginApi" ya guardó en localStorage el token
+      // o si prefieres, puedes setearlo aquí:
+      // localStorage.setItem("token", data.token);
+
+      // Actualizar el estado de autenticación
       setIsAuth(true);
     } catch (error) {
-      console.error("Error during login:", error);
+      console.error("Error durante el inicio de sesión:", error);
       throw error;
     }
   };
@@ -49,6 +58,7 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   const logout = () => {
     localStorage.removeItem("token");
     setIsAuth(false);
+    window.location.href = "/login";
   };
 
   return (

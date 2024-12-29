@@ -1,3 +1,6 @@
+/***********************************************
+ * ar.com.envios.domain.model.Usuario
+ ***********************************************/
 package ar.com.envios.domain.model;
 
 import ar.com.envios.domain.enumeraciones.TipoUsuario;
@@ -12,7 +15,8 @@ public class Usuario {
     private Long id;
     private String nombre;
     private String email;
-    private String password; // Nueva propiedad
     private TipoUsuario tipoUsuario;
-
+    private String password;
+    private boolean disponible; // <-- nuevo campo
 }
+
