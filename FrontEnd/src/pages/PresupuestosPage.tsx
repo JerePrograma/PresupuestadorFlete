@@ -10,12 +10,12 @@ import {
   IonLabel,
 } from "@ionic/react";
 import PresupuestoForm from "../components/forms/PresupuestoForm";
-//import PresupuestoList from "../components/business/PresupuestoList";
+// import PresupuestoList from "../components/business/PresupuestoList";
 import UsuarioForm from "../components/forms/UsuarioForm";
 import VehiculoForm from "../components/forms/VehiculoForm";
-import { LoadScript } from "@react-google-maps/api";
+import { LoadScript, Libraries } from "@react-google-maps/api";
 
-const libraries = ["places"];
+const libraries: Libraries = ["places"];
 
 const PresupuestosPage: React.FC = () => {
   return (
@@ -34,6 +34,7 @@ const PresupuestosPage: React.FC = () => {
           <PresupuestoForm />
 
           {/* Presupuesto List */}
+          {/* <PresupuestoList /> */}
 
           {/* Accordion for Usuarios and Vehículos */}
           <IonAccordionGroup>
