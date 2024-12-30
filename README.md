@@ -1,12 +1,13 @@
 # PresupuestadorFlete
 
+Documentación de Puesta en Marcha
 Backend (Java 17 y Spring Boot)
 Ambiente Adecuado
 Java: Asegúrate de tener instalado Java 17.
 Maven: Utiliza el Maven Wrapper incluido en el proyecto para asegurar la versión correcta.
 Base de Datos: MySQL debe estar instalado y corriendo.
 Dependencias Principales
-Spring Boot (Web, Data JPA, Security, Validation)
+Spring Boot: Web, Data JPA, Security, Validation
 MySQL Connector
 Lombok
 JWT
@@ -126,6 +127,3 @@ sourcemap: true para generar mapas de origen.
 target: esnext para especificar el objetivo de la compilación.
 rollupOptions: Configura opciones adicionales para Rollup.
 external: Excluye @ionic/core/components del bundle.
-
-
-
