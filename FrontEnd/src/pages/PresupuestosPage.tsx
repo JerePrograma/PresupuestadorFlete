@@ -18,14 +18,16 @@ import { LoadScript, Libraries } from "@react-google-maps/api";
 const libraries: Libraries = ["places"];
 
 const PresupuestosPage: React.FC = () => {
+
+  
   return (
-    <IonPage>
-      <IonHeader>
-        <IonToolbar>
-          <IonTitle>Presupuestos</IonTitle>
+    <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IonHeader placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Presupuestos</IonTitle>
         </IonToolbar>
       </IonHeader>
-      <IonContent>
+      <IonContent placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         <LoadScript
           googleMapsApiKey="AIzaSyDpc10F7TycEIoHckCUKThh-NZRcXsfub0"
           libraries={libraries}
@@ -37,11 +39,11 @@ const PresupuestosPage: React.FC = () => {
           {/* <PresupuestoList /> */}
 
           {/* Accordion for Usuarios and Vehículos */}
-          <IonAccordionGroup>
+          <IonAccordionGroup placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             {/* Usuarios Section */}
-            <IonAccordion value="usuarios">
-              <IonItem slot="header">
-                <IonLabel>Gestión de Usuarios</IonLabel>
+            <IonAccordion value="usuarios" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <IonItem slot="header" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Gestión de Usuarios</IonLabel>
               </IonItem>
               <div slot="content">
                 <UsuarioForm />
@@ -49,9 +51,9 @@ const PresupuestosPage: React.FC = () => {
             </IonAccordion>
 
             {/* Vehículos Section */}
-            <IonAccordion value="vehiculos">
-              <IonItem slot="header">
-                <IonLabel>Gestión de Vehículos</IonLabel>
+            <IonAccordion value="vehiculos" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+              <IonItem slot="header" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                <IonLabel placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Gestión de Vehículos</IonLabel>
               </IonItem>
               <div slot="content">
                 <VehiculoForm />

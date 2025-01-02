@@ -27,16 +27,15 @@ const ControlledInput: React.FC<ControlledInputProps> = ({
   };
 
   return (
-    <IonItem>
-      <IonLabel position="floating">{label}</IonLabel>
+    <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{label}</IonLabel>
       <IonInput
         name={name}
         type={type}
         value={value}
         onIonChange={handleInputChange}
         required={required}
-        min={min}
-      />
+        min={min} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}      />
     </IonItem>
   );
 };

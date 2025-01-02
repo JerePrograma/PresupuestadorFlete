@@ -1,18 +1,6 @@
 import React, { useState } from "react";
-import {
-  IonButton,
-  IonInput,
-  IonItem,
-  IonList,
-  IonAlert,
-  IonPage,
-  IonContent,
-  IonGrid,
-  IonRow,
-  IonCol,
-} from "@ionic/react";
-import { login } from "../../api/services/authService";
-import { useHistory } from "react-router-dom";
+import { IonButton, IonInput, IonItem, IonList } from "@ionic/react";
+import { useAuth } from "../../hooks/context/AuthContext";
 
 const LoginForm: React.FC = () => {
   const [email, setEmail] = useState("");
@@ -31,44 +19,36 @@ const LoginForm: React.FC = () => {
   };
 
   return (
-    <IonPage>
-      <IonContent>
-        <IonGrid>
-          <IonRow>
-            <IonCol size="12">
-              <form onSubmit={handleSubmit}>
-                <IonList>
-                  <IonItem>
-                    <IonInput
-                      placeholder="Email"
-                      type="email"
-                      value={email}
-                      onIonChange={(e) => setEmail(e.detail.value!)}
-                      required
-                    />
-                  </IonItem>
-                  <IonItem>
-                    <IonInput
-                      placeholder="Contraseña"
-                      type="password"
-                      value={password}
-                      onIonChange={(e) => setPassword(e.detail.value!)}
-                      required
-                    />
-                  </IonItem>
-                  <IonButton expand="full" type="submit">
-                    Iniciar Sesión
-                  </IonButton>
-                </IonList>
-                {error && (
-                  <IonAlert isOpen={true} message={error} buttons={["OK"]} />
-                )}
-              </form>
-            </IonCol>
-          </IonRow>
-        </IonGrid>
-      </IonContent>
-    </IonPage>
+    <form onSubmit={handleSubmit}>
+      <IonList lines="none" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
+        <IonItem lines="none" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
+          <IonInput
+            placeholder="Email"
+            type="email"
+            value={email}
+            onIonChange={(e) => setEmail(e.detail.value!)}
+            required
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+          />
+        </IonItem>
+        <IonItem placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
+          <IonInput
+            placeholder="Password"
+            type="password"
+            value={password}
+            onIonChange={(e) => setPassword(e.detail.value!)}
+            required
+            onPointerEnterCapture={() => {}}
+            onPointerLeaveCapture={() => {}}
+          />
+        </IonItem>
+        <IonButton expand="full" type="submit" placeholder="" onPointerEnterCapture={() => {}} onPointerLeaveCapture={() => {}}>
+          Iniciar Sesión
+        </IonButton>
+      </IonList>
+      {error && <p style={{ color: "red" }}>{error}</p>}
+    </form>
   );
 };
 

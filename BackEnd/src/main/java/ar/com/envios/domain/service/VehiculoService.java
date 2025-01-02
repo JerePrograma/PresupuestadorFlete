@@ -6,17 +6,20 @@ import org.springframework.stereotype.Service;
 import ar.com.envios.domain.repository.IVehiculoRepository;
 import java.util.List;
 
-@Service
+
 public class VehiculoService {
 
-    @Autowired
-    private JpaVehiculoRepository jpaVehiculoRepository;
+    private final IVehiculoRepository vehiculoRepository;
+
+    public VehiculoService(IVehiculoRepository vehiculoRepository) {
+        this.vehiculoRepository = vehiculoRepository;
+    }
 
     public List<Vehiculo> obtenerTodos() {
-        return jpaVehiculoRepository.listarTodos();
+        return vehiculoRepository.obtenerTodos();
     }
 
     public void crearVehiculo(Vehiculo vehiculo) {
-        jpaVehiculoRepository.guardar(vehiculo);
+        vehiculoRepository.guardar(vehiculo);
     }
 }

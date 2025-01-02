@@ -8,7 +8,7 @@ interface ButtonProps {
 }
 
 const Button: FC<ButtonProps> = ({ label, onClick }) => {
-  return <IonButton onClick={onClick}>{label}</IonButton>;
+  return <IonButton onClick={onClick} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>{label}</IonButton>;
 };
 
 export default Button;

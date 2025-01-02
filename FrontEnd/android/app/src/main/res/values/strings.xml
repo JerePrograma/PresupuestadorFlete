@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">MyNewProject</string>
+    <string name="title_activity_main">MyNewProject</string>
+    <string name="package_name">com.example.mynewproject</string>
+    <string name="custom_url_scheme">com.example.mynewproject</string>
+</resources>

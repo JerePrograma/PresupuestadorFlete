@@ -57,59 +57,55 @@ const UsuarioForm: React.FC = () => {
 
   return (
     <form onSubmit={handleSubmit}>
-      <IonList>
+      <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
         {/* Nombre */}
-        <IonItem>
-          <IonLabel position="floating">Nombre</IonLabel>
+        <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Nombre</IonLabel>
           <IonInput
             name="nombre"
             placeholder="Nombre del Usuario"
             value={formData.nombre}
             onIonChange={handleInputChange}
-            required
-          />
+            required onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
         </IonItem>
 
         {/* Email */}
-        <IonItem>
-          <IonLabel position="floating">Email</IonLabel>
+        <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Email</IonLabel>
           <IonInput
             name="email"
             type="email"
             placeholder="Email"
             value={formData.email}
             onIonChange={handleInputChange}
-            required
-          />
+            required onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
         </IonItem>
 
         {/* Contraseña */}
-        <IonItem>
-          <IonLabel position="floating">Contraseña</IonLabel>
+        <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Contraseña</IonLabel>
           <IonInput
             name="password"
             type="password"
             placeholder="Contraseña"
             value={formData.password}
             onIonChange={handleInputChange}
-            required
-          />
+            required onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
         </IonItem>
 
         {/* Tipo de Usuario */}
-        <IonItem>
-          <IonLabel position="floating">Tipo de Usuario</IonLabel>
+        <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Tipo de Usuario</IonLabel>
           <IonInput
             name="tipoUsuario"
             placeholder='Ej: "CHOFER", "AYUDANTE", "ADMIN"...'
             value={formData.tipoUsuario}
             onIonChange={handleInputChange}
-            required
-          />
+            required onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}          />
         </IonItem>
 
         {/* Botón de Enviar */}
-        <IonButton type="submit" expand="full" style={{ marginTop: "1rem" }}>
+        <IonButton type="submit" expand="full" style={{ marginTop: "1rem" }} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           Crear Usuario
         </IonButton>
       </IonList>

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-// import { PresupuestoRequest } from "../../api/services/presupuestoService";
+import { PresupuestoRequest } from "../../api/services/presupuestoService";
 import {
   IonButton,
   IonContent,
@@ -8,6 +8,8 @@ import {
   IonSpinner,
   IonSelect,
   IonSelectOption,
+  IonInput,
+  IonLabel,
 } from "@ionic/react";
 import { usePresupuesto } from "../../hooks/usePresupuesto";
 
@@ -49,42 +51,65 @@ function PresupuestoForm() {
   };
 
   return (
-    <IonContent>
+    <IonContent placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
       <form onSubmit={handleSubmit}>
-        <IonList>
-          <IonItem>
+        <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Origen</IonLabel>
+            <IonInput
+              value={formData.origen}
+              onIonChange={(e) => handleFieldChange("origen", e.detail.value)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
+          </IonItem>
+
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Destino</IonLabel>
+            <IonInput
+              value={formData.destino}
+              onIonChange={(e) => handleFieldChange("destino", e.detail.value)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
+          </IonItem>
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Volumen de Carga</IonLabel>
+            <IonInput
+              type="number"
+              value={formData.volumenCarga}
+              onIonChange={(e) => handleFieldChange("volumenCarga", e.detail.value)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
+          </IonItem>
+
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Peso de Carga</IonLabel>
+            <IonInput
+              type="number"
+              value={formData.pesoCarga}
+              onIonChange={(e) => handleFieldChange("pesoCarga", e.detail.value)} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            />
+          </IonItem>
+
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <IonSelect
               placeholder="Seleccionar Usuarios"
               multiple
-              onIonChange={(e) =>
-                handleFieldChange("usuariosInvolucrados", e.detail.value)
-              }
-            >
+              onIonChange={(e) => handleFieldChange("usuariosInvolucrados", e.detail.value)} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               {usuarios.map((user) => (
-                <IonSelectOption key={user.id} value={user.id}>
+                <IonSelectOption key={user.id} value={user.id} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                   {user.nombre} ({user.tipoUsuario})
                 </IonSelectOption>
               ))}
             </IonSelect>
           </IonItem>
 
-          <IonItem>
+          <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
             <IonSelect
               placeholder="Seleccionar Vehículo"
-              onIonChange={(e) =>
-                handleFieldChange("nombreTipoVehiculo", e.detail.value)
-              }
-            >
+              onIonChange={(e) => handleFieldChange("nombreTipoVehiculo", e.detail.value)} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}            >
               {vehiculos.map((vehiculo) => (
-                <IonSelectOption key={vehiculo.id} value={vehiculo.nombre}>
+                <IonSelectOption key={vehiculo.id} value={vehiculo.nombre} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
                   {vehiculo.nombre} - Capacidad: {vehiculo.capacidad}
                 </IonSelectOption>
               ))}
             </IonSelect>
           </IonItem>
 
-          <IonButton expand="full" type="submit" disabled={loading}>
-            {loading ? <IonSpinner name="dots" /> : "Crear Presupuesto"}
+          <IonButton expand="full" type="submit" disabled={loading} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            {loading ? <IonSpinner name="dots" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined} /> : "Crear Presupuesto"}
           </IonButton>
         </IonList>
       </form>

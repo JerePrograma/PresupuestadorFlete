@@ -1,74 +1,107 @@
 import React, { useState } from "react";
-import { IonButton, IonInput, IonItem, IonList, IonContent, IonPage, IonGrid, IonRow, IonCol } from "@ionic/react";
+import {
+  IonButton,
+  IonInput,
+  IonItem,
+  IonList,
+  IonContent,
+  IonPage,
+  IonGrid,
+  IonRow,
+  IonCol,
+  IonLabel,
+  IonText,
+  IonToast,
+  useIonLoading
+} from "@ionic/react";
 import { crearVehiculo } from "../../api/services/vehiculoService";
 
 const VehiculoForm: React.FC = () => {
   const [formData, setFormData] = useState({
     nombre: "",
-    capacidadMaxVolumen: 0,
-    capacidadMaxPeso: 0,
-    consumoPorKm: 0,
+    capacidad: "",
+    tipoVehiculo: "",
+    capacidadMaxVolumen: "",
+    capacidadMaxPeso: "",
+    consumoPorKm: "",
   });
+  const [showToast, setShowToast] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  const handleChange = (e: CustomEvent) => {
-    const { name, value } = e.detail;
-    setFormData({ ...formData, [name]: value });
+  const handleInputChange = (e: CustomEvent) => {
+    const { name, value } = (e.target as HTMLInputElement);
+    setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      await crearVehiculo(formData);
-      console.log("Vehículo creado:", formData);
+      await crearVehiculo({
+        ...formData,
+        capacidadMaxVolumen: Number(formData.capacidadMaxVolumen),
+        capacidadMaxPeso: Number(formData.capacidadMaxPeso),
+        consumoPorKm: Number(formData.consumoPorKm),
+      });
+      setShowToast(true);
+      setFormData({
+        nombre: "",
+        capacidad: "",
+        tipoVehiculo: "",
+        capacidadMaxVolumen: "",
+        capacidadMaxPeso: "",
+        consumoPorKm: "",
+      });
     } catch (error) {
-      console.error("Error al crear vehículo:", error);
+      console.error("Error al crear el vehículo:", error);
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <IonPage>
-      <IonContent>
-        <IonGrid>
-          <IonRow>
-            <IonCol size="12">
+    <IonPage placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IonContent placeholder={undefined} onPointerEnter={undefined} onPointerLeaveCapture={undefined} onPointerEnterCapture={undefined}>
+        <IonGrid placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+          <IonRow placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+            <IonCol placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
               <form onSubmit={handleSubmit}>
-                <IonList>
-                  <IonItem>
+                <IonList placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                  <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Nombre</IonLabel>
                     <IonInput
                       name="nombre"
-                      placeholder="Nombre del Vehículo"
-                      onIonChange={handleChange}
-                    />
+                      value={formData.nombre}
+                      onIonChange={handleInputChange}
+                      required placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                    />
                   </IonItem>
-                  <IonItem>
+                  <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Capacidad</IonLabel>
                     <IonInput
-                      name="capacidadMaxVolumen"
-                      type="number"
-                      placeholder="Capacidad Máxima de Volumen"
-                      onIonChange={handleChange}
-                    />
+                      name="capacidad"
+                      value={formData.capacidad}
+                      onIonChange={handleInputChange}
+                      required placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                    />
                   </IonItem>
-                  <IonItem>
+                  <IonItem placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                    <IonLabel position="floating" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Tipo de Vehículo</IonLabel>
                     <IonInput
-                      name="capacidadMaxPeso"
-                      type="number"
-                      placeholder="Capacidad Máxima de Peso"
-                      onIonChange={handleChange}
-                    />
+                      name="tipoVehiculo"
+                      value={formData.tipoVehiculo}
+                      onIonChange={handleInputChange}
+                      required placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}                    />
                   </IonItem>
-                  <IonItem>
-                    <IonInput
-                      name="consumoPorKm"
-                      type="number"
-                      placeholder="Consumo por Kilómetro"
-                      onIonChange={handleChange}
-                    />
-                  </IonItem>
-                  <IonButton expand="full" type="submit">
-                    Crear Vehículo
-                  </IonButton>
                 </IonList>
+                <IonButton type="submit" expand="full" disabled={loading} placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+                  {loading ? "Creando..." : "Crear Vehículo"}
+                </IonButton>
               </form>
+              <IonToast
+                isOpen={showToast}
+                message="Vehículo creado exitosamente"
+                duration={2000}
+                onDidDismiss={() => setShowToast(false)}
+              />
             </IonCol>
           </IonRow>
         </IonGrid>

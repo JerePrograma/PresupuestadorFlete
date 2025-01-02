@@ -4,19 +4,19 @@ import { Link } from "react-router-dom";
 
 function Navbar() {
   return (
-    <IonToolbar>
-      <IonTitle>Facturación y Envíos</IonTitle>
-      <IonButtons slot="start">
-        <IonButton>
+    <IonToolbar placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+      <IonTitle placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>Facturación y Envíos</IonTitle>
+      <IonButtons slot="start" placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
+        <IonButton placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Link to="/">Inicio</Link>
         </IonButton>
-        <IonButton>
+        <IonButton placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Link to="/presupuestos">Presupuestos</Link>
         </IonButton>
-        <IonButton>
+        <IonButton placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Link to="/usuarios">Usuarios</Link>
         </IonButton>
-        <IonButton>
+        <IonButton placeholder={undefined} onPointerEnterCapture={undefined} onPointerLeaveCapture={undefined}>
           <Link to="/vehiculos">Vehículos</Link>
         </IonButton>
       </IonButtons>
@@ -24,10 +24,6 @@ function Navbar() {
       <div
         style={{ marginRight: "16px", display: "flex", alignItems: "center" }}
       >
-        <AvatarChip
-          avatarSrc="https://ionicframework.com/docs/img/demos/avatar.svg"
-          label="Usuario"
-        />
       </div>
     </IonToolbar>
   );
