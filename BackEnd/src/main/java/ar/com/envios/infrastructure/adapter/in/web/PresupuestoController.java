@@ -7,6 +7,7 @@ import ar.com.envios.application.dto.VehiculoResponse;
 import ar.com.envios.application.service.PresupuestoService;
 import ar.com.envios.application.service.UsuarioService;
 import ar.com.envios.application.service.VehiculoService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.validation.Valid;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
@@ -19,7 +20,7 @@ import java.util.stream.Collectors;
 
 @RestController
 @RequestMapping("api/presupuestos")
-@CrossOrigin(origins = "http://localhost:8100")
+@SecurityRequirement(name = "bearer-key") // Aplica el esquema de seguridad al controlador
 public class PresupuestoController {
 
     private final PresupuestoService presupuestoService;

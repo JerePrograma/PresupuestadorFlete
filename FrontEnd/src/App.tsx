@@ -1,6 +1,13 @@
-/***********************
+/***********************************************
  * src/App.tsx
- ***********************/
+ ***********************************************/
+
+/**
+ * Este archivo define el componente raíz de la aplicación.
+ * - Configura Ionic y React Router.
+ * - Gestiona rutas públicas y protegidas.
+ * - Implementa un diseño con barra de tabs y menú lateral.
+ */
 
 import React from "react";
 import {
@@ -26,7 +33,7 @@ import ProtectedRoute from "./routes/ProtectedRoute";
 import Menu from "./components/Menu";
 import { AuthProvider } from "./hooks/context/AuthContext";
 
-/* CSS imports */
+/* Importación de estilos base de Ionic */
 import "@ionic/react/css/core.css";
 import "@ionic/react/css/normalize.css";
 import "@ionic/react/css/structure.css";
@@ -39,24 +46,34 @@ import "@ionic/react/css/flex-utils.css";
 import "@ionic/react/css/display.css";
 import "./theme/variables.css";
 
+/**
+ * Inicializa la configuración de Ionic.
+ */
 setupIonicReact();
 
+/**
+ * Componente principal `App`:
+ * - Envuelve toda la aplicación en el contexto de autenticación (`AuthProvider`).
+ * - Define el diseño con un menú lateral y tabs en la parte inferior.
+ * - Implementa la lógica de rutas públicas y protegidas.
+ */
 const App: React.FC = () => {
   return (
     <AuthProvider>
       <IonApp>
         <IonReactRouter>
           <IonSplitPane contentId="main">
-            {/* Side menu */}
+            {/* Menú lateral */}
             <Menu />
 
+            {/* Configuración de tabs */}
             <IonTabs>
               <IonRouterOutlet id="main">
                 <Switch>
-                  {/* Ruta de Login (pública) */}
+                  {/* Ruta pública: Login */}
                   <Route exact path="/login" component={LoginForm} />
 
-                  {/* Rutas protegidas (si no hay token, ProtectedRoute redirige a /login) */}
+                  {/* Rutas protegidas: Solo accesibles con sesión iniciada */}
                   <ProtectedRoute
                     exact
                     path="/presupuestos"
@@ -73,29 +90,23 @@ const App: React.FC = () => {
                     component={VehiculoPage}
                   />
 
-                  {/* Redirección por defecto a /login */}
+                  {/* Redirección predeterminada a /login */}
                   <Route exact path="/">
                     <Redirect to="/login" />
                   </Route>
                 </Switch>
               </IonRouterOutlet>
 
-              {/*
-                Barra de Tabs en la parte inferior
-                Nota: fíjate que en href ponemos la ruta del FRONTEND,
-                no la del backend (/api/...).  
-              */}
+              {/* Barra de navegación inferior */}
               <IonTabBar slot="bottom">
                 <IonTabButton tab="presupuestos" href="/presupuestos">
                   <IonIcon aria-hidden="true" icon={triangle} />
                   <IonLabel>Presupuestos</IonLabel>
                 </IonTabButton>
-
                 <IonTabButton tab="usuarios" href="/usuarios">
                   <IonIcon aria-hidden="true" icon={ellipse} />
                   <IonLabel>Usuarios</IonLabel>
                 </IonTabButton>
-
                 <IonTabButton tab="vehiculos" href="/vehiculos">
                   <IonIcon aria-hidden="true" icon={square} />
                   <IonLabel>Vehículos</IonLabel>
