@@ -57,63 +57,14 @@ setupIonicReact();
  * - Define el diseño con un menú lateral y tabs en la parte inferior.
  * - Implementa la lógica de rutas públicas y protegidas.
  */
-const App: React.FC = () => {
-  return (
-    <AuthProvider>
-      <IonApp>
-        <IonReactRouter>
-          <IonSplitPane contentId="main">
-            {/* Menú lateral */}
-            <Menu />
-
-            {/* Configuración de tabs */}
-            <IonTabs>
-              <IonRouterOutlet id="main">
-                <Switch>
-                  {/* Ruta pública: Login */}
-                  <Route exact path="/login" component={LoginForm} />
-
-                  {/* Rutas protegidas: Solo accesibles con sesión iniciada */}
-                  <Route
-                    exact
-                    path="/presupuestos"
-                    component={PresupuestosPage}
-                  />
-                  <Route exact path="/usuarios" component={UsuarioPage} />
-                  <Route exact path="/vehiculos" component={VehiculoPage} />
-
-                  {/* Redirección predeterminada */}
-                  <Route path="*">
-                    {localStorage.getItem("token") ? (
-                      <Redirect to="/presupuestos" />
-                    ) : (
-                      <Redirect to="/login" />
-                    )}
-                  </Route>
-                </Switch>
-              </IonRouterOutlet>
-
-              {/* Barra de navegación inferior */}
-              <IonTabBar slot="bottom">
-                <IonTabButton tab="presupuestos" href="/presupuestos">
-                  <IonIcon aria-hidden="true" icon={triangle} />
-                  <IonLabel>Presupuestos</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="usuarios" href="/usuarios">
-                  <IonIcon aria-hidden="true" icon={ellipse} />
-                  <IonLabel>Usuarios</IonLabel>
-                </IonTabButton>
-                <IonTabButton tab="vehiculos" href="/vehiculos">
-                  <IonIcon aria-hidden="true" icon={square} />
-                  <IonLabel>Vehículos</IonLabel>
-                </IonTabButton>
-              </IonTabBar>
-            </IonTabs>
-          </IonSplitPane>
-        </IonReactRouter>
-      </IonApp>
-    </AuthProvider>
-  );
-};
+const App: React.FC = () => (
+  <IonApp>
+    <IonReactRouter>
+      <Route exact path="/">
+        <h1>Test Component</h1>
+      </Route>
+    </IonReactRouter>
+  </IonApp>
+);
 
 export default App;
