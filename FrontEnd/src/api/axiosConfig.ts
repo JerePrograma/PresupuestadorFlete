@@ -12,7 +12,7 @@ import axios from "axios";
 
 const api = axios.create({
   //baseURL: "http://192.168.1.16:8080/api", // URL base del backend
-  baseURL = "http://149.56.68.32/api";
+  baseURL: "http://149.56.68.32/api",
   headers: {
     "Content-Type": "application/json", // Configura el tipo de contenido como JSON
   },
