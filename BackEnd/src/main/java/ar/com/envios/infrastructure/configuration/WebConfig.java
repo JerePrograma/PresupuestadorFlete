@@ -17,6 +17,7 @@ public class WebConfig {
         configuration.setAllowedOrigins(List.of(
                 "http://192.168.1.16:8100", // Origen del frontend
                 "http://149.56.68.32:8080/", // Origen del despliegue
+                "http://149.56.68.32", // Origen del despliegue
                 "http://localhost:8100"     // Para desarrollo local
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT", "DELETE"));
