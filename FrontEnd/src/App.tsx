@@ -73,7 +73,16 @@ const App: React.FC = () => {
                   {/* Ruta pública: Login */}
                   <Route exact path="/login" component={LoginForm} />
 
-                  {/* Rutas protegidas: Solo accesibles con sesión iniciada */}
+                  {/* Redirección predeterminada según autenticación */}
+                  <Route exact path="/">
+                    {localStorage.getItem("token") ? (
+                      <Redirect to="/presupuestos" />
+                    ) : (
+                      <Redirect to="/login" />
+                    )}
+                  </Route>
+
+                  {/* Rutas protegidas */}
                   <ProtectedRoute
                     exact
                     path="/presupuestos"
@@ -89,11 +98,6 @@ const App: React.FC = () => {
                     path="/vehiculos"
                     component={VehiculoPage}
                   />
-
-                  {/* Redirección predeterminada a /login */}
-                  <Route exact path="/">
-                    <Redirect to="/login" />
-                  </Route>
                 </Switch>
               </IonRouterOutlet>
 
