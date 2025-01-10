@@ -90,9 +90,13 @@ const App: React.FC = () => {
                     component={VehiculoPage}
                   />
 
-                  {/* Redirección predeterminada a /login */}
-                  <Route exact path="/">
-                    <Redirect to="/login" />
+                  {/* Redirección predeterminada */}
+                  <Route path="*">
+                    {localStorage.getItem("token") ? (
+                      <Redirect to="/presupuestos" />
+                    ) : (
+                      <Redirect to="/login" />
+                    )}
                   </Route>
                 </Switch>
               </IonRouterOutlet>
