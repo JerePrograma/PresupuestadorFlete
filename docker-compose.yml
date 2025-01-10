@@ -1,32 +1,38 @@
-version: "3.8"
-
 services:
-  frontend:
-    build:
-      context: ./FrontEnd
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-    networks:
-      - app-network
-    depends_on:
-      - backend
-
   backend:
     build:
-      context: ./BackEnd
+      context: ./backend
       dockerfile: Dockerfile
-    container_name: backend
-    ports:
-      - "8080:8080"
     environment:
       - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
       - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
       - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-      - SPRING_PROFILES_ACTIVE=prod
-    networks:
-      - app-network
+      - JWT_SECRET=${JWT_SECRET}
+      - JWT_ISSUER=${JWT_ISSUER}
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
 
-networks:
-  app-network:
-    driver: bridge
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    ports:
+      - "80:80"
+
+  database:
+    image: mysql:8.0
+    environment:
+      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${DB_NAME}
+      MYSQL_USER: ${DB_USER}
+      MYSQL_PASSWORD: ${DB_PASSWORD}
+    ports:
+      - "3306:3306"
+    volumes:
+      - db_data:/var/lib/mysql
+
+volumes:
+  db_data:
+
