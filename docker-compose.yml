@@ -9,12 +9,21 @@ services:
       - "80:80"
     networks:
       - app-network
+    depends_on:
+      - backend
 
   backend:
-    image: tu-backend-image
+    build:
+      context: ./BackEnd
+      dockerfile: Dockerfile
     container_name: backend
     ports:
       - "8080:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
+      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
+      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
+      - SPRING_PROFILES_ACTIVE=prod
     networks:
       - app-network
 
