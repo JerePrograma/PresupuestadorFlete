@@ -11,12 +11,11 @@
 import axios from "axios";
 
 const api = axios.create({
-  //baseURL: "http://192.168.1.16:8080/api", // URL base del backend
-  baseURL: "http://149.56.68.32/api",
+  baseURL: "http://149.56.68.32/api", // URL base del backend desplegado
   headers: {
-    "Content-Type": "application/json", // Configura el tipo de contenido como JSON
+    "Content-Type": "application/json",
   },
-  withCredentials: true, // Permite incluir cookies en las solicitudes
+  withCredentials: true, // Esto permite enviar cookies o encabezados de autenticación
 });
 
 /**
