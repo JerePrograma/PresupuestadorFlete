@@ -32,27 +32,27 @@ public class GenerarPresupuestoUseCase {
     /**
      * Genera un presupuesto, calculando su costo total.
      *
-     * @param origen             Ubicación de origen
-     * @param destino            Ubicación de destino
+     * @param origen             Ubicacion de origen
+     * @param destino            Ubicacion de destino
      * @param volumenCarga       Volumen o peso de la carga a trasladar
-     * @param nombreTipoVehiculo Nombre del tipo de vehículo (ej: "Camioneta")
+     * @param nombreTipoVehiculo Nombre del tipo de vehiculo (ej: "Camioneta")
      * @return Un objeto Presupuesto con su costo total calculado
-     * @throws IllegalArgumentException Si no se encuentra el tipo de vehículo o falla alguna validación.
+     * @throws IllegalArgumentException Si no se encuentra el tipo de vehiculo o falla alguna validacion.
      */
     public Presupuesto ejecutar(String origen, String destino, double volumenCarga, double pesoCarga,
                                 String nombreTipoVehiculo, List<Usuario> usuariosInvolucrados) {
         Optional<Vehiculo> tipoVehiculoOpt = tarifasRepository.findByNombre(nombreTipoVehiculo);
         if (tipoVehiculoOpt.isEmpty()) {
-            throw new IllegalArgumentException("No se encontró el tipo de vehículo: " + nombreTipoVehiculo);
+            throw new IllegalArgumentException("No se encontro el tipo de vehiculo: " + nombreTipoVehiculo);
         }
 
         Vehiculo vehiculo = tipoVehiculoOpt.get();
 
         if (!vehiculo.soportaVolumen(volumenCarga)) {
-            throw new IllegalArgumentException("El vehículo no soporta el volumen de la carga.");
+            throw new IllegalArgumentException("El vehiculo no soporta el volumen de la carga.");
         }
         if (!vehiculo.soportaPeso(pesoCarga)) {
-            throw new IllegalArgumentException("El vehículo no soporta el peso de la carga.");
+            throw new IllegalArgumentException("El vehiculo no soporta el peso de la carga.");
         }
 
         // Solo crear y retornar el presupuesto de dominio

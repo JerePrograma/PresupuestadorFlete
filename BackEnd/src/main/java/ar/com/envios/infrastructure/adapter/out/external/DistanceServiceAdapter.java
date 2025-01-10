@@ -14,7 +14,7 @@ public class DistanceServiceAdapter {
     }
 
     public MapResponse getDistance(String origin, String destination) {
-        String apiKey = "YOUR_API_KEY"; // Considera usar una configuración más segura
+        String apiKey = "YOUR_API_KEY"; // Considera usar una configuracion mas segura
         String url = String.format(
                 "https://maps.googleapis.com/maps/api/distancematrix/json?origins=%s&destinations=%s&key=%s",
                 origin, destination, apiKey

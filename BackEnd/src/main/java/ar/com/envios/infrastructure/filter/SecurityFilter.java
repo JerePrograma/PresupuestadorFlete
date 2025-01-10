@@ -59,12 +59,12 @@ public class SecurityFilter extends OncePerRequestFilter {
                 }
             } catch (RuntimeException e) {
                 response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-                response.getWriter().write("Token inválido o no verificable");
+                response.getWriter().write("Token invalido o no verificable");
                 return;
             }
         }
 
-        // Si llegaste aquí, hay un token válido o es una ruta permitida
+        // Si llegaste aqui, hay un token valido o es una ruta permitida
         chain.doFilter(request, response);
     }
 

@@ -39,7 +39,7 @@ public class SecurityConfig {
                     auth.requestMatchers(HttpMethod.POST, "/api/register").permitAll();
                     auth.requestMatchers("/v3/api-docs/**", "/swagger-ui.html", "/swagger-ui/**").permitAll();
 
-                    // Aquí podrías forzar que TODO /api/** se autentique:
+                    // Aqui podrias forzar que TODO /api/** se autentique:
                     auth.requestMatchers("/api/**").authenticated();
                     // o si prefieres enumerar GET, POST, etc.
                     // auth.requestMatchers(HttpMethod.GET, "/api/presupuestos/**").authenticated();

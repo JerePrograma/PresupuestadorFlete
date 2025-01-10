@@ -16,14 +16,14 @@ import lombok.NoArgsConstructor;
 public class UsuarioRequest {
     private Long id;
 
-    @NotBlank(message = "El nombre no puede estar vacío")
+    @NotBlank(message = "El nombre no puede estar vacio")
     private String nombre;
 
-    @Email(message = "Debe proporcionar un email válido")
-    @NotBlank(message = "El email no puede estar vacío")
+    @Email(message = "Debe proporcionar un email valido")
+    @NotBlank(message = "El email no puede estar vacio")
     private String email;
 
-    @NotBlank(message = "La contraseña no puede estar vacía")
+    @NotBlank(message = "La contraseña no puede estar vacia")
     @Size(min = 6, message = "La contraseña debe tener al menos 6 caracteres")
     private String password;
 

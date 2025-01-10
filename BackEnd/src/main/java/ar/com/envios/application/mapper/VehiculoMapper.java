@@ -25,7 +25,7 @@ public class VehiculoMapper {
         );
     }
 
-    // Nuevo método: Convierte de Vehiculo a VehiculoResponse
+    // Nuevo metodo: Convierte de Vehiculo a VehiculoResponse
     public static VehiculoResponse toResponse(Vehiculo vehiculo) {
         return new VehiculoResponse(
                 vehiculo.getNombre(),

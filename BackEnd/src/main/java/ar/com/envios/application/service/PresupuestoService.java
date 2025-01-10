@@ -31,16 +31,16 @@ public class PresupuestoService {
             IPresupuestoRepository presupuestoRepository,
             CalculadorPresupuestoService calculadorPresupuestoService,
             GenerarPresupuestoUseCase generarPresupuestoUseCase,
-            UsuarioDomainService usuarioDomainService) { // Cambio aquí
+            UsuarioDomainService usuarioDomainService) { // Cambio aqui
 
         this.presupuestoRepository = presupuestoRepository;
         this.calculadorPresupuestoService = calculadorPresupuestoService;
         this.generarPresupuestoUseCase = generarPresupuestoUseCase;
-        this.usuarioDomainService = usuarioDomainService; // Cambio aquí
+        this.usuarioDomainService = usuarioDomainService; // Cambio aqui
     }
 
     public PresupuestoResponse crearPresupuesto(PresupuestoRequest request) {
-        // Usa la interfaz en lugar de la implementación
+        // Usa la interfaz en lugar de la implementacion
         List<Usuario> usuariosInvolucrados = request.getUsuariosInvolucrados().stream()
                 .map(usuarioDomainService::obtenerUsuarioPorId)
                 .collect(Collectors.toList());

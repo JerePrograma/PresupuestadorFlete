@@ -75,13 +75,13 @@ public class JpaUsuarioRepository implements IUsuarioRepository {
 
     @Override
     public UserDetails findByNombre(String nombre) {
-        // No implementado. Podrías hacer un findByNombre en jpaRepository
+        // No implementado. Podrias hacer un findByNombre en jpaRepository
         return null;
     }
 
 
     // ---------------------------------------------
-    // Método helper para mapear Entity -> Domain
+    // Metodo helper para mapear Entity -> Domain
     // ---------------------------------------------
     private Usuario mapToDomain(UsuarioEntity entity) {
         return new Usuario(

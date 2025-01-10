@@ -10,7 +10,7 @@ import java.util.Optional;
 import java.util.stream.Collectors;
 
 /**
- * Este repositorio JPA interactúa con la base de datos y luego mapea las entidades a objetos de dominio.
+ * Este repositorio JPA interactua con la base de datos y luego mapea las entidades a objetos de dominio.
  */
 @Repository
 public class JpaTarifasRepository implements ITarifasRepository {

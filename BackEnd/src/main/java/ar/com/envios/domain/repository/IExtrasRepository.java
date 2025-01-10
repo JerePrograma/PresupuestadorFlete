@@ -20,7 +20,7 @@ public interface IExtrasRepository {
     /**
      * Busca un extra por su nombre (ej: "Seguro adicional", "Embalaje especial").
      * @param nombre Nombre del extra
-     * @return Un Optional con el Extra si se encuentra, vacío si no existe.
+     * @return Un Optional con el Extra si se encuentra, vacio si no existe.
      */
     Optional<Extra> findByNombre(String nombre);
 }

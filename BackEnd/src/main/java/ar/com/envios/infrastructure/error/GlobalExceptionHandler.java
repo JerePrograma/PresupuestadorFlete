@@ -26,39 +26,39 @@ public class GlobalExceptionHandler {
         });
 
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("message", "Errores de validación");
+        response.put("message", "Errores de validacion");
         response.put("errors", errors);
 
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(response);
     }
 
     /**
-     * Manejo de IllegalArgumentException, que usas para indicar errores lógicos
-     * como "No se encontró el tipo de vehículo" o "Usuario no encontrado".
+     * Manejo de IllegalArgumentException, que usas para indicar errores logicos
+     * como "No se encontro el tipo de vehiculo" o "Usuario no encontrado".
      */
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<Map<String, Object>> handleIllegalArgument(IllegalArgumentException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.BAD_REQUEST.value());
-        response.put("error", "Datos inválidos");
+        response.put("error", "Datos invalidos");
         response.put("message", ex.getMessage());
         return ResponseEntity.badRequest().body(response);
     }
 
     /**
-     * Manejo de credenciales inválidas (si utilizas BadCredentialsException).
+     * Manejo de credenciales invalidas (si utilizas BadCredentialsException).
      */
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<Map<String, Object>> handleBadCredentials(BadCredentialsException ex) {
         Map<String, Object> response = new HashMap<>();
         response.put("status", HttpStatus.UNAUTHORIZED.value());
-        response.put("error", "Credenciales inválidas");
+        response.put("error", "Credenciales invalidas");
         response.put("message", ex.getMessage());
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(response);
     }
 
     /**
-     * Manejo genérico de excepciones no controladas, para diagnóstico.
+     * Manejo generico de excepciones no controladas, para diagnostico.
      */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<Map<String, Object>> handleAllExceptions(Exception ex) {

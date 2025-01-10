@@ -20,7 +20,7 @@ public class WebConfig {
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
-        configuration.setAllowCredentials(true); // Para permitir cookies o encabezados de autenticación
+        configuration.setAllowCredentials(true); // Para permitir cookies o encabezados de autenticacion
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**", configuration);

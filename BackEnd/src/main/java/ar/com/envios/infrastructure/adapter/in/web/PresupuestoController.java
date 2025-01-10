@@ -43,7 +43,7 @@ public class PresupuestoController {
                     .map(DefaultMessageSourceResolvable::getDefaultMessage)
                     .collect(Collectors.joining(", "));
             return ResponseEntity.status(HttpStatus.BAD_REQUEST)
-                    .body(new PresupuestoResponse("Errores de validación: " + errores));
+                    .body(new PresupuestoResponse("Errores de validacion: " + errores));
         }
 
         try {

@@ -36,7 +36,7 @@ public class JpaPresupuestoRepository implements IPresupuestoRepository {
 
     /**
      * Presupuesto -> PresupuestoEntity
-     * (si lo necesitaras en algún momento)
+     * (si lo necesitaras en algun momento)
      */
     private PresupuestoEntity convertirAEntidad(Presupuesto presupuesto) {
         return new PresupuestoEntity(

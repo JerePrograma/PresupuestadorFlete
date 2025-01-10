@@ -44,12 +44,12 @@ public class TokenService {
                     .withIssuer("PresupuestadorFlete") // Emisor debe coincidir
                     .build()
                     .verify(token);
-            System.out.println("Token válido: " + token);
+            System.out.println("Token valido: " + token);
             return verifier.getSubject(); // Extrae el subject del token
         } catch (TokenExpiredException exception) {
             throw new RuntimeException("El token ha expirado", exception);
         } catch (JWTVerificationException exception) {
-            throw new RuntimeException("Token inválido o no verificable", exception);
+            throw new RuntimeException("Token invalido o no verificable", exception);
         }
     }
 

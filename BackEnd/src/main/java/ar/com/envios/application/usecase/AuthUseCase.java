@@ -31,12 +31,12 @@ public class AuthUseCase {
                 new UsernamePasswordAuthenticationToken(request.getEmail(), request.getPassword())
         );
 
-        // Obtén UserDetails del contexto
+        // Obten UserDetails del contexto
         UserDetails userDetails = (UserDetails) auth.getPrincipal();
 
         // Busca el Usuario en la base de datos
         Usuario usuario = usuarioRepository.buscarPorEmail(userDetails.getUsername())
-                .orElseThrow(() -> new RuntimeException("Usuario no encontrado tras autenticación"));
+                .orElseThrow(() -> new RuntimeException("Usuario no encontrado tras autenticacion"));
 
         // Genera el token
         String token = tokenService.generateToken(usuario);

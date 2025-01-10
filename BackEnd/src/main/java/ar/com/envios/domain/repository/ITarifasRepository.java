@@ -6,21 +6,21 @@ import java.util.List;
 import java.util.Optional;
 
 /**
- * Repositorio que provee acceso a información de tipos de vehículos
+ * Repositorio que provee acceso a informacion de tipos de vehiculos
  * (y sus costos asociados).
  */
 public interface ITarifasRepository {
 
     /**
-     * Obtiene la lista completa de tipos de vehículo disponibles.
+     * Obtiene la lista completa de tipos de vehiculo disponibles.
      * @return Lista de TipoVehiculo
      */
     List<Vehiculo> findAll();
 
     /**
-     * Busca un tipo de vehículo por su nombre (camioneta, camión grande, etc.)
-     * @param nombre Nombre del tipo de vehículo
-     * @return Un Optional con el TipoVehiculo si se encuentra, vacío si no existe.
+     * Busca un tipo de vehiculo por su nombre (camioneta, camion grande, etc.)
+     * @param nombre Nombre del tipo de vehiculo
+     * @return Un Optional con el TipoVehiculo si se encuentra, vacio si no existe.
      */
     Optional<Vehiculo> findByNombre(String nombre);
 }

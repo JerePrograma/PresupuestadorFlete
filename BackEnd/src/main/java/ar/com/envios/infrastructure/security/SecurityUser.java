@@ -44,8 +44,8 @@ public class SecurityUser implements UserDetails {
     }
 
     /**
-     * Métodos extra: supón que todos están habilitados/no expirados,
-     * o ajusta según tu lógica
+     * Metodos extra: supon que todos estan habilitados/no expirados,
+     * o ajusta segun tu logica
      */
     @Override
     public boolean isAccountNonExpired() {
@@ -64,7 +64,7 @@ public class SecurityUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        // Podrías usar domainUser.isDisponible() si quieres
+        // Podrias usar domainUser.isDisponible() si quieres
         return true;
     }
 }

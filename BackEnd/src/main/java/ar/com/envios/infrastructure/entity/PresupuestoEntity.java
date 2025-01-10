@@ -31,12 +31,12 @@ public class PresupuestoEntity {
     @Column(name = "presupuesto_total", nullable = false)
     private double presupuestoTotal;
 
-    // Relación con tipoVehiculo (Many-to-One)
+    // Relacion con tipoVehiculo (Many-to-One)
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "tipo_vehiculo_id", nullable = false)
     private VehiculoEntity tipoVehiculo;
 
-    // Relación con extras (Many-to-Many)
+    // Relacion con extras (Many-to-Many)
     @ManyToMany
     @JoinTable(
             name = "presupuesto_extra",

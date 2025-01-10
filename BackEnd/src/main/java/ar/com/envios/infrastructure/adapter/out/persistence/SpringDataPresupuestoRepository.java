@@ -6,5 +6,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SpringDataPresupuestoRepository extends JpaRepository<PresupuestoEntity, Long> {
-    // Aquí puedes agregar métodos personalizados si los necesitas.
+    // Aqui puedes agregar metodos personalizados si los necesitas.
 }

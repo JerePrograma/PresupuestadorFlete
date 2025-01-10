@@ -11,16 +11,16 @@ public class PresupuestoRequest {
     @NotBlank(message = "El destino es obligatorio")
     private String destino;
 
-    @Positive(message = "El volumen debe ser un número positivo")
+    @Positive(message = "El volumen debe ser un numero positivo")
     private double volumenCarga;
 
-    @Positive(message = "El peso debe ser un número positivo")
+    @Positive(message = "El peso debe ser un numero positivo")
     private double pesoCarga;
 
-    @NotBlank(message = "El tipo de vehículo es obligatorio")
+    @NotBlank(message = "El tipo de vehiculo es obligatorio")
     private String nombreTipoVehiculo;
 
-    // Ahora sólo IDs de usuarios
+    // Ahora solo IDs de usuarios
     private List<Long> usuariosInvolucrados;
 
     public PresupuestoRequest() {
