@@ -28,6 +28,7 @@ public class SuperAdminInitializer {
                 () -> {
                     Usuario superAdmin = new Usuario();
                     superAdmin.setEmail("superadmin@mail.com");
+                    superAdmin.setNombre("admin");
                     superAdmin.setPassword(passwordEncoder.encode("superpassword"));
                     superAdmin.setTipoUsuario(TipoUsuario.SUPERADMIN);
                     usuarioRepository.guardar(superAdmin);
