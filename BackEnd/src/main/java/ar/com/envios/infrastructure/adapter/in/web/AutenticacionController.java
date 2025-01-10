@@ -45,4 +45,24 @@ public class AutenticacionController {
         System.out.println(JWTtoken);
         return ResponseEntity.ok(new LoginResponse(JWTtoken));
     }
+
+    @PostMapping("/superlogin")
+    public ResponseEntity<?> superLogin() {
+        // Datos del superadmin preconfigurado
+        String email = "superadmin@mail.com";
+        String password = "superpassword";
+
+        // Autenticación del superadmin
+        var authToken = new UsernamePasswordAuthenticationToken(email, password);
+        var authentication = manager.authenticate(authToken);
+
+        // principal = SecurityUser
+        SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
+        Usuario domainUser = securityUser.getDomainUser();
+
+        // Generamos el token para el superadmin
+        String JWTtoken = tokenService.generateToken(domainUser);
+        return ResponseEntity.ok(new LoginResponse(JWTtoken));
+    }
+
 }
