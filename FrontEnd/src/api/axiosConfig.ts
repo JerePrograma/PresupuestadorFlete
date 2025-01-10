@@ -11,11 +11,11 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "http://149.56.68.32/api", // URL base del backend desplegado
+  baseURL: "http://192.168.1.16:8080/api", // URL base del backend
   headers: {
-    "Content-Type": "application/json",
+    "Content-Type": "application/json", // Configura el tipo de contenido como JSON
   },
-  withCredentials: true, // Esto permite enviar cookies o encabezados de autenticación
+  withCredentials: true, // Permite incluir cookies en las solicitudes
 });
 
 /**
@@ -24,12 +24,13 @@ const api = axios.create({
  */
 api.interceptors.request.use(
   (config) => {
-    const hardcodedToken =
-      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJQcmVzdXB1ZXN0YWRvckZsZXRlIiwic3ViIjoic3VwZXJhZG1pbkBtYWlsLmNvbSIsImlkIjoxLCJleHAiOjE3MzY1NTE1NDJ9.kOESp-Rd-RBwm8obJJfwTkiTX4MVTD2br1EaiD6qLbA";
-    config.headers.Authorization = `Bearer ${hardcodedToken}`;
+    const token = localStorage.getItem("token"); // Obtiene el token del almacenamiento local
+    if (token) {
+      config.headers.Authorization = `Bearer ${token}`; // Añade el token al encabezado
+    }
     return config;
   },
-  (error) => Promise.reject(error)
+  (error) => Promise.reject(error) // Maneja errores antes de enviar la solicitud
 );
 
 /**
@@ -42,7 +43,7 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token"); // Elimina el token del almacenamiento local
-      // Aquí NO rediriges automáticamente a /login
+      window.location.href = "/login"; // Redirige a la página de login
     }
     return Promise.reject(error); // Rechaza el error para manejarlo externamente
   }

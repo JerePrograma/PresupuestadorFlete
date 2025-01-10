@@ -1,13 +1,6 @@
-/***********************************************
+/*******************************
  * src/routes/ProtectedRoute.tsx
- ***********************************************/
-
-/**
- * Este archivo ha sido deshabilitado temporalmente para pruebas.
- */
-
-// Código comentado para deshabilitar la protección JWT
-/*
+ *******************************/
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
@@ -21,23 +14,19 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
   component: Component,
   ...rest
 }) => {
-  const token = localStorage.getItem("token"); // Verificar si existe el token
-
   return (
     <Route
       {...rest}
-      render={(props) =>
-        token ? (
-          <Component {...props} /> // Renderiza el componente si hay token
-        ) : (
-          <Redirect to="/login" /> // Redirige al login si no hay token
-        )
-      }
+      render={(props) => {
+        const token = localStorage.getItem("token");
+        // Si NO hay token en localStorage, redireccionamos a /login
+        if (!token) {
+          return <Redirect to="/login" />;
+        }
+        return <Component {...props} />;
+      }}
     />
   );
 };
 
 export default ProtectedRoute;
-*/
-
-export {};
