@@ -24,13 +24,12 @@ const api = axios.create({
  */
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token"); // Obtiene el token del almacenamiento local
-    if (token) {
-      config.headers.Authorization = `Bearer ${token}`; // Añade el token al encabezado
-    }
+    const hardcodedToken =
+      "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJQcmVzdXB1ZXN0YWRvckZsZXRlIiwic3ViIjoic3VwZXJhZG1pbkBtYWlsLmNvbSIsImlkIjoxLCJleHAiOjE3MzY1NTE1NDJ9.kOESp-Rd-RBwm8obJJfwTkiTX4MVTD2br1EaiD6qLbA";
+    config.headers.Authorization = `Bearer ${hardcodedToken}`;
     return config;
   },
-  (error) => Promise.reject(error) // Maneja errores antes de enviar la solicitud
+  (error) => Promise.reject(error)
 );
 
 /**

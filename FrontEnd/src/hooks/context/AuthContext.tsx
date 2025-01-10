@@ -9,17 +9,17 @@
  */
 
 import React, {
+  createContext, // Crea un contexto React
   useContext, // Permite consumir el contexto en otros componentes
   useEffect, // Maneja efectos secundarios
   useState, // Gestiona el estado local
-  createContext, // Crea un contexto React
   ReactNode, // Define el tipo de los hijos del proveedor
 } from "react";
 import { login as loginApi } from "../../api/axiosConfig"; // Función de API para el login
 
 /**
  * Interfaz `AuthContextProps`:
- * - Define las propiedades expuestas por el contexto de autenticación.
+ * - Define las propiedades y funciones expuestas por el contexto de autenticación.
  */
 interface AuthContextProps {
   isAuth: boolean; // Estado de autenticación (true si el usuario está autenticado)
@@ -30,7 +30,7 @@ interface AuthContextProps {
 
 /**
  * Contexto `AuthContext`:
- * - Se inicializa como `undefined` para evitar errores de referencia no inicializada.
+ * - Proporciona acceso a los estados y funciones relacionadas con la autenticación.
  */
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
@@ -41,13 +41,16 @@ const AuthContext = createContext<AuthContextProps | undefined>(undefined);
  */
 export const useAuth = () => {
   const context = useContext(AuthContext);
-  if (!context) throw new Error("useAuth must be used within an AuthProvider");
+  if (!context) {
+    throw new Error("useAuth must be used within an AuthProvider");
+  }
   return context;
 };
 
 /**
  * Proveedor de contexto `AuthProvider`:
  * - Envuelve los componentes hijos con el contexto de autenticación.
+ * - Maneja el estado y las funciones relacionadas con la autenticación.
  */
 export const AuthProvider: React.FC<{ children: ReactNode }> = ({
   children,
@@ -60,8 +63,13 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
    * - Comprueba si hay un token en el almacenamiento local al montar el componente.
    */
   useEffect(() => {
-    const token = localStorage.getItem("token"); // Obtiene el token del almacenamiento local
-    setIsAuth(!!token); // Actualiza el estado según la existencia del token
+    const token = localStorage.getItem("token");
+    if (token) {
+      console.log("Token encontrado. Usuario autenticado.");
+      setIsAuth(true);
+    } else {
+      console.log("No se encontró token. Usuario no autenticado.");
+    }
     setLoading(false); // Finaliza el estado de carga
   }, []);
 
@@ -71,10 +79,11 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
    * - Guarda el token en el almacenamiento local y actualiza el estado.
    */
   const login = async (email: string, password: string) => {
+    console.log("Intentando autenticar al usuario...");
     try {
-      const data = await loginApi(email, password); // Llama a la API para autenticación
-      // Almacena el token (si no se maneja automáticamente en la API)
-      // localStorage.setItem("token", data.token);
+      const data = await loginApi(email, password);
+      console.log("Autenticación exitosa. Token recibido:", data.token);
+      localStorage.setItem("token", data.token);
       setIsAuth(true); // Marca al usuario como autenticado
     } catch (error) {
       console.error("Error durante el inicio de sesión:", error);
@@ -88,8 +97,9 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
    * - Actualiza el estado para marcar al usuario como no autenticado.
    */
   const logout = () => {
-    localStorage.removeItem("token"); // Elimina el token almacenado
-    setIsAuth(false); // Marca al usuario como no autenticado
+    console.log("Cerrando sesión del usuario...");
+    localStorage.removeItem("token");
+    setIsAuth(false);
     window.location.href = "/login"; // Redirige al usuario a la página de login
   };
 
@@ -102,3 +112,5 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
     </AuthContext.Provider>
   );
 };
+
+export default AuthContext;
