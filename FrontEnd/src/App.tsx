@@ -57,14 +57,70 @@ setupIonicReact();
  * - Define el diseño con un menú lateral y tabs en la parte inferior.
  * - Implementa la lógica de rutas públicas y protegidas.
  */
-const App: React.FC = () => (
-  <IonApp>
-    <IonReactRouter>
-      <Route exact path="/">
-        <h1>Test Component</h1>
-      </Route>
-    </IonReactRouter>
-  </IonApp>
-);
+const App: React.FC = () => {
+  return (
+    <AuthProvider>
+      <IonApp>
+        <IonReactRouter>
+          <IonSplitPane contentId="main">
+            {/* Menú lateral */}
+            <Menu />
+
+            {/* Configuración de tabs */}
+            <IonTabs>
+              <IonRouterOutlet id="main">
+                <Switch>
+                  {/* Ruta pública: /login */}
+                  <Route exact path="/login" component={LoginForm} />
+
+                  {/* Redirección de la raíz hacia /login */}
+                  <Route exact path="/">
+                    <Redirect to="/login" />
+                  </Route>
+
+                  {/* Rutas protegidas: Solo accesibles con sesión iniciada */}
+                  <ProtectedRoute
+                    exact
+                    path="/presupuestos"
+                    component={PresupuestosPage}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/usuarios"
+                    component={UsuarioPage}
+                  />
+                  <ProtectedRoute
+                    exact
+                    path="/vehiculos"
+                    component={VehiculoPage}
+                  />
+
+                  {/* Si no coincide nada, redirecciona a /login */}
+                  <Redirect to="/login" />
+                </Switch>
+              </IonRouterOutlet>
+
+              {/* Barra de navegación inferior */}
+              <IonTabBar slot="bottom">
+                <IonTabButton tab="presupuestos" href="/presupuestos">
+                  <IonIcon aria-hidden="true" icon={triangle} />
+                  <IonLabel>Presupuestos</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="usuarios" href="/usuarios">
+                  <IonIcon aria-hidden="true" icon={ellipse} />
+                  <IonLabel>Usuarios</IonLabel>
+                </IonTabButton>
+                <IonTabButton tab="vehiculos" href="/vehiculos">
+                  <IonIcon aria-hidden="true" icon={square} />
+                  <IonLabel>Vehículos</IonLabel>
+                </IonTabButton>
+              </IonTabBar>
+            </IonTabs>
+          </IonSplitPane>
+        </IonReactRouter>
+      </IonApp>
+    </AuthProvider>
+  );
+};
 
 export default App;
