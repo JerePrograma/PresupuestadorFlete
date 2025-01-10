@@ -1,3 +1,13 @@
+/***********************************************
+ * src/routes/ProtectedRoute.tsx
+ ***********************************************/
+
+/**
+ * Este archivo ha sido deshabilitado temporalmente para pruebas.
+ */
+
+// Código comentado para deshabilitar la protección JWT
+/*
 import React from "react";
 import { Route, Redirect } from "react-router-dom";
 
@@ -28,3 +38,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({
 };
 
 export default ProtectedRoute;
+*/
+
+export {};
