@@ -74,21 +74,13 @@ const App: React.FC = () => {
                   <Route exact path="/login" component={LoginForm} />
 
                   {/* Rutas protegidas: Solo accesibles con sesión iniciada */}
-                  <ProtectedRoute
+                  <Route
                     exact
                     path="/presupuestos"
                     component={PresupuestosPage}
                   />
-                  <ProtectedRoute
-                    exact
-                    path="/usuarios"
-                    component={UsuarioPage}
-                  />
-                  <ProtectedRoute
-                    exact
-                    path="/vehiculos"
-                    component={VehiculoPage}
-                  />
+                  <Route exact path="/usuarios" component={UsuarioPage} />
+                  <Route exact path="/vehiculos" component={VehiculoPage} />
 
                   {/* Redirección predeterminada */}
                   <Route path="*">
