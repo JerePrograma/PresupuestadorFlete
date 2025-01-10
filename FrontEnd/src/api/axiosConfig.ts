@@ -81,19 +81,3 @@ export const logout = () => {
 };
 
 export default api;
-
-/**
- * Servicio `superLogin`:
- * - Envía credenciales al endpoint `/api/login/superlogin`.
- */
-export const superLogin = async (email: string, password: string) => {
-  try {
-    const response = await api.post("/login/superlogin", { email, password });
-    const { token } = response.data; // Extrae el token de la respuesta
-    localStorage.setItem("token", token); // Almacena el token en localStorage
-    return response.data; // Devuelve los datos de la respuesta
-  } catch (error: any) {
-    console.error("Error durante el superlogin:", error);
-    throw error; // Lanza el error para manejarlo en los componentes
-  }
-};

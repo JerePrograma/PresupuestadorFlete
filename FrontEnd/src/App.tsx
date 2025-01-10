@@ -70,13 +70,8 @@ const App: React.FC = () => {
             <IonTabs>
               <IonRouterOutlet id="main">
                 <Switch>
-                  {/* Ruta pública: /login */}
+                  {/* Ruta pública: Login */}
                   <Route exact path="/login" component={LoginForm} />
-
-                  {/* Redirección de la raíz hacia /login */}
-                  <Route exact path="/">
-                    <Redirect to="/login" />
-                  </Route>
 
                   {/* Rutas protegidas: Solo accesibles con sesión iniciada */}
                   <ProtectedRoute
@@ -95,8 +90,10 @@ const App: React.FC = () => {
                     component={VehiculoPage}
                   />
 
-                  {/* Si no coincide nada, redirecciona a /login */}
-                  <Redirect to="/login" />
+                  {/* Redirección predeterminada a /login */}
+                  <Route exact path="/">
+                    <Redirect to="/login" />
+                  </Route>
                 </Switch>
               </IonRouterOutlet>
 
