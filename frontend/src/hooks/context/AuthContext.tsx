@@ -70,19 +70,28 @@ export const AuthProvider: React.FC<{ children: ReactNode }> = ({
    * - Realiza la autenticación del usuario mediante la API.
    * - Guarda el token en el almacenamiento local y actualiza el estado.
    */
-const login = async () => {
-  setIsAuth(true); // Autenticación siempre exitosa
-};
-
-const logout = () => {
-  setIsAuth(false); // Solo cambia el estado sin redirigir
-};
+  const login = async (email: string, password: string) => {
+    try {
+      const response = await api.post("/login", { email, password }); // Realiza la solicitud de login
+      const { token } = response.data; // Extrae el token de la respuesta
+      localStorage.setItem("token", token); // Guarda el token en el almacenamiento local
+      setIsAuth(true); // Marca al usuario como autenticado
+    } catch (error) {
+      console.error("Error durante el inicio de sesión:", error);
+      throw error; // Lanza el error para manejarlo en el componente
+    }
+  };
 
   /**
    * Función `logout`:
    * - Elimina el token del almacenamiento local.
    * - Actualiza el estado para marcar al usuario como no autenticado.
    */
+  const logout = () => {
+    localStorage.removeItem("token"); // Elimina el token almacenado
+    setIsAuth(false); // Marca al usuario como no autenticado
+    window.location.href = "/login"; // Redirige al usuario a la página de login
+  };
 
   /**
    * Proporciona las funciones y estados al contexto.

@@ -1,38 +1,65 @@
 services:
-  backend:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    environment:
-      - SPRING_DATASOURCE_URL=${SPRING_DATASOURCE_URL}
-      - SPRING_DATASOURCE_USERNAME=${SPRING_DATASOURCE_USERNAME}
-      - SPRING_DATASOURCE_PASSWORD=${SPRING_DATASOURCE_PASSWORD}
-      - JWT_SECRET=${JWT_SECRET}
-      - JWT_ISSUER=${JWT_ISSUER}
-    ports:
-      - "8080:8080"
-    depends_on:
-      - database
-
-  frontend:
-    build:
-      context: ./frontend
-      dockerfile: Dockerfile
-    ports:
-      - "80:80"
-
+  # =====================
+  #       DATABASE
+  # =====================
   database:
     image: mysql:8.0
+    container_name: mysql-presupuestador
     environment:
-      MYSQL_ROOT_PASSWORD: ${DB_ROOT_PASSWORD}
-      MYSQL_DATABASE: ${DB_NAME}
-      MYSQL_USER: ${DB_USER}
-      MYSQL_PASSWORD: ${DB_PASSWORD}
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: presupuestador_db
+      MYSQL_USER: presupuestador_user
+      MYSQL_PASSWORD: presupuestador_pass
     ports:
       - "3306:3306"
     volumes:
       - db_data:/var/lib/mysql
+    networks:
+      - app-network
+
+  # =====================
+  #       BACKEND
+  # =====================
+  backend:
+    build:
+      context: ./backend
+    container_name: backend
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/presupuestador_db
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root_password
+      JWT_SECRET: supersecreto
+      JWT_ISSUER: PresupuestadorFlete
+    ports:
+      - "8080:8080"
+    depends_on:
+      - database
+    networks:
+      - app-network
+
+  # =====================
+  #       FRONTEND
+  # =====================
+  frontend:
+    build:
+      context: ./frontend
+    container_name: frontend
+    # Si necesitas exponer HTTP y HTTPS directamente:
+    ports:
+      - "80:80"
+      - "443:443"
+    # Montar certificados Let’s Encrypt si tu config de Nginx los lee en /etc/letsencrypt
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+    depends_on:
+      - backend
+    networks:
+      - app-network
 
 volumes:
   db_data:
+
+networks:
+  app-network:
+    driver: bridge
 

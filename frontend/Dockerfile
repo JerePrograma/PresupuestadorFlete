@@ -1,27 +1,28 @@
-# Etapa 1: Build
+# (Dockerfile en ./frontend)
+
+# Etapa 1: Build con Node
 FROM node:18 AS build
 WORKDIR /app
 
-# Copiar package.json y package-lock.json
 COPY package*.json ./
-
-# Instalar dependencias
 RUN npm install
 
-# Copiar el código fuente
 COPY . .
+RUN npm run build  # Genera /app/dist (Vite) o /app/build (CRA)
 
-# Construir la aplicación
-RUN npm run build
-
-# Etapa 2: Servir con Nginx
+# Etapa 2: Imagen final con Nginx
 FROM nginx:1.21
+
+# 1) Copiamos la carpeta generada en la etapa anterior al docroot de Nginx
 COPY --from=build /app/dist /usr/share/nginx/html
+# O si usas create-react-app: /app/build en vez de /app/dist
 
-# Configuración de Nginx
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# 2) Copiamos nuestro archivo de configuración Nginx con SSL y proxy
+COPY default.conf /etc/nginx/conf.d/default.conf
 
+# 3) Exponemos puertos 80 y 443
 EXPOSE 80
+EXPOSE 443
 
 CMD ["nginx", "-g", "daemon off;"]
 

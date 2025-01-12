@@ -14,17 +14,20 @@ public class WebConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
+        // Solo los orígenes que realmente necesitas
         configuration.setAllowedOrigins(List.of(
-                "http://192.168.1.16:8100", // Origen del frontend
-                "http://149.56.68.32:8080/", // Origen del despliegue
-                "http://149.56.68.32", // Origen del despliegue
-                "http://localhost:8100"     // Para desarrollo local
+                "http://localhost:3000",
+                "http://localhost:8100",
+                "http://jereprograma.com",
+                "https://jereprograma.com",
+		"https://jereprograma.com/login"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));
-        configuration.setAllowCredentials(true); // Para permitir cookies o encabezados de autenticacion
+        configuration.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        // Aplica a todas las rutas
         source.registerCorsConfiguration("/**", configuration);
         return source;
     }
