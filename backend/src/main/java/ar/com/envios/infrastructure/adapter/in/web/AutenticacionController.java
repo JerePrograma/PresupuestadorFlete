@@ -31,11 +31,12 @@ public class AutenticacionController {
         var authToken = new UsernamePasswordAuthenticationToken(
                 request.getEmail(),
                 request.getPassword()
-        );
+    	);
+	System.out.println("Email: " + request.getEmail());
+	System.out.println("Password: " + request.getPassword());
 
         // Se autentica
         var authentication = manager.authenticate(authToken);
-
         // principal = SecurityUser
         SecurityUser securityUser = (SecurityUser) authentication.getPrincipal();
         Usuario domainUser = securityUser.getDomainUser();

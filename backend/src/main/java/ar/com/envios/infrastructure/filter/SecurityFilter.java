@@ -28,19 +28,18 @@ public class SecurityFilter extends OncePerRequestFilter {
                                     HttpServletResponse response,
                                     FilterChain chain)
             throws ServletException, IOException {
-        // 1) Si es un método OPTIONS, dejarlo pasar.
-        if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
-            chain.doFilter(request, response);
-            return;
-        }
+
         String header = request.getHeader("Authorization");
 
         // Si NO hay header Bearer, DEVOLVER 401 salvo para /api/login o /api/register
         final String path = request.getRequestURI();
 // Si NO hay token y no es /api/login o /api/register => 401
-        if ((header == null || !header.startsWith("Bearer "))
-                && !path.startsWith("/api/login")
-                && !path.startsWith("/api/register")) {
+System.out.println("Request Path: " + path);
+System.out.println("Authorization Header: " + header);
+
+	if ((header == null || !header.startsWith("Bearer "))
+                && !path.equals("/api/login")
+                && !path.equals("/api/register")) {
             response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
             response.getWriter().write("Token no proporcionado");
             return;
@@ -73,4 +72,3 @@ public class SecurityFilter extends OncePerRequestFilter {
     }
 
 }
-

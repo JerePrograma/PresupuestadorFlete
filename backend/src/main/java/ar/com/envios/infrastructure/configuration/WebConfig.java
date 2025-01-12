@@ -14,13 +14,14 @@ public class WebConfig {
     @Bean
     CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        // Solo los orígenes que realmente necesitas
+        // Solo los origenes que realmente necesitas
         configuration.setAllowedOrigins(List.of(
                 "http://localhost:3000",
                 "http://localhost:8100",
                 "http://jereprograma.com",
                 "https://jereprograma.com",
-		"https://jereprograma.com/login"
+		"https://jereprograma.com/login",
+		    "https://maps.googleapis.com"
         ));
         configuration.setAllowedMethods(List.of("GET", "POST", "OPTIONS", "PUT", "DELETE"));
         configuration.setAllowedHeaders(List.of("Content-Type", "Authorization"));

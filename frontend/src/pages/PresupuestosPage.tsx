@@ -17,6 +17,10 @@ import { LoadScript } from "@react-google-maps/api";
 
 const libraries = ["places"];
 
+const initMap = () => {
+  console.log("Google Maps API cargada y lista para usarse.");
+};
+
 const PresupuestosPage: React.FC = () => {
   return (
     <IonPage>
@@ -29,6 +33,7 @@ const PresupuestosPage: React.FC = () => {
         <LoadScript
           googleMapsApiKey="AIzaSyDpc10F7TycEIoHckCUKThh-NZRcXsfub0"
           libraries={libraries}
+	  onLoad={initMap} // Asegúrate de ejecutar algo al cargar la API
         >
           {/* Presupuesto Form */}
           <PresupuestoForm />

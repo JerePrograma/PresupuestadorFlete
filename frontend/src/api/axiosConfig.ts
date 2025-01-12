@@ -7,19 +7,18 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: "https://jereprograma.com/api", // O HTTPS si tienes certificado
+  baseURL: "https://jereprograma.com/api",
   headers: {
     "Content-Type": "application/json",
   },
-  withCredentials: true,
 });
 
 // Interceptor de solicitudes
 api.interceptors.request.use(
   (config) => {
-    const token = localStorage.getItem("token");
+    const token = localStorage.getItem("token"); // Obtiene el token del almacenamiento local
     if (token) {
-      config.headers.Authorization = `Bearer ${token}`;
+      config.headers.Authorization = `Bearer ${token}`; // Añade el token al encabezado
     }
     return config;
   },
@@ -32,7 +31,6 @@ api.interceptors.response.use(
   (error) => {
     if (error.response && error.response.status === 401) {
       localStorage.removeItem("token");
-      alert("Tu sesión ha expirado. Por favor, inicia sesión nuevamente.");
       if (!window.location.pathname.includes("/login")) {
         window.location.href = "/login";
       }

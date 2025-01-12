@@ -1,7 +1,4 @@
 services:
-  # =====================
-  #       DATABASE
-  # =====================
   database:
     image: mysql:8.0
     container_name: mysql-presupuestador
@@ -17,17 +14,14 @@ services:
     networks:
       - app-network
 
-  # =====================
-  #       BACKEND
-  # =====================
   backend:
     build:
       context: ./backend
     container_name: backend
     environment:
       SPRING_DATASOURCE_URL: jdbc:mysql://database:3306/presupuestador_db
-      SPRING_DATASOURCE_USERNAME: root
-      SPRING_DATASOURCE_PASSWORD: root_password
+      SPRING_DATASOURCE_USERNAME: presupuestador_user
+      SPRING_DATASOURCE_PASSWORD: presupuestador_pass
       JWT_SECRET: supersecreto
       JWT_ISSUER: PresupuestadorFlete
     ports:
@@ -37,9 +31,6 @@ services:
     networks:
       - app-network
 
-  # =====================
-  #       FRONTEND
-  # =====================
   frontend:
     build:
       context: ./frontend
