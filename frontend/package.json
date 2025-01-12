@@ -27,7 +27,6 @@
     "@reduxjs/toolkit": "^1.9.5",
     "axios": "^1.5.0",
     "ionicons": "^6.0.4",
-    "MyNewProject": "file:",
     "prop-types": "^15.8.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
@@ -42,7 +41,7 @@
     "@types/google.maps": "^3.49.2",
     "@types/react": "^18.2.0",
     "@types/react-dom": "^18.2.0",
-    "@types/react-router-dom": "^5.3.3",
+    "@types/react-router-dom": "^5.1.8",
     "@vitejs/plugin-legacy": "^4.0.1",
     "@vitejs/plugin-react": "^3.1.0",
     "cypress": "^12.17.1",
@@ -54,3 +53,4 @@
   },
   "description": "An Ionic project"
 }
+

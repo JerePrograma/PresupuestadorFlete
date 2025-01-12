@@ -1,3 +1,4 @@
+import React from "react";
 import {
   IonContent,
   IonHeader,
@@ -10,16 +11,8 @@ import {
   IonLabel,
 } from "@ionic/react";
 import PresupuestoForm from "../components/forms/PresupuestoForm";
-//import PresupuestoList from "../components/business/PresupuestoList";
 import UsuarioForm from "../components/forms/UsuarioForm";
 import VehiculoForm from "../components/forms/VehiculoForm";
-import { LoadScript } from "@react-google-maps/api";
-
-const libraries = ["places"];
-
-const initMap = () => {
-  console.log("Google Maps API cargada y lista para usarse.");
-};
 
 const PresupuestosPage: React.FC = () => {
   return (
@@ -30,42 +23,35 @@ const PresupuestosPage: React.FC = () => {
         </IonToolbar>
       </IonHeader>
       <IonContent>
-        <LoadScript
-          googleMapsApiKey="AIzaSyDpc10F7TycEIoHckCUKThh-NZRcXsfub0"
-          libraries={libraries}
-	  onLoad={initMap} // Asegúrate de ejecutar algo al cargar la API
-        >
-          {/* Presupuesto Form */}
-          <PresupuestoForm />
+        {/* Formulario para crear presupuestos */}
+        <PresupuestoForm />
 
-          {/* Presupuesto List */}
+        {/* Accordion para gestionar usuarios y vehículos */}
+        <IonAccordionGroup>
+          {/* Gestión de Usuarios */}
+          <IonAccordion value="usuarios">
+            <IonItem slot="header">
+              <IonLabel>Gestión de Usuarios</IonLabel>
+            </IonItem>
+            <div slot="content">
+              <UsuarioForm />
+            </div>
+          </IonAccordion>
 
-          {/* Accordion for Usuarios and Vehículos */}
-          <IonAccordionGroup>
-            {/* Usuarios Section */}
-            <IonAccordion value="usuarios">
-              <IonItem slot="header">
-                <IonLabel>Gestión de Usuarios</IonLabel>
-              </IonItem>
-              <div slot="content">
-                <UsuarioForm />
-              </div>
-            </IonAccordion>
-
-            {/* Vehículos Section */}
-            <IonAccordion value="vehiculos">
-              <IonItem slot="header">
-                <IonLabel>Gestión de Vehículos</IonLabel>
-              </IonItem>
-              <div slot="content">
-                <VehiculoForm />
-              </div>
-            </IonAccordion>
-          </IonAccordionGroup>
-        </LoadScript>
+          {/* Gestión de Vehículos */}
+          <IonAccordion value="vehiculos">
+            <IonItem slot="header">
+              <IonLabel>Gestión de Vehículos</IonLabel>
+            </IonItem>
+            <div slot="content">
+              <VehiculoForm />
+            </div>
+          </IonAccordion>
+        </IonAccordionGroup>
       </IonContent>
     </IonPage>
   );
 };
 
 export default PresupuestosPage;
+

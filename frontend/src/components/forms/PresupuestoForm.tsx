@@ -1,5 +1,4 @@
-// src/components/forms/PresupuestoForm.tsx
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   IonButton,
   IonContent,
@@ -9,10 +8,12 @@ import {
   IonSelect,
   IonSelectOption,
 } from "@ionic/react";
-import AutocompleteInput from "../AutocompleteInputProps";
+import { GoogleMap, LoadScript, Autocomplete } from "@react-google-maps/api";
 import ControlledInput from "../utils/ControlledInput";
 import { PresupuestoRequest } from "../../api/services/presupuestoService";
 import { usePresupuesto } from "../../hooks/usePresupuesto";
+
+const libraries: "places"[] = ["places"];
 
 function PresupuestoForm() {
   const { addPresupuesto, usuarios, vehiculos, loading, error } =
@@ -25,13 +26,13 @@ function PresupuestoForm() {
     nombreTipoVehiculo: "",
     usuariosInvolucrados: [],
   });
-
   const [submitting, setSubmitting] = useState(false);
 
-  // Manejador genérico para actualizar campos
-  const handleFieldChange = (name: string, value: any) => {
-    setFormData((prev) => ({ ...prev, [name]: value }));
-  };
+  const autocompleteOriginRef = useRef<google.maps.places.Autocomplete | null>(
+    null
+  );
+  const autocompleteDestinationRef =
+    useRef<google.maps.places.Autocomplete | null>(null);
 
   // Maneja cambios en AutocompleteInput para Origen y Destino
   const handlePlaceChanged = (field: "origen" | "destino") => {
@@ -44,8 +45,10 @@ function PresupuestoForm() {
       }
     };
   };
+  const handleFieldChange = (name: string, value: any) => {
+    setFormData((prev) => ({ ...prev, [name]: value }));
+  };
 
-  // Maneja el envío del formulario
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
@@ -58,8 +61,6 @@ function PresupuestoForm() {
     try {
       await addPresupuesto(formData);
       console.log("Presupuesto creado:", formData);
-
-      // Restablecer formulario
       setFormData({
         origen: "",
         destino: "",
@@ -77,101 +78,114 @@ function PresupuestoForm() {
 
   return (
     <IonContent>
-      <form onSubmit={handleSubmit}>
-        <IonList>
-          {/* Origen */}
-          <IonItem>
-            <AutocompleteInput
-              label="Origen"
-              onPlaceChanged={handlePlaceChanged("origen")}
-            />
-          </IonItem>
-
-          {/* Destino */}
-          <IonItem>
-            <AutocompleteInput
-              label="Destino"
-              onPlaceChanged={handlePlaceChanged("destino")}
-            />
-          </IonItem>
-
-          {/* Volumen de Carga */}
-          <ControlledInput
-            label="Volumen de Carga"
-            name="volumenCarga"
-            type="number"
-            value={formData.volumenCarga}
-            onChange={handleFieldChange}
-            required
-            min={0}
-          />
-
-          {/* Peso de Carga */}
-          <ControlledInput
-            label="Peso de Carga"
-            name="pesoCarga"
-            type="number"
-            value={formData.pesoCarga}
-            onChange={handleFieldChange}
-            required
-            min={0}
-          />
-
-          {/* Usuarios Involucrados */}
-          <IonItem>
-            {loading ? (
-              <IonSpinner name="dots" />
-            ) : usuarios.length > 0 ? (
-              <IonSelect
-                placeholder="Seleccionar Usuarios"
-                multiple
-                value={formData.usuariosInvolucrados}
-                onIonChange={(e) =>
-                  handleFieldChange("usuariosInvolucrados", e.detail.value)
+      <LoadScript
+        googleMapsApiKey="AIzaSyDpc10F7TycEIoHckCUKThh-NZRcXsfub0"
+        libraries={libraries}
+      >
+        <form onSubmit={handleSubmit}>
+          <IonList>
+            {/* Origen */}
+            <IonItem>
+              <Autocomplete
+                onLoad={(autocomplete) =>
+                  (autocompleteOriginRef.current = autocomplete)
                 }
+                onPlaceChanged={handlePlaceChanged("origen")}
               >
-                {usuarios.map((user, index) => (
-                  <IonSelectOption key={index} value={user.id}>
-                    {user.nombre} ({user.tipoUsuario})
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-            ) : (
-              <p>No hay usuarios disponibles</p>
-            )}
-          </IonItem>
+                <input
+                  type="text"
+                  placeholder="Origen"
+                  style={{ width: "100%", padding: "10px" }}
+                />
+              </Autocomplete>
+            </IonItem>
 
-          {/* Vehículo */}
-          <IonItem>
-            {loading ? (
-              <IonSpinner name="dots" />
-            ) : vehiculos.length > 0 ? (
-              <IonSelect
-                placeholder="Seleccionar Vehículo"
-                value={formData.nombreTipoVehiculo}
-                onIonChange={(e) =>
-                  handleFieldChange("nombreTipoVehiculo", e.detail.value)
+            {/* Destino */}
+            <IonItem>
+              <Autocomplete
+                onLoad={(autocomplete) =>
+                  (autocompleteDestinationRef.current = autocomplete)
                 }
+                onPlaceChanged={handlePlaceChanged("destino")}
               >
-                {vehiculos.map((vehiculo) => (
-                  <IonSelectOption key={vehiculo.id} value={vehiculo.nombre}>
-                    {vehiculo.nombre} - Capacidad: {vehiculo.capacidad}
-                  </IonSelectOption>
-                ))}
-              </IonSelect>
-            ) : (
-              <p>No hay vehículos disponibles</p>
-            )}
-          </IonItem>
-        </IonList>
+                <input
+                  type="text"
+                  placeholder="Destino"
+                  style={{ width: "100%", padding: "10px" }}
+                />
+              </Autocomplete>
+            </IonItem>
 
-        {error && <p style={{ color: "red" }}>{error}</p>}
+            {/* Volumen de Carga */}
+            <ControlledInput
+              label="Volumen de Carga"
+              name="volumenCarga"
+              type="number"
+              value={formData.volumenCarga}
+              onChange={handleFieldChange}
+              required
+              min={0}
+            />
 
-        {/* Botón de Enviar */}
-        <IonButton expand="full" type="submit" disabled={submitting || loading}>
-          {submitting ? <IonSpinner name="dots" /> : "Crear Presupuesto"}
-        </IonButton>
-      </form>
+            {/* Usuarios Involucrados */}
+            <IonItem>
+              {loading ? (
+                <IonSpinner name="dots" />
+              ) : usuarios.length > 0 ? (
+                <IonSelect
+                  placeholder="Seleccionar Usuarios"
+                  multiple
+                  value={formData.usuariosInvolucrados}
+                  onIonChange={(e) =>
+                    handleFieldChange("usuariosInvolucrados", e.detail.value)
+                  }
+                >
+                  {usuarios.map((user) => (
+                    <IonSelectOption key={user.id} value={user.id}>
+                      {user.nombre} ({user.tipoUsuario})
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              ) : (
+                <p>No hay usuarios disponibles</p>
+              )}
+            </IonItem>
+
+            {/* Vehículo */}
+            <IonItem>
+              {loading ? (
+                <IonSpinner name="dots" />
+              ) : vehiculos.length > 0 ? (
+                <IonSelect
+                  placeholder="Seleccionar Vehículo"
+                  value={formData.nombreTipoVehiculo}
+                  onIonChange={(e) =>
+                    handleFieldChange("nombreTipoVehiculo", e.detail.value)
+                  }
+                >
+                  {vehiculos.map((vehiculo) => (
+                    <IonSelectOption key={vehiculo.id} value={vehiculo.nombre}>
+                      {vehiculo.nombre} - Capacidad: {vehiculo.capacidad}
+                    </IonSelectOption>
+                  ))}
+                </IonSelect>
+              ) : (
+                <p>No hay vehículos disponibles</p>
+              )}
+            </IonItem>
+          </IonList>
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          <IonButton
+            expand="full"
+            type="submit"
+            disabled={submitting || loading}
+          >
+            {submitting ? <IonSpinner name="dots" /> : "Crear Presupuesto"}
+          </IonButton>
+        </form>
+      </LoadScript>
     </IonContent>
   );
 }

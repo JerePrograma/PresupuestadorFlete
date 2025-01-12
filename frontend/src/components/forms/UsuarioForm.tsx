@@ -40,10 +40,9 @@ const UsuarioForm: React.FC = () => {
     e.preventDefault();
     try {
       await crearUsuario(formData);
-      console.log("Usuario creado:", formData);
-
       // Limpia el formulario si quieres
-      setFormData({
+	
+	setFormData({
         nombre: "",
         email: "",
         password: "",

@@ -1,24 +1,55 @@
-**PresupuestadorFlete**.
+```markdown
+# PresupuestadorFlete
+
+## 🚀 Descripción del Proyecto
+
+**PresupuestadorFlete** es una aplicación completa diseñada para gestionar presupuestos de fletes. Integra un backend robusto en **Java** con **Spring Boot** y un frontend basado en **Ionic** y **React**, todo desplegado en un **VPS** para garantizar seguridad y escalabilidad. Puedes ver el proyecto en acción aquí:
+
+🌐 **Proyecto disponible en**: [https://jereprograma.com/](https://jereprograma.com/)  
+📂 **Repositorio en GitHub**: [https://github.com/JerePrograma/PresupuestadorFlete](https://github.com/JerePrograma/PresupuestadorFlete)  
 
 ---
 
-## Documentación de Puesta en Marcha
+## 🔧 Tecnologías Principales
 
-### Backend (Java 17 y Spring Boot)
+### Frontend
+- **Framework**: Ionic y React
+- **Estado global**: Context API con JWT para autenticación
+- **Bibliotecas**: `@react-google-maps/api` para integración de Google Maps
 
-#### Ambiente Adecuado
-- **Java**: Asegúrate de tener instalado Java 17.
-- **Maven**: Utiliza el Maven Wrapper incluido en el proyecto para asegurar la versión correcta.
-- **Base de Datos**: MySQL debe estar instalado y corriendo.
+### Backend
+- **Lenguaje**: Java 17
+- **Framework**: Spring Boot (Web, Security, Data JPA)
+- **Seguridad**: JWT, BCrypt
+- **Base de Datos**: MySQL
 
-#### Dependencias Principales
-- **Spring Boot**: Web, Data JPA, Security, Validation
-- **MySQL Connector**
-- **Lombok**
-- **JWT**
-- **Springdoc OpenAPI**
+### DevOps e Infraestructura
+- **Contenedores**: Docker, docker-compose
+- **Infraestructura**: VPS con Ubuntu
+- **Proxy inverso**: Nginx
+- **Certificados SSL**: Let's Encrypt
+- **Optimización**: Cloudflare
 
-#### Secuencia de Comandos
+---
+
+## 📂 Estructura del Proyecto
+
+### Backend
+- **src/main/java**: Código fuente principal
+- **src/main/resources**: Archivos de configuración (`application.properties`, `logback.xml`, etc.)
+- **pom.xml**: Manejo de dependencias con Maven
+
+### Frontend
+- **src/components**: Componentes de React
+- **src/pages**: Páginas principales de la aplicación
+- **src/hooks**: Manejo de estado y lógica compartida
+- **vite.config.ts**: Configuración de Vite
+
+---
+
+## 💻 Puesta en Marcha
+
+### Backend
 
 1. **Clonar el repositorio**:
    ```bash
@@ -26,150 +57,90 @@
    cd PresupuestadorFlete/backend
    ```
 
-2. **Configurar las variables de entorno**:
-   En lugar de incluir datos sensibles directamente en `application.properties`, utiliza variables de entorno. Aquí tienes cómo hacerlo en Windows:
+2. **Configurar variables de entorno**:
+   Crea variables de entorno necesarias, como:
+   ```properties
+   DATASOURCE_URL=jdbc:mysql://localhost:3306/presupuestador_db
+   DATASOURCE_USERNAME=root
+   DATASOURCE_PASSWORD=root
+   JWT_SECRET=TuClaveSecreta
+   ```
 
-   - **Crear variables de entorno**:
-     1. Abre el Panel de Control y navega a `Sistema y Seguridad > Sistema > Configuración avanzada del sistema`.
-     2. Haz clic en `Variables de entorno`.
-     3. En la sección `Variables del sistema`, haz clic en `Nueva` y añade tus variables, por ejemplo:
-        - `DATASOURCE_URL=jdbc:mysql://localhost:3306/facturacion_envios_db`
-        - `DATASOURCE_USERNAME=root`
-        - `DATASOURCE_PASSWORD=root`
-        - `JWT_SECRET=TuClaveSecretaMuySegura`
-
-   - **Modificar `application.properties`**:
-     ```properties
-     # Configuración de la base de datos
-     spring.datasource.url=${DATASOURCE_URL}
-     spring.datasource.username=${DATASOURCE_USERNAME}
-     spring.datasource.password=${DATASOURCE_PASSWORD}
-     spring.datasource.driver-class-name=com.mysql.cj.jdbc.Driver
-
-     # Configuración JPA/Hibernate
-     spring.jpa.hibernate.ddl-auto=update
-     spring.jpa.show-sql=true
-     spring.jpa.properties.hibernate.format_sql=true
-     spring.jpa.database-platform=org.hibernate.dialect.MySQL8Dialect
-
-     # Logging
-     logging.level.ar.com.envios=DEBUG
-     logging.level.org.hibernate.SQL=debug
-     logging.level.org.hibernate.type.descriptor.sql.BasicBinder=trace
-
-     # Inicialización de la base de datos (opcional)
-     spring.datasource.initialize=true
-     jwt.issuer=PresupuestadorFlete
-
-     spring.main.allow-bean-definition-overriding=true
-
-     server.address=0.0.0.0
-     server.port=8080
-
-     jwt.secret=${JWT_SECRET}
-     ```
-
-3. **Compilar y ejecutar la aplicación**:
+3. **Ejecutar el proyecto**:
    ```bash
    ./mvnw spring-boot:run
    ```
 
-   Para activar el perfil de producción, usa:
-   ```bash
-   ./mvnw spring-boot:run -Dspring-boot.run.profiles=prod
-   ```
-
----
-
-### Frontend (Ionic con React)
-
-#### Ambiente Adecuado
-- **Node.js**: Asegúrate de tener instalado Node.js (versión 14 o superior).
-- **Ionic CLI**: Instala la CLI de Ionic globalmente.
-- **Capacitor**: Para funcionalidades nativas en aplicaciones móviles.
-
-#### Dependencias Principales
-- **@capacitor/android, @capacitor/app, @capacitor/core, @capacitor/haptics, @capacitor/ios, @capacitor/keyboard, @capacitor/status-bar**: Capacitor plugins para funcionalidades nativas en aplicaciones móviles.
-- **@ionic/core, @ionic/react, @ionic/react-router**: Componentes y herramientas de Ionic para React.
-- **@react-google-maps/api**: Biblioteca para integrar Google Maps en aplicaciones React.
-- **@reduxjs/toolkit, react-redux**: Herramientas para manejar el estado global de la aplicación con Redux.
-- **axios**: Cliente HTTP para hacer peticiones al backend.
-- **ionicons**: Conjunto de iconos para aplicaciones Ionic.
-- **prop-types**: Para la validación de tipos en componentes React.
-- **react, react-dom**: Bibliotecas principales de React.
-- **react-router, react-router-dom**: Para manejar rutas en la aplicación.
-
-#### Dependencias de Desarrollo
-- **@testing-library/jest-dom, @testing-library/react, @testing-library/user-event**: Herramientas para pruebas unitarias y de integración.
-- **@types/google.maps, @types/react, @types/react-dom, @types/react-router-dom**: Definiciones de tipos para TypeScript.
-- **@vitejs/plugin-legacy, @vitejs/plugin-react**: Plugins para Vite, un bundler rápido para proyectos web.
-- **cypress**: Herramienta para pruebas end-to-end.
-- **eslint, eslint-plugin-react**: Herramientas para linting del código.
-- **typescript**: Soporte para TypeScript.
-- **vite, vitest**: Herramientas para desarrollo y pruebas.
-
-#### Secuencia de Comandos
+### Frontend
 
 1. **Navegar al directorio del frontend**:
    ```bash
    cd ../frontend
    ```
 
-2. **Instalar las dependencias**:
+2. **Instalar dependencias**:
    ```bash
    npm install
    ```
 
-3. **Configurar las variables de entorno**:
-   Crea un archivo `.env` en la raíz del proyecto con la URL de la API:
+3. **Configurar variables de entorno**:
+   Crea un archivo `.env`:
    ```env
-   REACT_APP_API_URL=http://localhost:8080
+   VITE_API_URL=https://jereprograma.com/api
    ```
 
-4. **Iniciar la aplicación**:
+4. **Ejecutar la aplicación**:
    ```bash
    ionic serve
    ```
 
 ---
 
-### Configuración de Capacitor
+## 🌐 Despliegue en VPS
 
-1. **Agregar plataformas**:
+1. **Configurar VPS con Ubuntu**:
+   - Instalar MySQL y configurar la base de datos.
+   - Configurar SSH para acceso remoto seguro.
+   - Implementar certificados SSL con Let's Encrypt.
+
+2. **Contenerizar la aplicación**:
+   Utiliza Docker para empaquetar servicios:
    ```bash
-   npx cap add android
-   npx cap add ios
+   docker-compose up --build
    ```
 
-2. **Sincronizar el proyecto**:
-   ```bash
-   npx cap sync
-   ```
+3. **Configurar Nginx**:
+   Configura un proxy inverso con soporte para HTTPS.
 
-3. **Desplegar en dispositivo o emulador**:
-   ```bash
-   npx cap open android
-   npx cap open ios
-   ```
+4. **Optimizar con Cloudflare**:
+   Activa la protección y optimización del tráfico.
 
 ---
 
-### Configuración de Vite
+## 🛠️ Configuración de Herramientas
 
-#### Contenido del archivo
-El archivo contiene configuraciones para:
-- **Plugins**: Utiliza el plugin de React.
-- **Resolución de Módulos**: Define un alias para rutas relativas a `/src`.
-- **Servidor de Desarrollo**: Configura el servidor de desarrollo.
-  - **host**: `0.0.0.0` para permitir conexiones desde cualquier dirección IP.
-  - **port**: `3000` para especificar el puerto del servidor.
-  - **strictPort**: `true` para asegurar que el puerto especificado se utilice estrictamente.
-  - **proxy**: Configura un proxy para redirigir las peticiones a `/api` al backend en `http://localhost:8080`.
-- **Construcción**: Configura opciones para la construcción del proyecto.
-  - **sourcemap**: `true` para generar mapas de origen.
-  - **target**: `esnext` para especificar el objetivo de la compilación.
-  - **rollupOptions**: Configura opciones adicionales para Rollup.
-    - **external**: Excluye `@ionic/core/components` del bundle.
+### Docker
+- **docker-compose.yml**: Configura servicios de backend, frontend y base de datos.
+- **Dockerfile**: Define imágenes personalizadas para backend y frontend.
+
+### Nginx
+- Proxy inverso configurado para redirigir tráfico HTTP a HTTPS.
 
 ---
 
+## 📝 Tareas Pendientes
+
+- Ajustar integración de Google Maps API para autocompletar direcciones.
+- Implementar más pruebas unitarias y end-to-end.
+- Optimizar la arquitectura para soporte de múltiples usuarios concurrentes.
+
+---
+
+## 📧 Contacto
+
+Si tienes preguntas o sugerencias, no dudes en contactarme. También puedes contribuir al proyecto enviando un pull request.
+
+---
+
+#DesarrolloWeb #FullStack #Java #SpringBoot #Ionic #Docker #DevOps #React #MySQL #VPS #JWT #Cloudflare
+``` 

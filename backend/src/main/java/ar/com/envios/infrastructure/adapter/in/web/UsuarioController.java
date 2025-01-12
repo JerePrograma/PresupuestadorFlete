@@ -26,7 +26,7 @@ public class UsuarioController {
         this.usuarioUseCase = usuarioUseCase;
     }
 
-    @PostMapping("")
+    @PostMapping("/crear")
     public ResponseEntity<UsuarioResponse> crearUsuario(@RequestBody @Valid UsuarioRequest request) {
         UsuarioResponse response = usuarioUseCase.crearUsuario(request);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
